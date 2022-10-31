@@ -19,10 +19,7 @@ const resolvers = {
 
     },
     Mutation: {
-        addUser: async (parent, args) => {
-
-            const { newCompany, signUpCode, companyTitle, ...userArgs } = args;
-
+        addUser: async (parent, { newCompany, signUpCode, companyTitle, ...userArgs }) => {
 
             //check for new company
             //front end validation should check for the presence of a company title  before submit of company registration
@@ -40,7 +37,7 @@ const resolvers = {
             }
             else if (signUpCode) {
                 //decode signup code and create user for department
-                const department = function () //placeholder
+                const department = 'placeholder' //placeholder
             }
             else {
                 throw new GraphQLError('Some data is missing', {
