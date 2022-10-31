@@ -12,7 +12,7 @@ const typeDefs = gql`
         _id: ID
         deptName: String
         company: Company
-        singUpLink: String
+        signUpLink: String
     }
 
     type Company {
@@ -33,7 +33,7 @@ const typeDefs = gql`
 
     type Mutation {
         login(email: String!, password: String!): Auth
-        addUser(username: String!, email: String!, password: String!, signUpCode: String, newCompany: Boolean, CompanyTitle: String): Auth
+        addUser(username: String!, email: String!, password: String!, signUpCode: String, newCompany: Boolean, companyTitle: String): Auth
     }
 `;
 
