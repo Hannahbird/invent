@@ -1,18 +1,18 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const userSchema = new Schema(
   {
     username: {
       type: String,
       required: true,
-      unique: true,
       trim: true
     },
     email: {
       type: String,
       required: true,
-      unique: true,
+      index: true,
       match: [/.+@.+\..+/, 'Must match an email address!']
     },
     password: {
@@ -20,12 +20,12 @@ const userSchema = new Schema(
       required: true,
       minlength: 5
     },
-    friends: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-      }
-    ]
+    department: {
+      type: Schema.Types.ObjectId,
+      ref: 'Department',
+      required: true
+    }
+
   },
   {
     toJSON: {
@@ -49,9 +49,9 @@ userSchema.methods.isCorrectPassword = async function(password) {
   return bcrypt.compare(password, this.password);
 };
 
-userSchema.virtual('friendCount').get(function() {
-  return this.friends.length;
-});
+//enforce unique user at validation
+userSchema.index({email: 1,username: 1}, {unique: true})
+userSchema.plugin(uniqueValidator);
 
 const User = model('User', userSchema);
 
