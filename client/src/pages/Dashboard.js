@@ -20,27 +20,27 @@ const Dashboard = () => {
 
             <div>
                 <div className="card mb-3">
-                    <div class="card-header">
-                        <form className="row">
+                    <div className="card-header">
+                        <p>Card Tester</p>
+                    </div>
+                    <div className="card-body row">
+                        <form>
                             <div className="input-group date" id="datepicker">
-                                <input type="text" className="form-control" id="date" />
-                                <span className="input-group-append">
-                                    <span className="input-group-text bg-light d-block">
-                                        <i className="fa fa-calendar"></i>
-                                    </span>
-                                </span>
+                                <input type="date" className="form-control" id="date" />
                             </div>
                         </form>
-                        <div className="dropdown">
-                            <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                Select Progress
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a className="dropdown-item" href="#">Not Started</a></li>
-                                <li><a className="dropdown-item" href="#">In Progress</a></li>
-                                <li><a className="dropdown-item" href="#">Completed</a></li>
-                            </ul>
-                        </div>
+                        <select className="form-select" aria-label="Default select example">
+                            <option selected>Completion Level</option>
+                            <option value="1">Not Started</option>
+                            <option value="2">In Progress</option>
+                            <option value="3">Completed</option>
+                        </select>
+                        <select className="form-select" aria-label="Default select example">
+                            <option selected>Select Manager</option>
+                            <option value="1">Jimmy</option>
+                            <option value="2">John</option>
+                            <option value="3">Jamal</option>
+                        </select>
                     </div>
                 </div>
             </div>
