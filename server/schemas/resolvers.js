@@ -35,16 +35,11 @@ const resolvers = {
             if (context.user) {
                 let userCompanyId = context.user.department.company;
 
-                const deptData = await Department.findById(deptId)
-                    .populate('company')
-                
-                if (deptData.company._id != userCompanyId) {
-                    throw new GraphQLError('Could not find dept', {
-                    extensions: {
-                        code: 'BAD_USER_INPUT'
-                    }
+                const deptData = await Department.findOne({
+                    _id: deptId,
+                    company: userCompanyId //adds tenant security
                 })
-                }
+                    .populate('company')
 
                 return deptData
             }
@@ -116,6 +111,20 @@ const resolvers = {
             const token = signToken(user);
             return {token, user};
         },
+        addDepartment: async (parent, { deptName }, context) => {
+            const userCompany = context.user.department.company
+
+            if (context.user) {
+                const department = await Department.create({
+                    deptName: deptName,
+                    company: userCompany
+                })
+
+                return department
+            }
+
+            throw new AuthenticationError('Not logged in');
+        }
     //     addThought: async (parent, args, context) => {
     //         if (context.user) {
     //             const thought = await Thought.create({ ...args, username: context.user.username });
