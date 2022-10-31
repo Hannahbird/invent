@@ -1,14 +1,15 @@
 import React from 'react';
 
-import { Navigate, useParams } from 'react-router-dom';
-import { useQuery, useMutation } from '@apollo/client';
+//import { Navigate, useParams } from 'react-router-dom';
+//import { useQuery, useMutation } from '@apollo/client';
+import { TempusDominus } from '@eonasdan/tempus-dominus';
 
-import EventList from '../components/EventList';
-import Auth from '../utils/auth';
+//import EventList from '../components/EventList';
+//import Auth from '../utils/auth';
 
 
 const Dashboard = () => {
-
+    new TempusDominus(document.getElementById('datetimepicker1'));
 
     return (
         <div>
@@ -25,8 +26,11 @@ const Dashboard = () => {
                     </div>
                     <div className="card-body row">
                         <form>
-                            <div className="input-group date">
-                                <input type="date" className="form-control" />
+                            <div className="input-group date" id="datetimepicker1" data-target-input="nearest">
+                                <input type="text" className="form-control datetimepicker-input" data-target="#datetimepicker1" />
+                                <div className="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                    <div className="input-group-text"><i className="fa fa-calendar"></i></div>
+                                </div>
                             </div>
                         </form>
                         <select className="form-select" aria-label="Default select example">
@@ -35,25 +39,19 @@ const Dashboard = () => {
                             <option value="2">In Progress</option>
                             <option value="3">Completed</option>
                         </select>
-                        <select className="form-select" aria-label="Default select example">
-                            <option selected>Select Manager</option>
-                            <option value="1">Jimmy</option>
-                            <option value="2">John</option>
-                            <option value="3">Jamal</option>
-                        </select>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button"
+                        <div className="dropdown">
+                            <button className="btn btn-secondary dropdown-toggle" type="button"
                                 id="sampleDropdownMenu" data-bs-toggle="dropdown">
                                 Select Department(s)
                             </button>
-                            <div class="dropdown-menu">
-                                <button class="dropdown-item" type="button">
+                            <div className="dropdown-menu">
+                                <button className="dropdown-item" type="button">
                                     <input type="checkbox" />IT
                                 </button>
-                                <button class="dropdown-item" type="button">
+                                <button className="dropdown-item" type="button">
                                     <input type="checkbox" />Finance
                                 </button>
-                                <button class="dropdown-item" type="button">
+                                <button className="dropdown-item" type="button">
                                     <input type="checkbox" />Department3
                                 </button>
                             </div>
@@ -77,25 +75,19 @@ const Dashboard = () => {
                             <option value="2">In Progress</option>
                             <option value="3">Completed</option>
                         </select>
-                        <select className="form-select" aria-label="Default select example">
-                            <option selected>Select Manager</option>
-                            <option value="1">Jimmy</option>
-                            <option value="2">John</option>
-                            <option value="3">Jamal</option>
-                        </select>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button"
+                        <div className="dropdown">
+                            <button className="btn btn-secondary dropdown-toggle" type="button"
                                 id="sampleDropdownMenu" data-bs-toggle="dropdown">
                                 Select Department(s)
                             </button>
-                            <div class="dropdown-menu">
-                                <button class="dropdown-item" type="button">
+                            <div className="dropdown-menu">
+                                <button className="dropdown-item" type="button">
                                     <input type="checkbox" />IT
                                 </button>
-                                <button class="dropdown-item" type="button">
+                                <button className="dropdown-item" type="button">
                                     <input type="checkbox" />Finance
                                 </button>
-                                <button class="dropdown-item" type="button">
+                                <button className="dropdown-item" type="button">
                                     <input type="checkbox" />Department3
                                 </button>
                             </div>
@@ -104,7 +96,7 @@ const Dashboard = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Dashboard;
