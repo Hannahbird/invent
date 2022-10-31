@@ -112,15 +112,33 @@ const resolvers = {
             return {token, user};
         },
         addDepartment: async (parent, { deptName }, context) => {
-            const userCompany = context.user.department.company
-
+            
             if (context.user) {
+                const userCompany = context.user.department.company
+
                 const department = await Department.create({
                     deptName: deptName,
                     company: userCompany
                 })
 
                 return department
+            }
+
+            throw new AuthenticationError('Not logged in');
+        },
+        updateDepartment: async (parent, { deptId, ...deptArgs }, context) => {
+            
+            if (context.user) {
+                const userCompany = context.user.department.company
+
+                const updatedDept = await Department.findOneAndUpdate(
+                    { _id: deptId, company: userCompany },
+                    deptArgs,
+                    { runValidators: true, context: 'query', new: true }
+                    //validation does not currently work on update, existing issue with the repo
+                )
+
+                return updatedDept
             }
 
             throw new AuthenticationError('Not logged in');

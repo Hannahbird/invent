@@ -7,7 +7,7 @@ const deptSchema = new Schema(
             type: String,
             required: true,
             trim: true,
-            index: true
+            index: true,
         },
         company: {
             type: Schema.Types.ObjectId,

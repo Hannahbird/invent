@@ -45,3 +45,23 @@ export const ADD_USER = gql`
             }
     }
 `
+
+export const ADD_DEPARTMENT = gql`
+    mutation addDepartment($deptName: String!) {
+        addDepartment(deptName: $deptName) {
+            _id
+            deptName
+            signUpLink
+        }
+    }
+`
+
+export const UPDATE_DEPARTMENT = gql`
+    mutation updateDepartment($deptId: ID!, $deptName: String!) {
+        updateDepartment(deptId: $deptId, deptName: $deptName) {
+            _id
+            deptName
+            SignUpLink
+        }
+    }
+`

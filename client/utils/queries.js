@@ -23,9 +23,19 @@ import { gql } from '@apollo/client';
 
 export const QUERY_COMPANY_DEPTS = gql`
     query company_departments() {
-        deptartments {
+        departments {
             _id
             deptName
+        }
+    }
+`
+
+export const QUERY_COMPANY_DEPT = gql`
+    query company_department($deptId: String!) {
+        department(deptId: $deptId) {
+            _id
+            deptName
+            signUpLink
         }
     }
 `
