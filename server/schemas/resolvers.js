@@ -30,6 +30,26 @@ const resolvers = {
             }
 
             throw new AuthenticationError('Not logged in');
+        },
+        department: async (parent, {deptId}, context) => {
+            if (context.user) {
+                let userCompanyId = context.user.department.company;
+
+                const deptData = await Department.findById(deptId)
+                    .populate('company')
+                
+                if (deptData.company._id != userCompanyId) {
+                    throw new GraphQLError('Could not find dept', {
+                    extensions: {
+                        code: 'BAD_USER_INPUT'
+                    }
+                })
+                }
+
+                return deptData
+            }
+
+            throw new AuthenticationError('Not logged in');
         }
 
     },
