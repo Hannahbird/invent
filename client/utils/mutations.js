@@ -23,9 +23,9 @@ export const ADD_USER = gql`
         $username: String!
         $email: String!
         $password: String!
-        signUpCode: String
-        newCompany: Boolean
-        companyTitle: String) {
+        $signUpCode: String
+        $newCompany: Boolean
+        $companyTitle: String) {
         addUser(
             username: $username
             email: $email
@@ -39,55 +39,9 @@ export const ADD_USER = gql`
                     username
                     department {
                         _id
-                        company {
-                            _id
-                        }
+                        company
                     }
                 } 
             }
-    }
-`
-
-export const ADD_FRIEND = gql`
-    mutation addFriend($id: ID!){
-        addFriend(friendId: $id){
-            _id
-            username
-            friendCount
-            friends {
-                _id
-                username
-            }
-        }
-    }
-`
-
-export const ADD_THOUGHT = gql`
-    mutation addThought($thoughtText: String!){
-        addThought(thoughtText: $thoughtText){
-            _id
-            thoughtText
-            createdAt
-            username
-            reactionCount
-            reactions{
-                _id
-            }
-        }
-    }
-`
-
-export const ADD_REACTION = gql`
-    mutation addReaction($thoughtId: ID!, $reactionBody: String!) {
-        addReaction(thoughtId: $thoughtId, reactionBody: $reactionBody){
-            _id
-            reactionCount
-            reactions {
-                _id
-                reactionBody
-                createdAt
-                username
-            }
-        }
     }
 `
