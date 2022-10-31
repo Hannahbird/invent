@@ -131,9 +131,10 @@ const resolvers = {
             if (context.user) {
                 const userCompany = context.user.department.company
 
-                const updatedDept = await Department.findOneAndUpdate(
+                //consider replacing with FindOneAndUpdate
+                const updatedDept = await Department.findOneAndReplace(
                     { _id: deptId, company: userCompany },
-                    deptArgs,
+                    {...deptArgs, company: userCompany},
                     { runValidators: true, context: 'query', new: true }
                     //validation does not currently work on update, existing issue with the repo
                 )
