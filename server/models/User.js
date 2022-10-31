@@ -20,12 +20,10 @@ const userSchema = new Schema(
       required: true,
       minlength: 5
     },
-    friends: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-      }
-    ]
+    deptId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Department'
+    }
   },
   {
     toJSON: {
