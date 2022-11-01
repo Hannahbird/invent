@@ -1,5 +1,6 @@
 import React from 'react';
 import DepartmentList from '../DepartmentList/index';
+import DateTime from '../../utils/dateTime/dateTime';
 import { Link } from 'react-router-dom';
 
 const EventList = ({ events, title }) => {

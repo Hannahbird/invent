@@ -1,15 +1,14 @@
 import React from 'react';
+import EventList from '../components/EventList';
 
-//import { Navigate, useParams } from 'react-router-dom';
-//import { useQuery, useMutation } from '@apollo/client';
+import { Navigate, useParams } from 'react-router-dom';
+import { useQuery, useMutation } from '@apollo/client';
 
-import DateTime from '../utils/dateTime/dateTime';
-
-//import EventList from '../components/EventList';
-//import Auth from '../utils/auth';
+import Auth from '../utils/auth';
 
 
 const Dashboard = () => {
+    const { username: userParam } = useParams();
 
     return (
         <div>
