@@ -4,8 +4,6 @@ import EventList from '../components/EventList';
 import { Navigate, useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 
-import Auth from '../utils/auth';
-
 
 const Dashboard = () => {
     const { username: userParam } = useParams();

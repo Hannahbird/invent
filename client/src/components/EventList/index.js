@@ -25,7 +25,7 @@ const EventList = ({ events, title }) => {
                                     Select Department(s)
                                 </button>
                                 <div className="dropdown-menu">
-                                    <DepartmentList departments={ } />
+                                    <DepartmentList />
                                 </div>
                                 <select className="form-select" aria-label="Default select example">
                                     <option selected>Completion Level</option>
