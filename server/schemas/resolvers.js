@@ -100,6 +100,23 @@ const resolvers = {
             return {token, user};
 
         },
+        updateUser: async (parent, { userId, ...userInfo }, context) => {
+                        
+            if (context.user) {
+                const userCompany = context.user.department.company
+
+                const updatedUser = await User.findOneAndReplace(
+                    { _id: userId },
+                    {...userInfo},
+                    { runValidators: true, context: 'query', new: true }
+                )
+                    .populate('department')
+
+                return updatedUser
+            }
+
+            throw new AuthenticationError('Not logged in');
+        },
         login: async (parent, {email, password}) => {
             const user = await User.findOne({ email })
                 .populate('department');
@@ -136,6 +153,14 @@ const resolvers = {
             //may need to prevent updating the admin department
             if (context.user) {
                 const userCompany = context.user.department.company
+
+                if (deptId === userCompany) {
+                    throw new GraphQLError('Updating the Admin Department is not permitted', {
+                        extensions: {
+                            code: 'BAD_USER_INPUT'
+                        }
+                    })
+                }
 
                 const updatedDept = await Department.findOneAndReplace(
                     { _id: deptId, company: userCompany },

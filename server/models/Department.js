@@ -22,8 +22,7 @@ const deptSchema = new Schema(
     }
 );
 
-
-deptSchema.post('remove', function (doc,next) {
+deptSchema.post('remove', function (doc, next) {
     User.updateMany({ department: this._id }, { department: null }).exec();
     next()
 })

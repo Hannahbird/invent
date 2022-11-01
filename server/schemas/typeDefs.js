@@ -37,6 +37,7 @@ const typeDefs = gql`
         login(email: String!, password: String!): Auth
         addUser(username: String!, email: String!, password: String!, signUpCode: String, newCompany: Boolean, companyTitle: String): Auth
         addDepartment(deptName: String!): Department
+        updateUser(userId: ID!, email: String, deptId: ID): User
         updateDepartment(deptId: ID!, deptName: String!): Department
         deleteDepartment(deptId: ID!): Department
     }
