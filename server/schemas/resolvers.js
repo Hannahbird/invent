@@ -105,12 +105,11 @@ const resolvers = {
             if (context.user) {
                 const userCompany = context.user.department.company
 
-                const updatedUser = await User.findOneAndReplace(
-                    { _id: userId },
-                    {...userInfo},
+                const updatedUser = await User.findByIdAndUpdate(
+                    userId,
+                    { ...userInfo },
                     { runValidators: true, context: 'query', new: true }
                 )
-                    .populate('department')
 
                 return updatedUser
             }
@@ -149,13 +148,16 @@ const resolvers = {
 
             throw new AuthenticationError('Not logged in');
         },
-        updateDepartment: async (parent, { deptId, ...deptArgs }, context) => {
+        updateDepartment: async (parent, { deptId, deptName }, context) => {
             //may need to prevent updating the admin department
             if (context.user) {
                 const userCompany = context.user.department.company
 
-                if (deptId === userCompany) {
-                    throw new GraphQLError('Updating the Admin Department is not permitted', {
+                const department = await Department.findById(deptId);
+
+                //prevent users from making changes to Admin
+                if (department.deptName === 'Admin' || deptName.toLowerCase() === 'admin') {
+                    throw new GraphQLError('Admin departments cannot be updated', {
                         extensions: {
                             code: 'BAD_USER_INPUT'
                         }
@@ -164,7 +166,7 @@ const resolvers = {
 
                 const updatedDept = await Department.findOneAndReplace(
                     { _id: deptId, company: userCompany },
-                    {...deptArgs, company: userCompany},
+                    {deptName: deptName, company: userCompany},
                     { runValidators: true, context: 'query', new: true }
                 )
 
