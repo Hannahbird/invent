@@ -13,6 +13,7 @@ const typeDefs = gql`
         deptName: String
         company: Company
         signUpLink: String
+        teamMembers: [User]
     }
 
     type Company {
@@ -37,6 +38,7 @@ const typeDefs = gql`
         addUser(username: String!, email: String!, password: String!, signUpCode: String, newCompany: Boolean, companyTitle: String): Auth
         addDepartment(deptName: String!): Department
         updateDepartment(deptId: ID!, deptName: String!): Department
+        deleteDepartment(deptId: ID!): Department
     }
 `;
 
