@@ -13,10 +13,14 @@ const Dashboard = () => {
 
     return (
         <div>
-            <div>
-                <h2>
-                    Users Admin Dashboard
-                </h2>
+            <h2>
+                Viewing your dashboard.
+            </h2>
+
+            <div className="flex-row justify-space-between mb-3">
+                <div>
+                    <EventList events={user.events} />
+                </div>
             </div>
         </div>
     );

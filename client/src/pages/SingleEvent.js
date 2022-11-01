@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client';
 import Auth from '../utils/auth';
 
 const SingleEvent = props => {
-
+    //NOT READY OR DONE
 
     return (
         <div>
