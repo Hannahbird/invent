@@ -18,7 +18,7 @@ const resolvers = {
             throw new AuthenticationError('Not logged in');
         },
         departments: async (parent, args, context) => {
-            console.log(context.user)
+            
             if (context.user) {
                 let companyId = context.user.department.company;
 
@@ -40,6 +40,12 @@ const resolvers = {
                     company: userCompanyId //adds tenant security
                 })
                     .populate('company')
+                
+                if (deptData) {
+                    deptData['teamMembers'] = await User.find({
+                        department: deptId
+                    })
+                }
 
                 return deptData
             }
@@ -127,19 +133,50 @@ const resolvers = {
             throw new AuthenticationError('Not logged in');
         },
         updateDepartment: async (parent, { deptId, ...deptArgs }, context) => {
-            
+            //may need to prevent updating the admin department
             if (context.user) {
                 const userCompany = context.user.department.company
 
-                //consider replacing with FindOneAndUpdate
                 const updatedDept = await Department.findOneAndReplace(
                     { _id: deptId, company: userCompany },
                     {...deptArgs, company: userCompany},
                     { runValidators: true, context: 'query', new: true }
-                    //validation does not currently work on update, existing issue with the repo
                 )
 
                 return updatedDept
+            }
+
+            throw new AuthenticationError('Not logged in');
+        },
+        deleteDepartment: async (parent, { deptId }, context) => {
+            if (context.user) {
+                let affectedUsers;
+                let userCompanyId = context.user.department.company;
+
+                //should we throw an error when no results are returned?
+                const deptData = await Department.findOne({
+                    _id: deptId,
+                    company: userCompanyId //adds tenant security
+                })
+
+                if (deptData && deptData.deptName === 'Admin') {
+                    throw new GraphQLError('You cannot delete an admin department', {
+                        extensions: {
+                            code: 'BAD_USER_INPUT'
+                        }
+                    })
+                }
+                
+                if (deptData) {
+                    affectedUsers = await User.find({ department: deptId });
+                    deptData.remove();
+                    // deptData['teamMembers'] = await User.where({ department: deptId })
+                    //     .setOptions({ multi: true, new: true })
+                    //     .update({ department: null })
+                    deptData['teamMembers'] = affectedUsers
+                }
+
+                return deptData
             }
 
             throw new AuthenticationError('Not logged in');
