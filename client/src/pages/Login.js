@@ -41,9 +41,12 @@ const Login = (props) => {
 
   return (
     <main className="flex-row justify-center mb-4">
+      <p>
+        Welcome to InVent, your one stop shop for all your event planning needs.
+      </p>
       <div className="col-12 col-md-6">
         <div className="card">
-          <h4 className="card-header">Login</h4>
+          <h4 className="card-header">Please log in to start planning</h4>
           <div className="card-body">
             <form onSubmit={handleFormSubmit}>
               <input
