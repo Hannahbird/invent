@@ -2,7 +2,7 @@ const { User, Company, Department } = require("../models");
 const { AuthenticationError } = require("apollo-server-express");
 const { GraphQLError } = require("graphql");
 const { signToken } = require("../utils/auth");
-
+const pusher = require("../utils/pusher");
 const resolvers = {
   Query: {
     me: async (parent, args, context) => {
@@ -55,6 +55,10 @@ const resolvers = {
       parent,
       { newCompany, signUpCode, companyTitle, ...userArgs }
     ) => {
+      //   pusher test, logs hellow world to console in front end when addUser is called
+      pusher.trigger("test-channel", "test-event", {
+        message: "hello world",
+      });
       let company;
       let department;
       //check for new company
