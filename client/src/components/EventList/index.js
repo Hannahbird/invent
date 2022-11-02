@@ -28,7 +28,7 @@ const EventList = () => {
 
   return (
     <div>
-      <h3>Events</h3>
+      <h3>Your Current Events</h3>
       {events &&
         events.map((event) => (
           <div key={event._id} className="card mb-3 col-6">
@@ -36,11 +36,11 @@ const EventList = () => {
               <p>{event.name}</p>
             </div>
             <div className="card-body row">
-              {event.timeOf}
+              Time of Event: {event.timeOf}
               <br />
-              {event.dept}
+              Departments Involved: {event.dept}
               <br />
-              {event.completion}
+              Completion Status: {event.completion}
             </div>
           </div>
         ))}
