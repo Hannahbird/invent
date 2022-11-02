@@ -1,4 +1,24 @@
 const { gql } = require('apollo-server-express');
+const { GraphQLScalarType, Kind }= require ('graphql');
+
+const dateScalar = new GraphQLScalarType({
+  name: 'Date',
+  description: 'Date custom scalar type',
+  serialize(value) {
+    return value.getTime(); // Convert outgoing Date to integer for JSON
+  },
+  parseValue(value) {
+    return new Date(value); // Convert incoming integer to Date
+  },
+  parseLiteral(ast) {
+    if (ast.kind === Kind.INT) {
+      // Convert hard-coded AST string to integer and then to Date
+      return new Date(parseInt(ast.value, 10));
+    }
+    // Invalid hard-coded value (not an integer)
+    return null;
+  },
+});
 
 const typeDefs = gql`
     type User {
@@ -22,6 +42,28 @@ const typeDefs = gql`
         companyEmail: String
     }
 
+    type Location {
+        _id: ID
+        locationName: String
+        company: Company
+        capacity: Int
+    }
+
+    type Event {
+        _id: ID
+        eventName: String
+        location: Location
+        departments: [
+            Department
+        ]
+        contactInfo: String
+        contactName: String
+        eventDate: Date
+        eventState: String
+    }
+
+    scalar Date
+
     type Auth {
         token: ID!
         user: User
@@ -35,8 +77,8 @@ const typeDefs = gql`
         me: User
         departments: [Department]
         department(deptId: String!): Department
-        checkEmail(email: String!): Check
-        checkUsername(username: String!): Check
+        events: [Event]
+        locations: [Location]
     }
 
     type Mutation {
@@ -45,7 +87,8 @@ const typeDefs = gql`
         addDepartment(deptName: String!): Department
         updateUser(userId: ID!, email: String, deptId: ID): User
         updateDepartment(deptId: ID!, deptName: String!): Department
-        deleteDepartment(deptId: ID!): Department
+        addLocation(locationName:String!, capacity:Int!): Location
+        addEvent(eventName:String!, location:ID!, departments:[ID], contactInfo:String!, contactName:String!, eventDate:Date!): Event
     }
 `;
 
