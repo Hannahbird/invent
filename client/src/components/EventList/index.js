@@ -26,32 +26,9 @@ const EventList = () => {
     return <h3>No Events Scheduled</h3>;
   }
 
-<<<<<<< HEAD
-    return (
-        <div>
-            <h3>Events</h3>
-            {
-                events &&
-                events.map(event => (
-                    <div key={event._id} className="card mb-3 col-6">
-                        <div className="card-header">
-                            <p>{event.name}</p>
-                        </div>
-                        <div className="card-body row">
-                            {event.timeOf}
-                            <br />
-                            {event.dept}
-                            <br />
-                            {event.completion}
-                        </div>
-                    </div>
-                ))}
-        </div>
-    );
-=======
   return (
     <div>
-      <h3>Your Current Events</h3>
+      <h3>Events</h3>
       {events &&
         events.map((event) => (
           <div key={event._id} className="card mb-3 col-6">
@@ -59,25 +36,16 @@ const EventList = () => {
               <p>{event.name}</p>
             </div>
             <div className="card-body row">
-              <div>Time of Event: {event.timeOf}</div>
-              <div>Date of Event: {event.dateOf}</div>
-              <div>
-                {/* <DateTime className="form-control" /> */}
-                Departments involved: {event.dept}
-              </div>
-              {/* <select className="form-select" aria-label="Default select example">
-                                <option selected>Completion Level</option>
-                                <option value="1">Not Started</option>
-                                <option value="2">In Progress</option>
-                                <option value="3">Completed</option>
-                            </select> */}
-              <div>Status: {event.completion}</div>
+              {event.timeOf}
+              <br />
+              {event.dept}
+              <br />
+              {event.completion}
             </div>
           </div>
         ))}
     </div>
   );
->>>>>>> cristinas-branch
 };
 
 export default EventList;
