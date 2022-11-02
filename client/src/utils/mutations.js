@@ -46,6 +46,20 @@ export const ADD_USER = gql`
     }
 `
 
+export const UPDATE_USER = gql`
+    mutation updateUser($userId: ID!, $email: String, $deptId: ID) {
+        updateUser(userId: $userId, email: $email, deptId: $deptId) {
+            _id
+            username
+            email
+            department {
+                _id
+                deptName
+            }
+        }
+    }
+`
+
 export const ADD_DEPARTMENT = gql`
     mutation addDepartment($deptName: String!) {
         addDepartment(deptName: $deptName) {
@@ -64,4 +78,17 @@ export const UPDATE_DEPARTMENT = gql`
             SignUpLink
         }
     }
+`
+
+export const DELETE_DEPARTMENT = gql`
+    mutation Mutation($deptId: ID!) {
+        deleteDepartment(deptId: $deptId) {
+            _id
+            deptName
+            teamMembers {
+                _id
+                username
+            }
+        }
+}
 `

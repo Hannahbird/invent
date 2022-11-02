@@ -48,13 +48,32 @@ const resolvers = {
       }
 
       throw new AuthenticationError("Not logged in");
+        },
+        checkEmail: async (parent, { email }) => {
+            const exists = await User.findOne({
+                email: email
+            })
+
+            if (exists) {
+                return { available: false }
+            }
+
+            return { available: true }
+        },
+        checkUsername: async (parent, { username }) => {
+            const exists = await User.findOne({
+                username: username
+            })
+
+            if (exists) {
+                return { available: false }
+            }
+
+            return { available: true }
     },
   },
   Mutation: {
-    addUser: async (
-      parent,
-      { newCompany, signUpCode, companyTitle, ...userArgs }
-    ) => {
+    addUser: async (parent,{ newCompany, signUpCode, companyTitle, ...userArgs }) => {
       //   pusher test, logs hellow world to console in front end when addUser is called
       pusher.trigger("test-channel", "test-event", {
         message: "hello world",

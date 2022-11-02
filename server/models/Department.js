@@ -23,10 +23,17 @@ const deptSchema = new Schema({
   },
 });
 
+<<<<<<< HEAD
 deptSchema.post("remove", function (doc, next) {
   User.updateMany({ department: this._id }, { department: null }).exec();
   next();
 });
+=======
+deptSchema.post('remove', function (doc, next) {
+    User.updateMany({ department: this._id }, { department: null }).exec();
+    next()
+})
+>>>>>>> feature/user-models
 //this provides a unique index bsed on the department name and the company id
 //this ensures no company has more than one department with the same name, while
 //preserving the ability to have the same department name used by different companies
