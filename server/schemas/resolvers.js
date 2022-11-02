@@ -4,39 +4,81 @@ const { GraphQLError } = require('graphql');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
-  Query: {
-    me: async (parent, args, context) => {
-      if (context.user) {
-        const userData = await User.findOne({ _id: context.user._id })
-          .select("-__v -password")
-          .populate("department");
+    Query: {
+        me: async (parent, args, context) => {
+            
+            if (context.user) {
+                const userData = await User.findOne({ _id: context.user._id })
+                    .select('-__v -password')
+                    .populate('department');
+                
+                 return userData
+            }
+            
+            throw new AuthenticationError('Not logged in');
+        },
+        departments: async (parent, args, context) => {
+            console.log(context.user)
+            if (context.user) {
+                let companyId = context.user.department.company;
 
-        return userData;
-      }
+                const deptData = await Department.find({
+                    company: companyId
+                })
 
-      throw new AuthenticationError("Not logged in");
+                return deptData
+            }
+
+            throw new AuthenticationError('Not logged in');
+        },
+        department: async (parent, {deptId}, context) => {
+            if (context.user) {
+                let userCompanyId = context.user.department.company;
+
+                const deptData = await Department.findOne({
+                    _id: deptId,
+                    company: userCompanyId //adds tenant security
+                })
+                    .populate('company')
+
+                return deptData
+            }
+
+            throw new AuthenticationError('Not logged in');
+        }
+
     },
-    departments: async (parent, args, context) => {
-      if (context.user) {
-        let companyId = context.user.department.company;
+    Mutation: {
+        addUser: async (parent, { newCompany, signUpCode, companyTitle, ...userArgs }) => {
 
-        const deptData = await Department.find({
-          company: companyId,
-        });
+            let department;
+            //check for new company
+            //front end validation should check for the presence of a company title  before submit of company registration
+            if (newCompany && companyTitle) {
 
-        return deptData;
-      }
+                const company = await Company.create({
+                    title: companyTitle,
+                    companyEmail: userArgs.email
+                })
 
-      throw new AuthenticationError("Not logged in");
-    },
-    department: async (parent, { deptId }, context) => {
-      if (context.user) {
-        let userCompanyId = context.user.department.company;
+                department = await Department.create({
+                    company: company._id,
+                    deptName: 'Admin'
+                })
+            }
+            else if (signUpCode) {
+                //decode signup code and create user for department
+                department = 'placeholder' //placeholder
+            }
+            else {
+                throw new GraphQLError('Some data is missing', {
+                    extensions: {
+                        code: 'BAD_USER_INPUT'
+                    }
+                })
+            }
 
-        const deptData = await Department.findOne({
-          _id: deptId,
-          company: userCompanyId, //adds tenant security
-        }).populate("company");
+            console.log(department._id)
 
             const user = await User.create({
                 ...userArgs,
@@ -171,7 +213,7 @@ const resolvers = {
 
     //         throw new AuthenticationError('You need to be logged in!');
     //     }
-  },
-},
+     }
 }
+
 module.exports = resolvers;
