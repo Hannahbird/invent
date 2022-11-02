@@ -9,6 +9,7 @@ import {
 import { setContext } from '@apollo/client/link/context';
 import './App.css';
 import AdminDashboard from './pages/AdminDashboard';
+import SingleEvent from './pages/SingleEvent';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -45,6 +46,7 @@ function App() {
                             <Route path="/" element={<Home />} />
                             <Route path="/login" element={<Login />} />
                             <Route path="/dashboard" element={<AdminDashboard />} />
+                            <Route path="/event/:id" element={<SingleEvent />} />
                             {/* <Route 
                 path="/signup" 
                 element={<Signup />} 
