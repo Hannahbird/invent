@@ -66,6 +66,14 @@ export const QUERY_EVENTS = gql`
   }
 `;
 
+export const QUERY_EVENT = gql`
+  query events($username: String) {
+    events {
+      _id
+    }
+  }
+`;
+
 export const QUERY_ME_BASIC = gql`
   {
     me {

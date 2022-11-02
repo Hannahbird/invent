@@ -1,41 +1,38 @@
 import React, { useState } from 'react';
-import Home from '../../pages/Home';
-import DepartmentList from '../DepartmentList';
-import Navigation from '../Navigation';
+import { Link } from 'react-router-dom';
+
+import Auth from '../../utils/auth';
 
 const Header = () => {
-  //state of the current page
-  const [currentPage, handlePageChange] = useState('Home');
-
-  const renderPage = () => {
-    //switch statement that will return the appropriate component of the 'current Page'
-    switch (currentPage) {
-      case 'Home': {
-        return <Home />;
-      }
-      case 'Manage Departments': {
-        return <DepartmentList />;
-      }
-      default:
-        return <Home />;
-    }
+  const logout = (event) => {
+    event.preventDefault();
+    Auth.logout();
   };
+
   return (
     <header className="mb-4 py-2 flex-row align-center">
       <div className="container header flex-row justify-space-between-lg justify-center align-left">
-        <h1>InVent</h1>
-      </div>
-      <div>
-        <Navigation
-          currentPage={currentPage}
-          handlePageChange={handlePageChange}
-        />
-        <div>
-          {
-            // Render the component returned by 'renderPage()'
-            renderPage()
-          }
-        </div>
+        <Link to="/">
+          <h1>InVent</h1>
+        </Link>
+
+        <nav className="text-center">
+          {Auth.loggedIn() ? (
+            <>
+              <Link to="/events">Events</Link>
+              <Link to="/spaces">Spaces</Link>
+              <Link to="/departments">Departments</Link>
+              <a href="/" onClick={logout}>
+                Logout
+              </a>
+            </>
+          ) : (
+            <>
+              <Link to="/login">Login</Link>
+              <Link to="/signup">Signup</Link>
+            </>
+          )}
+        </nav>
       </div>
     </header>
   );

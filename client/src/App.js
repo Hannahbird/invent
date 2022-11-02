@@ -8,11 +8,22 @@ import {
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import './App.css';
-import AdminDashboard from './pages/AdminDashboard';
+
+//component imports
 import Header from './components/Header';
 import Footer from './components/Footer';
+import DepartmentList from './components/DepartmentList';
+import EventList from './components/EventList';
+import SpacesList from './components/SpacesList';
+
+//pages imports
 import Home from './pages/Home';
 import Login from './pages/Login';
+import Signup from './pages/Signup';
+import AdminDashboard from './pages/AdminDashboard';
+import SingleEvent from './pages/SingleEvent';
+import NoMatch from './pages/NoMatch';
+
 import Pusher from 'pusher-js';
 import * as bs from 'bootstrap/dist/css/bootstrap.css';
 
@@ -55,11 +66,13 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
-              {/* <Route path="/dashboard" element={<AdminDashboard />} /> */}
-              {/* <Route 
-                path="/signup" 
-                element={<Signup />} 
-              /> */}
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/dashboard" element={<AdminDashboard />} />
+              <Route path="/events" element={<EventList />} />
+              <Route path="/event" element={<SingleEvent />} />
+              <Route path="/spaces" element={<SpacesList />} />
+              <Route path="/departments" element={<DepartmentList />} />
+              <Route path="*" element={<NoMatch />} />
             </Routes>
           </div>
           <Footer />
