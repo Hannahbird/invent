@@ -75,3 +75,21 @@ export const QUERY_ME_BASIC = gql`
     }
   }
 `;
+
+export const QUERY_CHECK_USERNAME = gql`
+  query checkUsername($username: String!) {
+    checkUsername(username: $username) {
+      available
+    }
+  }
+`
+
+export const QUERY_CHECK_EMAIL = gql`
+  query checkEmail($email: String!) {
+    checkEmail(email: $email) {
+      available
+    }
+  } 
+`
+
+
