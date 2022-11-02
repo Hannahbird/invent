@@ -1,31 +1,31 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
-} from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
-import "./App.css";
-import AdminDashboard from "./pages/AdminDashboard";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Pusher from "pusher-js";
-import * as bs from "bootstrap/dist/css/bootstrap.css";
+} from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+import './App.css';
+import AdminDashboard from './pages/AdminDashboard';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Pusher from 'pusher-js';
+import * as bs from 'bootstrap/dist/css/bootstrap.css';
 
 const httpLink = createHttpLink({
-  uri: "/graphql",
+  uri: '/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem("id_token");
+  const token = localStorage.getItem('id_token');
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : "",
+      authorization: token ? `Bearer ${token}` : '',
     },
   };
 });
@@ -35,15 +35,15 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 // set up pusher connection
-var pusher = new Pusher("b4bd3ba699f2fde524c6", {
-  cluster: "mt1",
+var pusher = new Pusher('b4bd3ba699f2fde524c6', {
+  cluster: 'mt1',
 });
 
-var channel = pusher.subscribe("test-channel");
+var channel = pusher.subscribe('test-channel');
 
 function App() {
   // pusher test
-  channel.bind("test-event", function (data) {
+  channel.bind('test-event', function (data) {
     console.log(JSON.stringify(data));
   });
   return (

@@ -19,5 +19,9 @@ code {
 }
 
 p {
-  font-family: 'Architects Daughter';
+  font-family: 'Arial';
+}
+
+body {
+  font: 'Arial'
 }
