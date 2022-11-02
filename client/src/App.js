@@ -8,9 +8,12 @@ import {
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import './App.css';
-import Dashboard from './pages/Dashboard';
+
 import Header from './components/Header';
 import Footer from './components/Footer';
+import HomeViews from './components/HomeViews';
+
+import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import * as bs from 'bootstrap/dist/css/bootstrap.css';
