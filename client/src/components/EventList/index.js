@@ -9,6 +9,10 @@ const EventList = () => {
 
     const events = data?.events || [];
 
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
     if (!events.length) {
         return <h3>No Events Scheduled</h3>;
     }
