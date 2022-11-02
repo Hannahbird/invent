@@ -16,7 +16,7 @@ const Dashboard = () => {
 
             <div className="flex-row justify-space-between mb-3">
                 <div>
-                    <EventList events={user.events} />
+                    <EventList />
                 </div>
             </div>
         </div>

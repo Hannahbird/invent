@@ -1,9 +1,11 @@
 import React from 'react';
-import DepartmentList from '../DepartmentList/index';
+import DepartmentList from '../DepartmentList';
 import DateTime from '../../utils/dateTime/dateTime';
 import { Link } from 'react-router-dom';
 
-const EventList = ({ events, title }) => {
+const EventList = () => {
+    const events = [{ name: "that event", _id: 1, timeOf: "10:00 PM", dept: "IT", completion: "Completed" }];
+
     if (!events.length) {
         return <h3>No Events Scheduled</h3>;
     }
@@ -19,21 +21,16 @@ const EventList = ({ events, title }) => {
                             <p>{event.name}</p>
                         </div>
                         <div className="card-body row">
+                            {event.timeOf}
                             <DateTime className="form-control" />
-                            <div className="dropdown">
-                                <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                    Select Department(s)
-                                </button>
-                                <div className="dropdown-menu">
-                                    <DepartmentList />
-                                </div>
-                                <select className="form-select" aria-label="Default select example">
-                                    <option selected>Completion Level</option>
-                                    <option value="1">Not Started</option>
-                                    <option value="2">In Progress</option>
-                                    <option value="3">Completed</option>
-                                </select>
-                            </div>
+                            {event.dept}
+                            <select className="form-select" aria-label="Default select example">
+                                <option selected>Completion Level</option>
+                                <option value="1">Not Started</option>
+                                <option value="2">In Progress</option>
+                                <option value="3">Completed</option>
+                            </select>
+                            {event.completion}
                         </div>
                     </div>
                 ))}
