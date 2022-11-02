@@ -14,14 +14,11 @@ const DepartmentList = () => {
 
     return (
         <div className="dropdown-menu">
-            <button className="dropdown-item" type="button">
-                <input type="checkbox" />IT
-            </button>
-            {/*{data.map(department => {*/}
-            {/*    <button key={department._id} className="dropdown-item" type="button">*/}
-            {/*        <input type="checkbox" />{department.deptName}*/}
-            {/*    </button>*/}
-            {/*})}*/}
+            {data.map(department => {
+                <button key={department._id} className="dropdown-item" type="button">
+                    <input type="checkbox" />{department.deptName}
+                </button>
+            })}
         </div>
     )
 }
