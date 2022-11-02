@@ -10,7 +10,9 @@ const SingleEvent = (props) => {
     const { id: eventId } = useParams();
 
     const { loading, data } = useQuery(QUERY_EVENT, {
-        variables: { id: eventId },
+        variables: {
+            _id: eventId,
+        },
     });
 
     const event = data?.event || {};

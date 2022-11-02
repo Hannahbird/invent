@@ -70,6 +70,7 @@ export const QUERY_EVENT = gql`
   query events($username: String) {
     events {
       _id
+      eventName
     }
   }
 `;
