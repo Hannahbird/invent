@@ -51,6 +51,28 @@ const resolvers = {
             }
 
             throw new AuthenticationError('Not logged in');
+        },
+        checkEmail: async (parent, { email }) => {
+            const exists = await User.findOne({
+                email: email
+            })
+
+            if (exists) {
+                return { available: false }
+            }
+
+            return { available: true }
+        },
+        checkUsername: async (parent, { username }) => {
+            const exists = await User.findOne({
+                username: username
+            })
+
+            if (exists) {
+                return { available: false }
+            }
+
+            return { available: true }
         }
 
     },

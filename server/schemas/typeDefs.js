@@ -27,10 +27,16 @@ const typeDefs = gql`
         user: User
     }
 
+    type Check {
+        available: Boolean
+    }
+
     type Query {
         me: User
         departments: [Department]
         department(deptId: String!): Department
+        checkEmail(email: String!): Check
+        checkUsername(username: String!): Check
     }
 
     type Mutation {
