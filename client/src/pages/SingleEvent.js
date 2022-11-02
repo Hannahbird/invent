@@ -1,8 +1,22 @@
+import React from 'react';
+import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
+import DepartmentList from '../components/DepartmentList';
+import DateTime from '../utils/dateTime/dateTime';
 import Auth from '../utils/auth';
 
 const SingleEvent = props => {
+    const { id: eventId } = useParams();
 
+    const { loading, data } = useQuery(QUERY_EVENT, {
+        variables: { id: eventId }
+    });
+
+    const event = data?.event || {};
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div>
@@ -17,15 +31,7 @@ const SingleEvent = props => {
                             Select Department(s)
                         </button>
                         <div className="dropdown-menu">
-                            <button className="dropdown-item" type="button">
-                                <input type="checkbox" />IT
-                            </button>
-                            <button className="dropdown-item" type="button">
-                                <input type="checkbox" />Finance
-                            </button>
-                            <button className="dropdown-item" type="button">
-                                <input type="checkbox" />Department3
-                            </button>
+                            <DepartmentList />
                         </div>
                     </div>
                     <select className="form-select" aria-label="Default select example">
@@ -37,7 +43,7 @@ const SingleEvent = props => {
                 </div>
             </div>
         </div>
-        )
-}
+    );
+};
 
 export default SingleEvent;
