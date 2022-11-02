@@ -22,7 +22,7 @@ import { gql } from '@apollo/client';
 // `
 
 export const QUERY_COMPANY_DEPTS = gql`
-    query company_departments() {
+    query company_departments {
         departments {
             _id
             deptName
