@@ -1,8 +1,8 @@
-const { User, Company, Department } = require("../models");
-const { AuthenticationError } = require("apollo-server-express");
-const { GraphQLError } = require("graphql");
-const { signToken } = require("../utils/auth");
-const pusher = require("../utils/pusher");
+const { User, Company, Department, Location, Event } = require('../models');
+const { AuthenticationError } = require('apollo-server-express');
+const { GraphQLError } = require('graphql');
+const { signToken } = require('../utils/auth');
+
 const resolvers = {
   Query: {
     me: async (parent, args, context) => {
@@ -38,171 +38,98 @@ const resolvers = {
           company: userCompanyId, //adds tenant security
         }).populate("company");
 
-        if (deptData) {
-          deptData["teamMembers"] = await User.find({
-            department: deptId,
-          });
-        }
+            const user = await User.create({
+                ...userArgs,
+                department: department._id
+            })
+                .then(data => {
+                    return data
+                        .populate('department')
 
-        return deptData;
-      }
-
-      throw new AuthenticationError("Not logged in");
-        },
-        checkEmail: async (parent, { email }) => {
-            const exists = await User.findOne({
-                email: email
             })
 
-            if (exists) {
-                return { available: false }
-            }
+            const token = signToken(user);
+            return {token, user};
 
-            return { available: true }
         },
-        checkUsername: async (parent, { username }) => {
-            const exists = await User.findOne({
-                username: username
-            })
+        login: async (parent, {email, password}) => {
+            const user = await User.findOne({ email })
+                .populate('department');
 
-            if (exists) {
-                return { available: false }
+            if (!user) {
+                throw new AuthenticationError('Incorrect credentials');
             }
 
-            return { available: true }
-    },
-  },
-  Mutation: {
-    addUser: async (parent,{ newCompany, signUpCode, companyTitle, ...userArgs }) => {
-      //   pusher test, logs hellow world to console in front end when addUser is called
-      pusher.trigger("test-channel", "test-event", {
-        message: "hello world",
-      });
-      let company;
-      let department;
-      //check for new company
-      //front end validation should check for the presence of a company title  before submit of company registration
-      if (newCompany && companyTitle) {
-        company = await Company.create({
-          title: companyTitle,
-          companyEmail: userArgs.email,
-        });
+            const correctPw = await user.isCorrectPassword(password);
 
-        department = await Department.create({
-          company: company._id,
-          deptName: "Admin",
-        });
-      } else if (signUpCode) {
-        //decode signup code and create user for department
-        department = "placeholder"; //placeholder
-      } else {
-        throw new GraphQLError("Some data is missing", {
-          extensions: {
-            code: "BAD_USER_INPUT",
-          },
-        });
-      }
+            if (!correctPw) {
+                throw new AuthenticationError('Incorrect credentials');
+            }
 
-      console.log(department._id);
+            const token = signToken(user);
+            return {token, user};
+        },
+        addDepartment: async (parent, { deptName }, context) => {
+            
+            if (context.user) {
+                const userCompany = context.user.department.company
 
-      const user = await User.create({
-        ...userArgs,
-        department: department._id,
-      })
-        .then((data) => {
-          return data.populate("department");
-        })
-        .catch((err) => {
-          Company.findByIdAndRemove(company._id);
-          throw new GraphQLError("user creation failed", {
-            extensions: {
-              code: "BAD_USER_INPUT",
-            },
-          });
-        });
+                const department = await Department.create({
+                    deptName: deptName,
+                    company: userCompany
+                })
 
-      const token = signToken(user);
-      return { token, user };
-    },
-    login: async (parent, { email, password }) => {
-      const user = await User.findOne({ email }).populate("department");
+                return department
+            }
 
-      if (!user) {
-        throw new AuthenticationError("Incorrect credentials");
-      }
+            throw new AuthenticationError('Not logged in');
+        },
+        updateDepartment: async (parent, { deptId, ...deptArgs }, context) => {
+            
+            if (context.user) {
+                const userCompany = context.user.department.company
 
-      const correctPw = await user.isCorrectPassword(password);
+                //consider replacing with FindOneAndUpdate
+                const updatedDept = await Department.findOneAndReplace(
+                    { _id: deptId, company: userCompany },
+                    {...deptArgs, company: userCompany},
+                    { runValidators: true, context: 'query', new: true }
+                    //validation does not currently work on update, existing issue with the repo
+                )
 
-      if (!correctPw) {
-        throw new AuthenticationError("Incorrect credentials");
-      }
+                return updatedDept
+            }
 
-      const token = signToken(user);
-      return { token, user };
-    },
-    addDepartment: async (parent, { deptName }, context) => {
-      if (context.user) {
-        const userCompany = context.user.department.company;
+            throw new AuthenticationError('Not logged in');
+        },
 
-        const department = await Department.create({
-          deptName: deptName,
-          company: userCompany,
-        });
+        addLocation: async (parent, locationData, context) => {
+            if (context.user) {
+                const userCompany = context.user.department.company
+                    console.log(locationData);
+                const location = await Location.create({
+                    company: userCompany,
+                    ...locationData
+                })
 
-        return department;
-      }
+                return location
+            }
 
-      throw new AuthenticationError("Not logged in");
-    },
-    updateDepartment: async (parent, { deptId, ...deptArgs }, context) => {
-      //may need to prevent updating the admin department
-      if (context.user) {
-        const userCompany = context.user.department.company;
+            throw new AuthenticationError('Not logged in');
+        },
+        addEvent: async (parent, eventData, context) => {
+            if (context.user) {
+                const event = await Event.create({
+                ...eventData
+            
+                })
 
-        const updatedDept = await Department.findOneAndReplace(
-          { _id: deptId, company: userCompany },
-          { ...deptArgs, company: userCompany },
-          { runValidators: true, context: "query", new: true }
-        );
+                return event
+            }
 
-        return updatedDept;
-      }
-
-      throw new AuthenticationError("Not logged in");
-    },
-    deleteDepartment: async (parent, { deptId }, context) => {
-      if (context.user) {
-        let affectedUsers;
-        let userCompanyId = context.user.department.company;
-
-        //should we throw an error when no results are returned?
-        const deptData = await Department.findOne({
-          _id: deptId,
-          company: userCompanyId, //adds tenant security
-        });
-
-        if (deptData && deptData.deptName === "Admin") {
-          throw new GraphQLError("You cannot delete an admin department", {
-            extensions: {
-              code: "BAD_USER_INPUT",
-            },
-          });
-        }
-
-        if (deptData) {
-          affectedUsers = await User.find({ department: deptId });
-          deptData.remove();
-          // deptData['teamMembers'] = await User.where({ department: deptId })
-          //     .setOptions({ multi: true, new: true })
-          //     .update({ department: null })
-          deptData["teamMembers"] = affectedUsers;
-        }
-
-        return deptData;
-      }
-
-      throw new AuthenticationError("Not logged in");
-    },
+            throw new AuthenticationError('Not logged in');
+        },
+        
     //     addThought: async (parent, args, context) => {
     //         if (context.user) {
     //             const thought = await Thought.create({ ...args, username: context.user.username });
@@ -245,6 +172,6 @@ const resolvers = {
     //         throw new AuthenticationError('You need to be logged in!');
     //     }
   },
-};
-
+},
+}
 module.exports = resolvers;

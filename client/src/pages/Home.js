@@ -1,35 +1,21 @@
 import React from 'react';
-import Login from './Login';
-import EventList from '../components/EventList';
-
-import Auth from '../utils/auth';
-import { useQuery } from '@apollo/client';
-import { QUERY_EVENTS } from '../utils/queries';
+import { Col } from 'react-bootstrap';
 
 const Home = () => {
-  const { loading, data } = useQuery(QUERY_EVENTS);
-  //   const { data: userData } = useQuery(QUERY_ME_BASIC);
-  const events = data?.thoughts || [];
-
-  const loggedIn = Auth.loggedIn();
-
   return (
-    <maim>
-      <div className="flex-row">
-        {loggedIn && (
-          <div className="col-12 mb-3">
-            <Login />
-          </div>
-        )}
+    <section className="about">
+      <div className="row justify-content-center" id="about-container">
+        <Col lg={6} md={12}>
+          <p>
+            Welcom to InVent, an application designed to help you manage all of
+            your minor and major events. Please log in to see the events you are
+            currently managing. Don't have an account yet? No worries! Sign up
+            to start planning!
+          </p>
+          <p>Happy planning!</p>
+        </Col>
       </div>
-      <div className={`col-12 mb-3 ${loggedIn && 'col-lg-8'}`}>
-        {loading ? (
-          <div>Loading...</div>
-        ) : (
-          <EventList events={events} title="Your current events:" />
-        )}
-      </div>
-    </maim>
+    </section>
   );
 };
 
