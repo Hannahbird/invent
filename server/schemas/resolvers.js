@@ -1,4 +1,4 @@
-const { User, Company, Department } = require('../models');
+const { User, Company, Department, Location, Event } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { GraphQLError } = require('graphql');
 const { signToken } = require('../utils/auth');
@@ -143,7 +143,35 @@ const resolvers = {
             }
 
             throw new AuthenticationError('Not logged in');
-        }
+        },
+
+        addLocation: async (parent, locationData, context) => {
+            if (context.user) {
+                const userCompany = context.user.department.company
+                    console.log(locationData);
+                const location = await Location.create({
+                    company: userCompany,
+                    ...locationData
+                })
+
+                return location
+            }
+
+            throw new AuthenticationError('Not logged in');
+        },
+        addEvent: async (parent, eventData, context) => {
+            if (context.user) {
+                const event = await Event.create({
+                ...eventData
+            
+                })
+
+                return event
+            }
+
+            throw new AuthenticationError('Not logged in');
+        },
+        
     //     addThought: async (parent, args, context) => {
     //         if (context.user) {
     //             const thought = await Thought.create({ ...args, username: context.user.username });
