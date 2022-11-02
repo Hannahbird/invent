@@ -110,6 +110,7 @@ const resolvers = {
                     { ...userInfo },
                     { runValidators: true, context: 'query', new: true }
                 )
+                    .populate('department')
 
                 return updatedUser
             }
