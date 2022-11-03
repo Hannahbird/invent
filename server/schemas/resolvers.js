@@ -56,6 +56,19 @@ const resolvers = {
 
       throw new AuthenticationError("Not logged in");
     },
+    events: async (parent, args, context) => {
+      if (context.user) {
+        let companyId = context.user.department.company;
+          console.log('companyId');
+        const eventData = await Event.find({
+          'location.company': mongoose.Types.ObjectId(companyId),
+        }).populate('location')
+
+        return eventData;
+      }
+
+      throw new AuthenticationError("Not logged in");
+    },
     checkEmail: async (parent, { email }) => {
       const exists = await User.findOne({
         email: email,
