@@ -91,5 +91,3 @@ export const QUERY_CHECK_EMAIL = gql`
     }
   } 
 `
-
-
