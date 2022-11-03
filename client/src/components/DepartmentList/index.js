@@ -2,12 +2,12 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 import { QUERY_COMPANY_DEPTS } from '../../utils/queries';
 
-const DepartmentList = ({ id }) => {
-    const { loading, data } = useQuery(QUERY_COMPANY_DEPTS, {
-        variables: { deptId: id }
-    });
+const DepartmentList = () => {
+    const { loading, data } = useQuery(QUERY_COMPANY_DEPTS);
 
-    const departments = data?.departments || {};
+    const departments = data?.departments || [];
+
+    console.log(departments);
 
     if (loading) {
         return <div>Loading...</div>
@@ -19,11 +19,12 @@ const DepartmentList = ({ id }) => {
 
     return (
         <div className="dropdown-menu">
-            {departments.map(department => {
+            {departments &&
+                departments.map(department => (
                 <button key={department._id} className="dropdown-item" type="button">
                     <input type="checkbox" />{department.deptName}
                 </button>
-            })}
+            ))}
         </div>
     )
 }

@@ -18,6 +18,12 @@ const EventList = () => {
         return <h3>No Events Scheduled</h3>;
     }
 
+    //EventList should have name, timeOf, dateOf, location
+    //On each hover edit button
+    //onMouseover opacity (like react portfolio)
+    //edit bring up modal that contains editable name, timeOf, dateOf, location, description(readonly)
+    //
+
     return (
         <div>
             <h3>Events</h3>
