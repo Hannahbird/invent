@@ -1,25 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
+import { QUERY_LOCATIONS } from '../../utils/queries';
 
 //Modal styling from react-bootstrap
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
 
-const SpacesList = () => {
-  const spaces = [
-    {
-      name: 'Round Room',
-      _id: 1,
-    },
-    {
-      name: 'Round Room',
-      _id: 2,
-    },
-  ];
+const SpacesList = ({ id }) => {
+  // const { loading, data } = useQuery(QUERY_LOCATIONS, {
+  //   variables: { deptId: id },
+  // });
 
-  if (!spaces.length) {
-    return <h3>You have no spaces created yet.</h3>;
-  }
+  // const spaces = data?.spaces || {};
+
+  // if (!data.spaces.length) {
+  //   return <h3>You have no spaces created yet.</h3>;
+  // }
+
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
 
   //add spaces modal
   function AddSpacesModal(props) {
@@ -37,14 +39,29 @@ const SpacesList = () => {
         </Modal.Header>
         <Modal.Body>
           <h4>Create Spaces</h4>
-          <p>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-            ac consectetur ac, vestibulum at eros.
-          </p>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Space Name</Form.Label>
+              <Form.Control type="string" placeholder="Space Name" />
+              <Form.Text className="text-muted">
+                What is the Space Name?
+              </Form.Text>
+            </Form.Group>
+          </Form>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Space Capacity</Form.Label>
+              <Form.Control type="string" placeholder="Space Capacity" />
+              <Form.Text className="text-muted">
+                What is the capacity of this space?
+              </Form.Text>
+            </Form.Group>
+          </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={props.onHide}>Save</Button>
+          <Button variant="secondary" onClick={props.onHide}>
+            Save
+          </Button>
         </Modal.Footer>
       </Modal>
     );
@@ -55,7 +72,7 @@ const SpacesList = () => {
 
     return (
       <>
-        <Button variant="primary" onClick={() => setModalShow(true)}>
+        <Button variant="secondary" onClick={() => setModalShow(true)}>
           Create Spaces
         </Button>
 
@@ -68,12 +85,12 @@ const SpacesList = () => {
     <div>
       <h3>Your Current Spaces</h3>
       <Create />
-      {spaces &&
+      {/* {spaces &&
         spaces.map((space) => {
           <div key={space.id} className="mb-3 col-6">
             {space.name}
           </div>;
-        })}
+        })} */}
     </div>
   );
 };

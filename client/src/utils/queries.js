@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 // export const QUERY_USER = gql`
 //     query user($username: String!) {
@@ -40,6 +40,16 @@ export const QUERY_COMPANY_DEPT = gql`
   }
 `;
 
+export const QUERY_LOCATIONS = gql`
+  query locations($deptId: String!) {
+    locations(deptId: $deptId) {
+      _id
+      locationName
+      locationCapacity
+    }
+  }
+`;
+
 export const QUERY_ME = gql`
   {
     me {
@@ -62,6 +72,8 @@ export const QUERY_EVENTS = gql`
   query events($username: String) {
     events {
       _id
+      eventName
+      eventDate
     }
   }
 `;
