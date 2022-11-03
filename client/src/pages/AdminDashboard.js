@@ -7,6 +7,7 @@ import { QUERY_EVENTS } from '../utils/queries';
 
 const Dashboard = () => {
 
+
     return (
         <div>
             <h2>
