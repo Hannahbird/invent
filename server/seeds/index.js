@@ -1,0 +1,115 @@
+const db = require("../config/connection");
+const {
+  Company,
+  Department,
+  Event,
+  EventTask,
+  Location,
+  User,
+} = require("../models");
+
+db.once("open", async () => {
+  console.log("seeding...");
+  try {
+    // clear database
+    await User.deleteMany({});
+    await Company.deleteMany({});
+    await Department.deleteMany({});
+    await Event.deleteMany({});
+    await EventTask.deleteMany({});
+    await Location.deleteMany({});
+
+    const company = await Company.create({
+      title: "Seedy Inc.",
+      companyEmail: "admin@admin.com",
+    });
+    const adminDept = await Department.create({
+      deptName: "admin",
+      company: company._id,
+    });
+    const adminUser = await User.create({
+      username: "admin",
+      password: "admin",
+      email: "admin@admin.com",
+      department: adminDept._id,
+    });
+
+    const techDept = await Department.create({
+      deptName: "Tech",
+      company: company._id,
+    });
+    const techEmployee = await User.create({
+      username: "techguy",
+      email: "techguy@techguy.com",
+      password: "techguy",
+      department: techDept._id,
+    });
+    const foodDept = await Department.create({
+      deptName: "food",
+      company: company._id,
+    });
+    const foodEmployee = await User.create({
+      username: "foodguy",
+      email: "foodguy@foodguy.com",
+      password: "foodguy",
+      department: foodDept._id,
+    });
+    const locationExample = await Location.create({
+      locationName: "example location",
+      company: company._id,
+      capacity: 100,
+    });
+    const eventExample1 = await Event.create({
+      eventName: "example event",
+      location: locationExample._id,
+      departments: [techDept._id, foodDept._id],
+      contactInfo: "customer@customer.com",
+      contactName: "Big Dave",
+      eventDate: Date(),
+    });
+    const taskExample1 = await EventTask.create({
+      description: "example event task",
+      department: techDept._id,
+      eventId: eventExample1._id,
+      startTime: "12:00",
+      endTime: "13:00",
+    });
+    const taskExample12 = await EventTask.create({
+      description: "second example event task",
+      department: foodDept._id,
+      eventId: eventExample1._id,
+      startTime: "13:00",
+      endTime: "14:00",
+    });
+    const eventExample2 = await Event.create({
+      eventName: "second example event",
+      location: locationExample._id,
+      departments: [techDept._id, foodDept._id],
+      contactInfo: "customer2@customer.com",
+      contactName: "Big Dave",
+      eventDate: Date(),
+    });
+    const taskExample2 = await EventTask.create({
+      description: "example event task",
+      department: techDept._id,
+      eventId: eventExample1._id,
+      startTime: "12:00",
+      endTime: "13:00",
+    });
+    const taskExample22 = await EventTask.create({
+      description: "second example event task",
+      department: foodDept._id,
+      eventId: eventExample1._id,
+      startTime: "13:00",
+      endTime: "14:00",
+    });
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
+  console.log("all done!");
+  console.log("ADMIN LOGIN: username: 'admin', password: 'admin");
+  console.log("TECH DEPT LOGIN: username: 'techguy', password: 'techguy'");
+  console.log("FOOD DEPT LOGIN: username: 'foodguy', password: 'foodguy'");
+  process.exit(0);
+});
