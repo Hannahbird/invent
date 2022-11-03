@@ -12,12 +12,12 @@ const Header = () => {
 
   return (
     <header className="mb-4 py-2 flex-row header align-center">
-      <div className="container header flex-row justify-space-between-lg justify-center align-left">
+      <div className="container header flex-row justify-space-between-lg justify-flex-end align-left">
         <Link to="/">
           <h1>InVent</h1>
         </Link>
       </div>
-      <div className="container header flex-row align-right">
+      <div className="flex-item-right container header flex-row align-right">
         <nav>
           {Auth.loggedIn() ? (
             <>

@@ -49,7 +49,9 @@ const DepartmentList = ({ id }) => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={props.onHide}>Save</Button>
+          <Button variant="secondary" onClick={props.onHide}>
+            Save
+          </Button>
         </Modal.Footer>
       </Modal>
     );
