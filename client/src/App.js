@@ -23,6 +23,7 @@ import Signup from './pages/Signup';
 import AdminDashboard from './pages/AdminDashboard';
 import SingleEvent from './pages/SingleEvent';
 import NoMatch from './pages/NoMatch';
+import Reserve from './pages/Reserve'
 
 import Pusher from 'pusher-js';
 import * as bs from 'bootstrap/dist/css/bootstrap.css';
@@ -72,6 +73,7 @@ function App() {
                             <Route path="/event" element={<SingleEvent />} />
                             <Route path="/spaces" element={<SpacesList />} />
                             <Route path="/departments" element={<DepartmentList />} />
+                            <Route path="/reserve/:id" element={<Reserve />} />
                             <Route path="*" element={<NoMatch />} />
                         </Routes>
                     </div>
