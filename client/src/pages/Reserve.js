@@ -37,7 +37,7 @@ const Reserve = () => {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-
+        console.log(event.target)
         setReservation({
             ...reservation,
             [name]: value,
@@ -52,7 +52,9 @@ const Reserve = () => {
 
         try {
             // const { data } = await reserveLocation({
-            //     variables: {...reservation}
+            //    variables: {
+            //    eventState: 'Pending'.
+            //    ...reservation}
             // })
         }
         catch (e) {
