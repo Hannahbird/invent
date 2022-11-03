@@ -17,7 +17,7 @@ const Header = () => {
         </Link>
 
         <nav className="text-center">
-          {/*{Auth.loggedIn() ? (*/}
+          {Auth.loggedIn() ? (
             <>
               <Link to="/events">Events</Link>
               <Link to="/spaces">Spaces</Link>
@@ -31,7 +31,7 @@ const Header = () => {
               <Link to="/login">Login</Link>
               <Link to="/signup">Signup</Link>
             </>
-          {/*)}*/}
+          )}
         </nav>
       </div>
     </header>
