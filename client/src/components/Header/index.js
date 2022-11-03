@@ -17,21 +17,21 @@ const Header = () => {
         </Link>
 
         <nav className="text-center">
-          {Auth.loggedIn() ? (
-            <>
-              <Link to="/events">Events</Link>
-              <Link to="/spaces">Spaces</Link>
-              <Link to="/departments">Departments</Link>
-              <a href="/" onClick={logout}>
-                Logout
-              </a>
-            </>
+          {/* {Auth.loggedIn() ? ( */}
+          <>
+            <Link to="/events">Events</Link>
+            <Link to="/spaces">Spaces</Link>
+            <Link to="/departments">Departments</Link>
+            <a href="/" onClick={logout}>
+              Logout
+            </a>
+          </>
           ) : (
-            <>
-              <Link to="/login">Login</Link>
-              <Link to="/signup">Signup</Link>
-            </>
-          )}
+          <>
+            <Link to="/login">Login</Link>
+            <Link to="/signup">Signup</Link>
+          </>
+          {/* )} */}
         </nav>
       </div>
     </header>
