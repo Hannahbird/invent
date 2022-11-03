@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client';
 import DepartmentList from '../components/DepartmentList';
 import DateTime from '../utils/dateTime/dateTime';
 import Auth from '../utils/auth';
-/*import { QUERY_EVENT } from '../utils/queries';*/
+import { QUERY_EVENT } from '../utils/queries';
 
 const SingleEvent = (props) => {
     const { id: eventId } = useParams();

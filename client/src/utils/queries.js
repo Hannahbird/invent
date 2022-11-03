@@ -71,6 +71,9 @@ export const QUERY_EVENT = gql`
     events {
       _id
       eventName
+      location
+      eventDate
+      eventState
     }
   }
 `;
