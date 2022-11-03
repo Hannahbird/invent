@@ -93,6 +93,7 @@ const typeDefs = gql`
         updateDepartment(deptId: ID!, deptName: String!): Department
         addLocation(locationName:String!, capacity:Int!): Location
         addEvent(eventName:String!, location:ID!, departments:[ID], contactInfo:String!, contactName:String!, eventDate:Date!): Event
+        deleteDepartment(deptId: ID!): Department
     }
 `;
 
