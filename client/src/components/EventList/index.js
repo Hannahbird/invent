@@ -181,11 +181,12 @@ const EventList = () => {
                             <Form.Group className="mb-3" controlId="formContactInfo">
                                 <Form.Label>Location</Form.Label>
                                 <Form.Control
-                                    type="input"
+                                    type="text"
                                     name='location'
                                     placeholder="Change the location"
                                     value={editEvent.location.locationName}
                                     onChange={handleChange}
+                                    disabled
                                 />
                             </Form.Group>
 
