@@ -5,6 +5,7 @@ import { QUERY_COMPANY_DEPTS } from '../../utils/queries';
 //Modal styling from react-bootstrap
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
 
 const DepartmentList = ({ id }) => {
   const { loading, data } = useQuery(QUERY_COMPANY_DEPTS, {
@@ -37,11 +38,15 @@ const DepartmentList = ({ id }) => {
         </Modal.Header>
         <Modal.Body>
           <h4>Create Department</h4>
-          <p>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-            ac consectetur ac, vestibulum at eros.
-          </p>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Department Name</Form.Label>
+              <Form.Control type="string" placeholder="Department Name" />
+              <Form.Text className="text-muted">
+                What is the Department's Name?
+              </Form.Text>
+            </Form.Group>
+          </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={props.onHide}>Save</Button>
@@ -55,7 +60,7 @@ const DepartmentList = ({ id }) => {
 
     return (
       <>
-        <Button variant="primary" onClick={() => setModalShow(true)}>
+        <Button variant="secondary" onClick={() => setModalShow(true)}>
           Create Department
         </Button>
 
