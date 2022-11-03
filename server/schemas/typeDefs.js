@@ -73,12 +73,16 @@ const typeDefs = gql`
         available: Boolean
     }
 
+    
+
     type Query {
         me: User
         departments: [Department]
         department(deptId: String!): Department
         events: [Event]
         locations: [Location]
+        checkEmail(email: String!): Check
+        checkUsername(username: String!): Check
     }
 
     type Mutation {
