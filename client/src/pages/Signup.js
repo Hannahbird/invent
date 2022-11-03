@@ -8,6 +8,8 @@ const Signup = () => {
   const [formState, setFormState] = useState({
     username: '',
     email: '',
+    companyTitle: '',
+    newCompany: false,
     password: '',
   });
   const [addUser, { error }] = useMutation(ADD_USER);
@@ -25,6 +27,10 @@ const Signup = () => {
   // submit form
   const handleFormSubmit = async (event) => {
     event.preventDefault();
+
+    if (formState.companyTitle) {
+      formState.newCompany = true;
+    }
 
     try {
       const { data } = await addUser({
@@ -60,6 +66,15 @@ const Signup = () => {
                 type="email"
                 id="email"
                 value={formState.email}
+                onChange={handleChange}
+              />
+              <input
+                className="form-input"
+                placeholder="Your Company"
+                name="companyTitle"
+                type="companyTitle"
+                id="companyTitle"
+                value={formState.companyTitle}
                 onChange={handleChange}
               />
               <input
