@@ -92,14 +92,14 @@ db.once("open", async () => {
     const taskExample2 = await EventTask.create({
       description: "example event task",
       department: techDept._id,
-      eventId: eventExample1._id,
+      eventId: eventExample2._id,
       startTime: "12:00",
       endTime: "13:00",
     });
     const taskExample22 = await EventTask.create({
       description: "second example event task",
       department: foodDept._id,
-      eventId: eventExample1._id,
+      eventId: eventExample2._id,
       startTime: "13:00",
       endTime: "14:00",
     });
@@ -108,8 +108,14 @@ db.once("open", async () => {
     process.exit(1);
   }
   console.log("all done!");
-  console.log("ADMIN LOGIN: username: 'admin', password: 'admin");
-  console.log("TECH DEPT LOGIN: username: 'techguy', password: 'techguy'");
-  console.log("FOOD DEPT LOGIN: username: 'foodguy', password: 'foodguy'");
+  console.log(
+    "ADMIN LOGIN: username: 'admin', email: admin@admin.com, password: 'admin"
+  );
+  console.log(
+    "TECH DEPT LOGIN: username: 'techguy', email: techguy@techguy.com, password: 'techguy'"
+  );
+  console.log(
+    "FOOD DEPT LOGIN: username: 'foodguy', email: foodguy@foodguy.com, password: 'foodguy'"
+  );
   process.exit(0);
 });
