@@ -1,20 +1,25 @@
 import React from 'react';
-import { QUERY_COMPANY_DEPTS } from '../../utils/queries';
 import { useQuery } from '@apollo/client';
+import { QUERY_COMPANY_DEPTS } from '../../utils/queries';
 
-const DepartmentList = () => {
+const DepartmentList = ({ id }) => {
+    const { loading, data } = useQuery(QUERY_COMPANY_DEPTS, {
+        variables: { deptId: id }
+    });
 
-    /*const { loading, data } = useQuery(QUERY_COMPANY_DEPTS);*/
+    const departments = data?.departments || {};
 
-    //if (loading) {
-    //    return <div>Loading...</div>
-    //};
+    if (loading) {
+        return <div>Loading...</div>
+    };
 
-    const data = [{ _id: 1, deptName: "Finance" }, { _id: 2, deptName: "IT" }];
+    if (!data.departments.length) {
+        return <h3>No departments yet</h3>;
+    }
 
     return (
         <div className="dropdown-menu">
-            {data.map(department => {
+            {departments.map(department => {
                 <button key={department._id} className="dropdown-item" type="button">
                     <input type="checkbox" />{department.deptName}
                 </button>

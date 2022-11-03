@@ -5,9 +5,10 @@ import { useQuery } from '@apollo/client';
 import { QUERY_EVENTS } from '../../utils/queries';
 
 const EventList = () => {
+
     const { loading, data } = useQuery(QUERY_EVENTS);
 
-    const events = data?.events || [];
+    const events = data?.events || {};
 
     if (loading) {
         return <div>Loading...</div>;
