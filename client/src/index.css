@@ -14,8 +14,29 @@ code {
 
 @import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
 
-.header, .footer {
-  font-family: 'Architects Daughter'
+.header {
+  font-family: 'Architects Daughter';
+  font-size: large;
+  background-color: #D6CCC2;
+  align-items: stretch;
+}
+.footer{
+  font-family: 'Architects Daughter';
+  background-color: #D6CCC2;
+}
+.header h1 {
+  font-size: 100px;
+  font-weight: bold;
+  color: black
+}
+
+
+.navigation {
+  color: black
+}
+
+a:link {
+  text-decoration: none;
 }
 
 p {
@@ -23,5 +44,6 @@ p {
 }
 
 body {
-  font: 'Arial'
+  font: 'Arial';
+  background-color: #EDEDE9
 }

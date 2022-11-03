@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const LOGIN_USER = gql`
   mutation login($email: String!, $password: String!) {
@@ -94,6 +94,71 @@ export const DELETE_DEPARTMENT = gql`
         _id
         username
       }
+    }
+  }
+`;
+
+export const ADD_EVENTTASK = gql`
+  mutation addEventTask(
+    $description: String!
+    $department: ID!
+    $eventId: ID!
+    $startTime: String
+    $endTime: String
+  ) {
+    addEventTask(
+      description: $description
+      department: $department
+      eventId: $eventId
+      startTime: $startTime
+      endTime: $endTime
+    ) {
+      _id
+      description
+      department {
+        deptName
+      }
+      eventId {
+        eventName
+      }
+    }
+  }
+`;
+
+export const UPDATE_EVENTTASK = gql`
+  mutation updateEventTask(
+    $taskId: ID!
+    $description: String
+    $department: ID
+    $eventId: ID
+    $startTime: String
+    $endTime: String
+  ) {
+    updateEventTask(
+      taskId: $taskId
+      description: $description
+      department: $department
+      eventId: $eventId
+      startTime: $startTime
+      endTime: $endTime
+    ) {
+      _id
+      description
+      department {
+        deptName
+      }
+      eventId {
+        eventName
+      }
+      startTime
+      endTime
+    }
+  }
+`;
+export const DELETE_EVENTTASK = gql`
+  mutation deleteEventTask($taskId: ID!) {
+    deleteEventTask(taskId: taskId) {
+      _id
     }
   }
 `;

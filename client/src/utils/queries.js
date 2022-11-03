@@ -40,6 +40,16 @@ export const QUERY_COMPANY_DEPT = gql`
   }
 `;
 
+export const QUERY_LOCATIONS = gql`
+  query locations($deptId: String!) {
+    locations(deptId: $deptId) {
+      _id
+      locationName
+      locationCapacity
+    }
+  }
+`;
+
 export const QUERY_ME = gql`
   {
     me {
@@ -62,6 +72,8 @@ export const QUERY_EVENTS = gql`
   query events($username: String) {
     events {
       _id
+      eventName
+      eventDate
     }
   }
 `;
@@ -88,6 +100,32 @@ export const QUERY_LOCATION = gql`
   }
 `;
 
+//export const QUERY_EVENTTASKS = gql`
+//query eventTasks($eventId: ID!){
+//  eventTasks(eventId: $eventId){
+//    taskId: $taskId
+//      description: $description
+//      department: $department
+//      eventId: $eventId
+//      startTime: $startTime
+//      endTime: $endTime
+//    ) {
+//      _id
+//      description
+//      department {
+//        _id
+//        deptName
+//      }
+//      eventId {
+//        _id
+//        eventName
+//      }
+//      startTime
+//      endTime
+//  }
+//}
+//`;
+
 export const QUERY_ME_BASIC = gql`
   {
     me {
@@ -104,14 +142,12 @@ export const QUERY_CHECK_USERNAME = gql`
       available
     }
   }
-`
+`;
 
 export const QUERY_CHECK_EMAIL = gql`
   query checkEmail($email: String!) {
     checkEmail(email: $email) {
       available
     }
-  } 
-`
-
-
+  }
+`;
