@@ -16,7 +16,10 @@ const Header = () => {
           <h1>InVent</h1>
         </Link>
 
-        <nav className="text-center">
+        <nav
+          className="text-center
+         flex-row justify-space-between"
+        >
           {Auth.loggedIn() ? (
             <>
               <Link to="/events">Events</Link>
