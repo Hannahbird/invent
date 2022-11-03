@@ -67,13 +67,23 @@ export const QUERY_EVENTS = gql`
 `;
 
 export const QUERY_EVENT = gql`
-  query events($username: String) {
+  query event($eventId: ID!) {
     events {
       _id
       eventName
       location
       eventDate
       eventState
+    }
+  }
+`;
+
+export const QUERY_LOCATION = gql`
+  query location($locationId: ID!) {
+    location {
+      _id
+      locationName
+      capacity
     }
   }
 `;
