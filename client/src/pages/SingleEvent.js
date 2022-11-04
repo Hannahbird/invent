@@ -31,14 +31,7 @@ const SingleEvent = (props) => {
         setOpaque(state);
     }
 
-    const [editEvent, setEditEvent] = useState({
-        eventName: '',
-        location: '',
-        eventDate: '',
-        contactName: '',
-        contactInfo: '',
-        eventState: ''
-    })
+    const [editEvent, setEditEvent] = useState(event);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -78,7 +71,7 @@ const SingleEvent = (props) => {
             <>
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>{loading ? "Loading event details" : "Edit Event"}</Modal.Title>
+                        <Modal.Title>{loading ? "Loading event details" : "Edit Event" }</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form>
@@ -88,7 +81,7 @@ const SingleEvent = (props) => {
                                     type="input"
                                     placeholder="Enter your name"
                                     name='contactName'
-                                    value={editEvent.contactName}
+                                    value={event.contactName}
                                     onChange={handleChange} />
                             </Form.Group>
 
@@ -98,7 +91,7 @@ const SingleEvent = (props) => {
                                     type="input"
                                     name='contactInfo'
                                     placeholder="Provide the best way to contact you"
-                                    value={editEvent.contactInfo}
+                                    value={event.contactInfo}
                                     onChange={handleChange}
                                 />
                             </Form.Group>
@@ -109,7 +102,7 @@ const SingleEvent = (props) => {
                                     type="input"
                                     name='eventName'
                                     placeholder="Enter a brief name for your event"
-                                    value={editEvent.eventName}
+                                    value={event.eventName}
                                     onChange={handleChange}
                                 />
                             </Form.Group>
@@ -120,7 +113,7 @@ const SingleEvent = (props) => {
                                     type="text"
                                     name='location'
                                     placeholder="Change the location"
-                                    value={editEvent.location.locationName}
+                                    value={event.location.locationName}
                                     onChange={handleChange}
                                     disabled
                                 />
@@ -131,7 +124,7 @@ const SingleEvent = (props) => {
                                 <DateTime
                                     className="form-control"
                                     name='eventDate'
-                                    value={editEvent.eventDate}
+                                    value={event.eventDate}
                                     onChange={handleChange} />
                             </Form.Group>
                         </Form>
