@@ -1,8 +1,7 @@
 import React from 'react';
-import DepartmentList from '../DepartmentList';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { QUERY_EVENTS, QUERY_COMPANY_DEPT } from '../../utils/queries';
+import { QUERY_EVENTS } from '../../utils/queries';
 
 //Modal styling from react-bootstrap
 import Button from 'react-bootstrap/Button';
@@ -10,10 +9,9 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
 const EventList = () => {
-    const { loading, data } = useQuery(QUERY_EVENTS, QUERY_COMPANY_DEPT);
+    const { loading, data } = useQuery(QUERY_EVENTS);
 
     const events = data?.events || {};
-    const departments = data?.departments || {};
 
     if (loading) {
         return <div>Loading...</div>;
