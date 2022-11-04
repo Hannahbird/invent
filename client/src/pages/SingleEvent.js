@@ -12,12 +12,15 @@ const SingleEvent = (props) => {
 
     const { loading, data } = useQuery(QUERY_EVENT, {
         variables: {
-            _id: eventId,
+            eventId: eventId,
         },
     });
 
+    console.log(data);
+    console.log(eventId);
+
     /*const [updateEvent, { error }] = useMutation(UPDATE_EVENT);*/
-    /*const events = data?.events || {};*/
+    const event = data?.event || {};
 
     const [show, setShow] = useState(false)
     const handleClose = () => setShow(false);
@@ -58,10 +61,6 @@ const SingleEvent = (props) => {
     //    }
     //}
 
-    /*const event = data?.event || {};*/
-
-    const event = { _id: 123, eventName: "peepeepoopoo" };
-
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -70,7 +69,7 @@ const SingleEvent = (props) => {
         console.log(event.target);
         handleShow();
         setEditEvent({
-            ...events[event.target.offsetParent.id]
+            ...event[event.target.offsetParent.id]
         })
     }
 
@@ -153,13 +152,6 @@ const SingleEvent = (props) => {
                     <p>{event.eventName}</p>
                 </div>
                 <div className="card-body row">
-                    <DateTime className="form-control" />
-                    <select className="form-select" aria-label="Default select example">
-                        <option selected>Completion Level</option>
-                        <option value="1">Not Started</option>
-                        <option value="2">In Progress</option>
-                        <option value="3">Completed</option>
-                    </select>
                 </div>
             </div>
         </div>
