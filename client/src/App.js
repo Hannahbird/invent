@@ -69,7 +69,7 @@ function App() {
                             <Route path="/signup" element={<Signup />} />
                             <Route path="/dashboard" element={<AdminDashboard />} />
                             <Route path="/events" element={<EventList />} />
-                            <Route path="/event" element={<SingleEvent />} />
+                            <Route path="/event/:id" element={<SingleEvent />} />
                             <Route path="/spaces" element={<SpacesList />} />
                             <Route path="/departments" element={<DepartmentList />} />
                             <Route path="*" element={<NoMatch />} />
