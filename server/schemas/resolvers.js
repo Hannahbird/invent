@@ -323,6 +323,20 @@ const resolvers = {
       }
       throw new AuthenticationError("Not logged in");
     },
+    updateEvent: async (parent, { eventId, ...eventInfo }, context) => {
+      if(context.user) {
+
+        const updatedEvent = await Event.findOneAndUpdate(
+          { _id: eventId },
+          { ...eventInfo },
+          { runValidators: true, context: "query", new: true }
+        ).populate('location');
+
+        return updatedEvent;
+      }
+
+      throw new AuthenticationError("Not logged in");
+    },
     deleteEventTask: async (parent, { taskId }, context) => {
       if (context.user) {
         const deleted = await EventTask.findByIdAndDelete(taskId);
