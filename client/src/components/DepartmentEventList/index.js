@@ -1,8 +1,8 @@
 import React from 'react';
-import { QUERY_DEPTS_EVENTS } from '../../utils/queries';
+import { QUERY_DEPT_EVENTS } from '../../utils/queries';
 
 const DepartmentEventList = () => {
-    const { loading, data } = useQuery(QUERY_DEPTS_EVENTS);
+    const { loading, data } = useQuery(QUERY_DEPT_EVENTS);
 
     const events = data?.deptEvents || {};
 
