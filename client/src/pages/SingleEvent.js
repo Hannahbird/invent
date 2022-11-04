@@ -8,162 +8,169 @@ import { QUERY_EVENT } from '../utils/queries';
 import { Card, Modal, Button, Form } from 'react-bootstrap';
 
 const SingleEvent = (props) => {
-    const { id: eventId } = useParams();
+  const { id: eventId } = useParams();
 
-    const { loading, data } = useQuery(QUERY_EVENT, {
-        variables: {
-            _id: eventId,
-        },
+  const { loading, data } = useQuery(QUERY_EVENT, {
+    variables: {
+      _id: eventId,
+    },
+  });
+
+  /*const [updateEvent, { error }] = useMutation(UPDATE_EVENT);*/
+  /*const events = data?.events || {};*/
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [opaque, setOpaque] = useState(false);
+
+  const handleMouseOver = (state) => {
+    setOpaque(state);
+  };
+
+  const [editEvent, setEditEvent] = useState({
+    eventName: '',
+    location: '',
+    eventDate: '',
+    contactName: '',
+    contactInfo: '',
+    eventState: '',
+  });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setEditEvent({
+      ...editEvent,
+      [name]: value,
     });
 
-    /*const [updateEvent, { error }] = useMutation(UPDATE_EVENT);*/
-    /*const events = data?.events || {};*/
+    console.log(editEvent);
+  };
 
-    const [show, setShow] = useState(false)
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-    const [opaque, setOpaque] = useState(false);
+  //const handleUpdateEvent = async (event) => {
+  //    try {
+  //        const { data } = await updateEvent({
+  //            variables: { ...editEvent }
+  //        });
+  //    } catch (e) {
+  //        console.log(error);
+  //    }
+  //}
 
-    const handleMouseOver = (state) => {
-        setOpaque(state);
-    }
+  /*const event = data?.event || {};*/
 
-    const [editEvent, setEditEvent] = useState({
-        eventName: '',
-        location: '',
-        eventDate: '',
-        contactName: '',
-        contactInfo: '',
-        eventState: ''
-    })
+  const event = { _id: 123, eventName: 'peepeepoopoo' };
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-        setEditEvent({
-            ...editEvent,
-            [name]: value,
-        });
+  const loadEdit = (event) => {
+    console.log(event.target);
+    handleShow();
+    setEditEvent({
+      ...event[event.target.offsetParent.id],
+    });
+  };
 
-        console.log(editEvent);
-    };
+  return (
+    <div>
+      <>
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>
+              {loading ? 'Loading event details' : 'Edit Event'}
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group className="mb-3" controlId="formContact">
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                  type="input"
+                  placeholder="Enter your name"
+                  name="contactName"
+                  value={editEvent.contactName}
+                  onChange={handleChange}
+                />
+              </Form.Group>
 
-    //const handleUpdateEvent = async (event) => {
-    //    try {
-    //        const { data } = await updateEvent({
-    //            variables: { ...editEvent }
-    //        });
-    //    } catch (e) {
-    //        console.log(error);
-    //    }
-    //}
+              <Form.Group className="mb-3" controlId="formContactInfo">
+                <Form.Label>Contact Info</Form.Label>
+                <Form.Control
+                  type="input"
+                  name="contactInfo"
+                  placeholder="Provide the best way to contact you"
+                  value={editEvent.contactInfo}
+                  onChange={handleChange}
+                />
+              </Form.Group>
 
-    /*const event = data?.event || {};*/
+              <Form.Group className="mb-3" controlId="formEventName">
+                <Form.Label>Event Name/Description</Form.Label>
+                <Form.Control
+                  type="input"
+                  name="eventName"
+                  placeholder="Enter a brief name for your event"
+                  value={editEvent.eventName}
+                  onChange={handleChange}
+                />
+              </Form.Group>
 
-    const event = { _id: 123, eventName: "peepeepoopoo" };
+              <Form.Group className="mb-3" controlId="formContactInfo">
+                <Form.Label>Location</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="location"
+                  placeholder="Change the location"
+                  value={editEvent.location.locationName}
+                  onChange={handleChange}
+                  disabled
+                />
+              </Form.Group>
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+              <Form.Group className="mb-3" controlId="formDate">
+                <Form.Label></Form.Label>
+                <DateTime
+                  className="form-control"
+                  name="eventDate"
+                  value={editEvent.eventDate}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary">Update</Button>
+          </Modal.Footer>
+        </Modal>
+      </>
 
-    const loadEdit = event => {
-        console.log(event.target);
-        handleShow();
-        setEditEvent({
-            ...events[event.target.offsetParent.id]
-        })
-    }
-
-    return (
-        <div>
-            <>
-                <Modal show={show} onHide={handleClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>{loading ? "Loading event details" : "Edit Event"}</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form>
-                            <Form.Group className="mb-3" controlId="formContact">
-                                <Form.Label>Name</Form.Label>
-                                <Form.Control
-                                    type="input"
-                                    placeholder="Enter your name"
-                                    name='contactName'
-                                    value={editEvent.contactName}
-                                    onChange={handleChange} />
-                            </Form.Group>
-
-                            <Form.Group className="mb-3" controlId="formContactInfo">
-                                <Form.Label>Contact Info</Form.Label>
-                                <Form.Control
-                                    type="input"
-                                    name='contactInfo'
-                                    placeholder="Provide the best way to contact you"
-                                    value={editEvent.contactInfo}
-                                    onChange={handleChange}
-                                />
-                            </Form.Group>
-
-                            <Form.Group className="mb-3" controlId="formEventName">
-                                <Form.Label>Event Name/Description</Form.Label>
-                                <Form.Control
-                                    type="input"
-                                    name='eventName'
-                                    placeholder="Enter a brief name for your event"
-                                    value={editEvent.eventName}
-                                    onChange={handleChange}
-                                />
-                            </Form.Group>
-
-                            <Form.Group className="mb-3" controlId="formContactInfo">
-                                <Form.Label>Location</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name='location'
-                                    placeholder="Change the location"
-                                    value={editEvent.location.locationName}
-                                    onChange={handleChange}
-                                    disabled
-                                />
-                            </Form.Group>
-
-                            <Form.Group className="mb-3" controlId="formDate">
-                                <Form.Label></Form.Label>
-                                <DateTime
-                                    className="form-control"
-                                    name='eventDate'
-                                    value={editEvent.eventDate}
-                                    onChange={handleChange} />
-                            </Form.Group>
-                        </Form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Close
-                        </Button>
-                        <Button variant="primary">
-                            Update
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-            </>
-
-            <div className={`card mb-3 col-6 ${opaque ? 'opacity-100' : 'opacity-50'}`} onClick={loadEdit} onMouseEnter={() => handleMouseOver(true)} onMouseLeave={() => handleMouseOver(false)}>
-                <div className="card-header">
-                    <p>{event.eventName}</p>
-                </div>
-                <div className="card-body row">
-                    <DateTime className="form-control" />
-                    <select className="form-select" aria-label="Default select example">
-                        <option selected>Completion Level</option>
-                        <option value="1">Not Started</option>
-                        <option value="2">In Progress</option>
-                        <option value="3">Completed</option>
-                    </select>
-                </div>
-            </div>
+      <div
+        className={`card mb-3 col-6 ${opaque ? 'opacity-100' : 'opacity-50'}`}
+        onClick={loadEdit}
+        onMouseEnter={() => handleMouseOver(true)}
+        onMouseLeave={() => handleMouseOver(false)}
+      >
+        <div className="card-header">
+          <p>{event.eventName}</p>
         </div>
-    );
+        <div className="card-body row">
+          <DateTime className="form-control" />
+          <select className="form-select" aria-label="Default select example">
+            <option selected>Completion Level</option>
+            <option value="1">Not Started</option>
+            <option value="2">In Progress</option>
+            <option value="3">Completed</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default SingleEvent;
