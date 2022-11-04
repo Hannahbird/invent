@@ -121,15 +121,16 @@ const EventList = () => {
                 events.map((event) => (
                     <div key={event._id} className="card mb-3 col-6">
                         <div className="card-header">
-                            <p>{event.name}</p>
+                            <p>{event.eventName}</p>
                         </div>
                         <div className="card-body row">
-                            {event.timeOf}
-                            {event.dateOf}
+                            {event.eventDate}
                             <br />
-                            {event.dept}
+                            {event.location.locationName}
                             <br />
-                            {event.completion}
+                            {event.contactName}
+                            {event.contactInfo}
+                            {event.eventState}
                         </div>
                     </div>
                 ))}
