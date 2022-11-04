@@ -1,8 +1,8 @@
 import React from 'react';
-import { QUERY_DEPARTMENT_EVENTS } from '../../utils/queries';
+import { QUERY_DEPTS_EVENTS } from '../../utils/queries';
 
 const DepartmentEventList = () => {
-    const { loading, data } = useQuery(QUERY_DEPARTMENT_EVENTS);
+    const { loading, data } = useQuery(QUERY_DEPTS_EVENTS);
 
     const events = data?.deptEvents || {};
 
@@ -42,3 +42,5 @@ const DepartmentEventList = () => {
         </div>
     );
 };
+
+export default DepartmentEventList;
