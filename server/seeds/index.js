@@ -96,13 +96,13 @@ db.once("open", async () => {
       startTime: "12:00",
       endTime: "13:00",
     });
-    const taskExample22 = await EventTask.create({
-      description: "second example event task",
-      department: foodDept._id,
-      eventId: eventExample2._id,
-      startTime: "13:00",
-      endTime: "14:00",
-    });
+    // const taskExample22 = await EventTask.create({
+    //   description: "second example event task",
+    //   department: foodDept._id,
+    //   eventId: eventExample2._id,
+    //   startTime: "13:00",
+    //   endTime: "14:00",
+    // });
   } catch (err) {
     console.error(err);
     process.exit(1);

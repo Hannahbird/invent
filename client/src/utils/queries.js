@@ -69,23 +69,57 @@ export const QUERY_ME = gql`
 `;
 
 export const QUERY_EVENTS = gql`
-  query events($username: String) {
-    events {
+query Events {
+  events {
+    _id
+    eventName
+    location {
+      _id
+      locationName
+    }
+    contactInfo
+    contactName
+    eventDate
+    eventState
+  }
+}
+`;
+
+export const QUERY_DEPT_EVENTS = gql`
+query deptEvents {
+  deptEvents {
+    _id
+    eventName
+    location {
+      _id
+      locationName
+    }
+    contactInfo
+    contactName
+    eventDate
+    eventState
+  }
+}
+`;
+
+ export const QUERY_EVENT = gql`
+  query Event($eventId: String!) {
+    event(eventId: $eventId) {
       _id
       eventName
+      location {
+        _id
+        locationName
+        capacity
+      }
+      contactInfo
+      contactName
       eventDate
+      eventState
     }
   }
 `;
 
-export const QUERY_EVENT = gql`
-  query events($username: String) {
-    events {
-      _id
-      eventName
-    }
-  }
-`;
 
 //export const QUERY_EVENTTASKS = gql`
 //query eventTasks($eventId: ID!){
