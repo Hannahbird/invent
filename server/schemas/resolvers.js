@@ -1,4 +1,11 @@
-const { User, Company, Department, Location, Event } = require("../models");
+const {
+  User,
+  Company,
+  Department,
+  Location,
+  Event,
+  EventTask,
+} = require("../models");
 const { AuthenticationError } = require("apollo-server-express");
 const { GraphQLError } = require("graphql");
 const { signToken } = require("../utils/auth");
@@ -49,6 +56,65 @@ const resolvers = {
 
       throw new AuthenticationError("Not logged in");
     },
+    events: async (parent, args, context) => {
+      if (context.user) {
+        let companyId = context.user.department.company;
+
+        const locations = await Location.find({
+          company: companyId
+        })
+
+        const locationIds = locations.map(location => {
+          return location._id
+        })
+
+        const eventData = await Event.find({
+          location: { $in: locationIds },
+          active: true
+        }).populate('location')
+
+        return eventData;
+      }
+
+      throw new AuthenticationError("Not logged in");
+    },
+    deptEvents: async (parent, args, context) => {
+        if (context.user) {
+        let deptId = context.user.department._id;
+
+        const events = await EventTask.find({
+          department: deptId
+        })
+
+        const eventIds = events.map(event => {
+          return event.eventId
+        })
+
+        const eventData = await Event.find({
+          _id: { $in: eventIds },
+          active: true
+        }).populate('location')
+
+        return eventData;
+      }
+
+      throw new AuthenticationError("Not logged in");
+    },
+    event: async (parent, { eventId }, context) => {
+        if (context.user) {
+          let companyId = context.user.department.company;
+
+        const eventData = await Event.findOne({
+          _id: eventId,
+          active: true
+        })
+            .populate('location')
+          
+        return eventData;
+      }
+
+      throw new AuthenticationError("Not logged in");
+    },
     checkEmail: async (parent, { email }) => {
       const exists = await User.findOne({
         email: email,
@@ -70,6 +136,20 @@ const resolvers = {
       }
 
       return { available: true };
+    },
+    eventTasks: async (parent, { eventId }, context) => {
+      const tasks = await EventTask.find({ eventId: eventId });
+      if (context.user) {
+        if (!tasks) {
+          throw new GraphQLError("Couldn't find any event with this id", {
+            extensions: {
+              code: "BAD_USER_INPUT",
+            },
+          });
+        }
+        return tasks;
+      }
+      throw new AuthenticationError("Not logged in");
     },
   },
   Mutation: {
@@ -105,8 +185,6 @@ const resolvers = {
           },
         });
       }
-
-      console.log(department._id);
 
       const user = await User.create({
         ...userArgs,
@@ -209,7 +287,7 @@ const resolvers = {
     addLocation: async (parent, locationData, context) => {
       if (context.user) {
         const userCompany = context.user.department.company;
-        console.log(locationData);
+
         const location = await Location.create({
           company: userCompany,
           ...locationData,
@@ -225,6 +303,30 @@ const resolvers = {
         });
 
         return event;
+      }
+      throw new AuthenticationError("Not logged in");
+    },
+    addEventTask: async (parent, taskData, context) => {
+      if (context.user) {
+        const newTask = await EventTask.create(taskData);
+        return newTask;
+      }
+      throw new AuthenticationError("Not logged in");
+    },
+    updateEventTask: async (parent, args, context) => {
+      if (context.user) {
+        const { taskId, ...data } = args;
+        const updated = await EventTask.findByIdAndUpdate(taskId, data, {
+          new: true,
+        });
+        return updated;
+      }
+      throw new AuthenticationError("Not logged in");
+    },
+    deleteEventTask: async (parent, { taskId }, context) => {
+      if (context.user) {
+        const deleted = await EventTask.findByIdAndDelete(taskId);
+        return deleted;
       }
       throw new AuthenticationError("Not logged in");
     },
