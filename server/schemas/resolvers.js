@@ -59,9 +59,17 @@ const resolvers = {
     events: async (parent, args, context) => {
       if (context.user) {
         let companyId = context.user.department.company;
-          console.log('companyId');
+
+        const locations = await Location.find({
+          company: companyId
+        })
+
+        const locationIds = locations.map(location => {
+          return location._id
+        })
+
         const eventData = await Event.find({
-          'location.company': mongoose.Types.ObjectId(companyId),
+          location: {$in : locationIds}
         }).populate('location')
 
         return eventData;
@@ -69,6 +77,19 @@ const resolvers = {
 
       throw new AuthenticationError("Not logged in");
     },
+
+    locations: async (parent, args, context) => {
+      if (context.user) {
+        let companyId = context.user.department.company;
+
+        const locations = await Location.find({
+          company: companyId
+        })
+        return locationData;
+      }
+      throw new AuthenticationError("Not logged in");
+    },
+
     checkEmail: async (parent, { email }) => {
       const exists = await User.findOne({
         email: email,

@@ -69,13 +69,20 @@ export const QUERY_ME = gql`
 `;
 
 export const QUERY_EVENTS = gql`
-  query events($eventId: ID!) {
-    events {
+query Events {
+  events {
+    _id
+    eventName
+    location {
       _id
-      eventName
-      eventDate
+      locationName
     }
+    contactInfo
+    contactName
+    eventDate
+    eventState
   }
+}
 `;
 
 export const QUERY_EVENT = gql`
