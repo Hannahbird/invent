@@ -148,7 +148,7 @@ const SingleEvent = (props) => {
                 </Modal>
             </>
 
-            <div className={`card mb-3 col-6 ${opaque ? 'opacity-100' : 'opacity-50'}`} onClick={loadEdit} onMouseEnter={() => handleMouseOver(true)} onMouseLeave={() => handleMouseOver(false)}>>
+            <div className={`card mb-3 col-6 ${opaque ? 'opacity-100' : 'opacity-50'}`} onClick={loadEdit} onMouseEnter={() => handleMouseOver(true)} onMouseLeave={() => handleMouseOver(false)}>
                 <div className="card-header">
                     <p>{event.eventName}</p>
                 </div>
