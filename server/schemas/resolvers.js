@@ -69,7 +69,8 @@ const resolvers = {
         })
 
         const eventData = await Event.find({
-          location: {$in : locationIds}
+          location: { $in: locationIds },
+          active: true
         }).populate('location')
 
         return eventData;
@@ -90,7 +91,8 @@ const resolvers = {
         })
 
         const eventData = await Event.find({
-          _id: {$in : eventIds}
+          _id: { $in: eventIds },
+          active: true
         }).populate('location')
 
         return eventData;
@@ -103,7 +105,8 @@ const resolvers = {
           let companyId = context.user.department.company;
 
         const eventData = await Event.findOne({
-          _id: eventId
+          _id: eventId,
+          active: true
         })
             .populate('location')
           
