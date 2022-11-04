@@ -105,6 +105,7 @@ const typeDefs = gql`
     updateUser(userId: ID!, email: String, deptId: ID): User
     updateDepartment(deptId: ID!, deptName: String!): Department
     addLocation(locationName: String!, capacity: Int!): Location
+    updateLocation(locationName: String, locationId: ID!, capacity: Int, active: Boolean): Location
     addEvent(
       eventName: String!
       location: ID!
