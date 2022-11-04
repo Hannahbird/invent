@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import DepartmentList from '../components/DepartmentList';
 import DateTime from '../utils/dateTime/dateTime';
 import Auth from '../utils/auth';
 import { QUERY_EVENT } from '../utils/queries';
+import { UPDATE_EVENT } from '../utils/mutations';
 import { Card, Modal, Button, Form } from 'react-bootstrap';
 
 const SingleEvent = (props) => {
@@ -16,14 +17,15 @@ const SingleEvent = (props) => {
         },
     });
 
-    console.log(data);
-    console.log(eventId);
+    const [updateEvent, { error }] = useMutation(UPDATE_EVENT);
 
-    /*const [updateEvent, { error }] = useMutation(UPDATE_EVENT);*/
-    const event = data?.event || {};
+    let eventData = data?.event || {};
 
     const [show, setShow] = useState(false)
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setShow(false);
+        setEditEvent({})
+    }
     const handleShow = () => setShow(true);
     const [opaque, setOpaque] = useState(false);
 
@@ -31,7 +33,7 @@ const SingleEvent = (props) => {
         setOpaque(state);
     }
 
-    const [editEvent, setEditEvent] = useState(event);
+    const [editEvent, setEditEvent] = useState({});
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -41,30 +43,40 @@ const SingleEvent = (props) => {
             [name]: value,
         });
 
+        eventData = { ...eventData, [name]: value };
+
+        console.log(eventData);
         console.log(editEvent);
     };
 
-    //const handleUpdateEvent = async (event) => {
-    //    try {
-    //        const { data } = await updateEvent({
-    //            variables: { ...editEvent }
-    //        });
-    //    } catch (e) {
-    //        console.log(error);
-    //    }
-    //}
+    const handleUpdateEvent = async (event) => {
+        try {
+            const { data } = await updateEvent({
+                variables: { ...editEvent }
+            });
+        } catch (e) {
+            console.log(error);
+        }
+    }
 
     if (loading) {
         return <div>Loading...</div>;
     }
 
-    const loadEdit = event => {
-        console.log(event.target);
-        handleShow();
-        setEditEvent({
-            ...event[event.target.offsetParent.id]
-        })
-    }
+    //const loadEdit = event => {
+    //    handleShow();
+    //    setEditEvent({
+    //        ...event[event.target.offsetParent.id]
+    //    })
+    //}
+
+    const isUndefined = (String) => {
+        if (typeof String === "undefined") {
+            return true;
+        };
+
+        return false;
+    };
 
     return (
         <div>
@@ -81,7 +93,7 @@ const SingleEvent = (props) => {
                                     type="input"
                                     placeholder="Enter your name"
                                     name='contactName'
-                                    value={event.contactName}
+                                    value={isUndefined(editEvent.contactName) ? eventData.contactName : editEvent.contactName }
                                     onChange={handleChange} />
                             </Form.Group>
 
@@ -91,7 +103,7 @@ const SingleEvent = (props) => {
                                     type="input"
                                     name='contactInfo'
                                     placeholder="Provide the best way to contact you"
-                                    value={event.contactInfo}
+                                    value={isUndefined(editEvent.contactInfo) ? eventData.contactInfo : editEvent.contactInfo }
                                     onChange={handleChange}
                                 />
                             </Form.Group>
@@ -102,7 +114,7 @@ const SingleEvent = (props) => {
                                     type="input"
                                     name='eventName'
                                     placeholder="Enter a brief name for your event"
-                                    value={event.eventName}
+                                    value={isUndefined(editEvent.eventName) ? eventData.eventName : editEvent.eventName }
                                     onChange={handleChange}
                                 />
                             </Form.Group>
@@ -113,8 +125,8 @@ const SingleEvent = (props) => {
                                     type="text"
                                     name='location'
                                     placeholder="Change the location"
-                                    value={event.location.locationName}
                                     onChange={handleChange}
+                                    value={eventData.location.locationName}
                                     disabled
                                 />
                             </Form.Group>
@@ -124,25 +136,25 @@ const SingleEvent = (props) => {
                                 <DateTime
                                     className="form-control"
                                     name='eventDate'
-                                    value={event.eventDate}
+                                    value={isUndefined(editEvent.eventDate) ? eventData.eventDate : editEvent.eventDate }
                                     onChange={handleChange} />
                             </Form.Group>
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleClose}>
-                            Close
+                            Cancel
                         </Button>
-                        <Button variant="primary">
+                        <Button variant="primary" onClick={handleUpdateEvent}>
                             Update
                         </Button>
                     </Modal.Footer>
                 </Modal>
             </>
 
-            <div className={`card mb-3 col-6 ${opaque ? 'opacity-100' : 'opacity-50'}`} onClick={loadEdit} onMouseEnter={() => handleMouseOver(true)} onMouseLeave={() => handleMouseOver(false)}>
+            <div className={`card mb-3 col-6 ${opaque ? 'opacity-100' : 'opacity-50'}`} onClick={handleShow} onMouseEnter={() => handleMouseOver(true)} onMouseLeave={() => handleMouseOver(false)}>
                 <div className="card-header">
-                    <p>{event.eventName}</p>
+                    <p>{eventData.eventName}</p>
                 </div>
                 <div className="card-body row">
                 </div>
