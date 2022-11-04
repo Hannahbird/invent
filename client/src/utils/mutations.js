@@ -162,3 +162,19 @@ export const DELETE_EVENTTASK = gql`
     }
   }
 `;
+
+export const UPDATE_EVENT = gql`
+mutation Mutation($eventId: ID!, $contactName: String, $eventName: String) {
+  updateEvent(eventId: $eventId, contactName: $contactName, eventName: $eventName) {
+    _id
+    eventName
+    location {
+      _id
+      locationName
+    }
+    contactInfo
+    contactName
+    eventDate
+  }
+}
+`
