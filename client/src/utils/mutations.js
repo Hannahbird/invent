@@ -162,3 +162,40 @@ export const DELETE_EVENTTASK = gql`
     }
   }
 `;
+export const ADD_EVENT = gql`
+mutation Mutation($contactName: String!, $eventDate: Date!, $eventName: String!, $location: ID!, $contactInfo: String!) {
+  addEvent(contactName: $contactName, eventDate: $eventDate, eventName: $eventName, location: $location, contactInfo: $contactInfo) {
+    _id
+    eventName
+    location {
+      _id
+      locationName
+    }
+    contactInfo
+    contactName
+    eventDate
+    eventState
+  }
+}`
+export const ADD_LOCATION = gql`
+mutation Mutation($locationName: String!, $capacity: Int!) {
+  addLocation(locationName: $locationName, capacity: $capacity) {
+    _id
+    locationName
+    capacity
+    company {
+      _id
+      title
+    }
+  }
+}
+`
+export const UPDATE_LOCATION =gql`
+mutation Mutation($locationId: ID!, $locationName: String, $capacity: Int, $active: Boolean) {
+  updateLocation(locationId: $locationId, locationName: $locationName, capacity: $capacity, active: $active) {
+    _id
+    locationName
+    capacity
+  }
+}`
+//if you want to delete a location send update location the id and active = false

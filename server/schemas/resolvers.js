@@ -115,6 +115,17 @@ const resolvers = {
 
       throw new AuthenticationError("Not logged in");
     },
+    locations: async (parent, args, context) => {
+      if (context.user) {
+        let companyId = context.user.department.company;
+
+        const locations = await Location.find({
+          company: companyId
+        })
+        return locations;
+      }
+      throw new AuthenticationError("Not logged in");
+    },
     checkEmail: async (parent, { email }) => {
       const exists = await User.findOne({
         email: email,
@@ -295,6 +306,14 @@ const resolvers = {
         return location;
       }
       throw new AuthenticationError("Not logged in");
+    },
+    updateLocation: async (parent, {locationId, ...locationInfo}, context) => {
+      if (context.user) {
+        const updatedLocation = await Location.findOneAndUpdate({_id: locationId}, {...locationInfo},
+        { runValidators: true, context: "query", new: true })
+        return updatedLocation;
+      }
+      
     },
     addEvent: async (parent, eventData, context) => {
       if (context.user) {
