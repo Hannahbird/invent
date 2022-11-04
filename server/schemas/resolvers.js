@@ -176,17 +176,20 @@ const resolvers = {
 
       throw new AuthenticationError("Not logged in");
     },
-    updateDepartment: async (parent, { deptId, ...deptArgs }, context) => {
+    updateDepartment: async (parent, { deptId, deptName }, context) => {
       //may need to prevent updating the admin department
+      console.log(deptName, deptId);
       if (context.user) {
         const userCompany = context.user.department.company;
 
-        const updatedDept = await Department.findOneAndReplace(
-          { _id: deptId, company: userCompany },
-          { ...deptArgs, company: userCompany },
-          { runValidators: true, context: "query", new: true }
+        const updatedDept = Department.findByIdAndUpdate(
+          deptId,
+          { deptName },
+          {
+            new: true,
+          }
         );
-
+        console.log(updatedDept);
         return updatedDept;
       }
 

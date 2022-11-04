@@ -80,7 +80,6 @@ export const UPDATE_DEPARTMENT = gql`
     updateDepartment(deptId: $deptId, deptName: $deptName) {
       _id
       deptName
-      SignUpLink
     }
   }
 `;
