@@ -13,11 +13,15 @@ const SingleEvent = (props) => {
 
     const { loading, data } = useQuery(QUERY_EVENT, {
         variables: {
-            eventId: eventId,
+            eventId: eventId
         },
     });
 
-    const [updateEvent, { error }] = useMutation(UPDATE_EVENT);
+    const [updateEvent, { error }] = useMutation(UPDATE_EVENT, {
+        variables: {
+            eventId: eventId
+        }
+    });
 
     let eventData = data?.event || {};
 
