@@ -56,6 +56,62 @@ const resolvers = {
 
       throw new AuthenticationError("Not logged in");
     },
+    events: async (parent, args, context) => {
+      if (context.user) {
+        let companyId = context.user.department.company;
+
+        const locations = await Location.find({
+          company: companyId
+        })
+
+        const locationIds = locations.map(location => {
+          return location._id
+        })
+
+        const eventData = await Event.find({
+          location: {$in : locationIds}
+        }).populate('location')
+
+        return eventData;
+      }
+
+      throw new AuthenticationError("Not logged in");
+    },
+    deptEvents: async (parent, args, context) => {
+        if (context.user) {
+        let deptId = context.user.department._id;
+
+        const events = await EventTask.find({
+          department: deptId
+        })
+
+        const eventIds = events.map(event => {
+          return event.eventId
+        })
+
+        const eventData = await Event.find({
+          _id: {$in : eventIds}
+        }).populate('location')
+
+        return eventData;
+      }
+
+      throw new AuthenticationError("Not logged in");
+    },
+    event: async (parent, { eventId }, context) => {
+        if (context.user) {
+          let companyId = context.user.department.company;
+
+        const eventData = await Event.findOne({
+          _id: eventId
+        })
+            .populate('location')
+          
+        return eventData;
+      }
+
+      throw new AuthenticationError("Not logged in");
+    },
     checkEmail: async (parent, { email }) => {
       const exists = await User.findOne({
         email: email,
