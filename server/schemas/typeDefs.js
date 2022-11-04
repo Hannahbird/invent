@@ -113,6 +113,7 @@ const typeDefs = gql`
       contactName: String!
       eventDate: Date!
     ): Event
+    updateEvent(eventId: ID!, eventName: String, contactInfo: String, contactName: String, eventDate: Date): Event
     deleteDepartment(deptId: ID!): Department
     addEventTask(
       description: String!
