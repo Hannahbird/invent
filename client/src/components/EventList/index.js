@@ -5,11 +5,11 @@ import { useQuery, useMutation } from '@apollo/client';
 import { UPDATE_EVENT } from '../../utils/mutations';
 import { QUERY_EVENTS } from '../../utils/queries';
 
-    //EventList should have name, timeOf, dateOf, location
-    //On each hover edit button
-    //onMouseover opacity (like react portfolio)
-    //edit bring up modal that contains editable name, timeOf, dateOf, location, description(readonly)
-    //
+//EventList should have name, timeOf, dateOf, location
+//On each hover edit button
+//onMouseover opacity (like react portfolio)
+//edit bring up modal that contains editable name, timeOf, dateOf, location, description(readonly)
+//
 
 //Modal styling from react-bootstrap
 import { Card, Modal, Button, Form } from 'react-bootstrap';
@@ -98,16 +98,18 @@ const EventList = () => {
             {events &&
                 events.map((event, index) => (
                     <div key={event._id} className={`card mb-3 col-6 ${opaque ? 'opacity-100' : 'opacity-50'}`} id={index} onMouseEnter={() => handleMouseOver(true)} onMouseLeave={() => handleMouseOver(false)}>
-                        <div className="card-header">
-                            <p>{event.eventName}</p>
-                        </div>
-                        <div className="card-body row">
-                            {event.eventDate}
-                            <br />
-                            {event.dept}
-                            <br />
-                            {event.completion}
-                        </div>
+                        <Link to={`/event/${event._id}`}>
+                            <div className="card-header">
+                                <p>{event.eventName}</p>
+                            </div>
+                            <div className="card-body row">
+                                {event.eventDate}
+                                <br />
+                                {event.dept}
+                                <br />
+                                {event.completion}
+                            </div>
+                        </Link>
                     </div>
                 ))}
         </div>
