@@ -87,10 +87,16 @@ query Events {
 
 export const QUERY_EVENT = gql`
   query event($eventId: ID!) {
-    events {
+    event(eventId: $eventId) {
       _id
       eventName
-      location
+      Location {
+        _id
+        locationName
+        capacity
+      }
+      contactInfo
+      contactName
       eventDate
       eventState
     }
