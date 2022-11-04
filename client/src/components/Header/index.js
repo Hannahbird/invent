@@ -17,7 +17,7 @@ const Header = () => {
           <h1>InVent</h1>
         </Link>
       </div>
-      <div className="flex-item-right container header flex-row align-right">
+      <div className="flex-item-right container header">
         <nav>
           {Auth.loggedIn() ? (
             <>
