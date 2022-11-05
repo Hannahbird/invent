@@ -2,11 +2,29 @@ import React from 'react';
 import { Col } from 'react-bootstrap';
 import Auth from '../utils/auth';
 import AdminDashboard from './AdminDashboard';
+import DepDashboard from './DepDashboard';
+import { useQuery, useMutation } from '@apollo/client';
+import {
+  QUERY_COMPANY_DEPTS,
+  QUERY_EVENTS,
+  QUERY_LOCATIONS,
+} from '../utils/queries';
+import { useParams } from 'react-router-dom';
 
 const Home = () => {
+  const { department: adminDept } = useParams();
+
+  const { loading, data } = useQuery(QUERY_COMPANY_DEPTS, {
+    variables: {
+      deptName: adminDept,
+    },
+  });
+
+  const isAdmin = adminDept;
   return (
     <div>
       {Auth.loggedIn() ? (
+        // <>{isAdmin ? <AdminDashboard /> : <DepDashboard />}</>
         <AdminDashboard />
       ) : (
         <section className="about">

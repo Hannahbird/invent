@@ -1,16 +1,28 @@
 import React from 'react';
-import DepartmentList from '../DepartmentList';
 import { Link } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
-import { QUERY_EVENTS } from '../../utils/queries';
+import { useQuery, useMutation } from '@apollo/client';
+import {
+  QUERY_COMPANY_DEPTS,
+  QUERY_EVENTS,
+  QUERY_LOCATIONS,
+} from '../../utils/queries';
+import { ADD_EVENT } from '../../utils/mutations';
 
 //Modal styling from react-bootstrap
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
 
 const EventList = () => {
-  const { loading, data } = useQuery(QUERY_EVENTS);
+  const { loading, error, data, refetch } = useQuery(QUERY_EVENTS);
+  const { loading: locationLoading, data: locationData } =
+    useQuery(QUERY_LOCATIONS);
 
+  const { loading: departmentLoading, data: departmentData } =
+    useQuery(QUERY_COMPANY_DEPTS);
+
+  const locations = locationData?.locations || [];
+  const departments = departmentData?.departments || [];
   const events = data?.events || {};
 
   if (loading) {
@@ -28,6 +40,16 @@ const EventList = () => {
 
   //Create Event Modal
   function AddEventsModal(props) {
+    const [addEvent] = useMutation(ADD_EVENT);
+    const onFormSubmit = async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target),
+        formDataObj = Object.fromEntries(formData.entries());
+      console.log(formDataObj);
+      props.onHide();
+      await addEvent({ variables: formDataObj });
+      refetch();
+    };
     return (
       <Modal
         {...props}
@@ -35,22 +57,100 @@ const EventList = () => {
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            Create Events
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <h4>Create Events</h4>
-          <p>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-            ac consectetur ac, vestibulum at eros.
-          </p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={props.onHide}>Save</Button>
-        </Modal.Footer>
+        <Form onSubmit={onFormSubmit}>
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title-vcenter">
+              Create Events
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h4>Create Events</h4>
+            <Form.Group className="mb-3">
+              <Form.Label>Event Name</Form.Label>
+              <Form.Control
+                name="eventName"
+                type="string"
+                placeholder="Event Name"
+              />
+              <Form.Text className="text-muted">
+                What is the Event's Name?
+              </Form.Text>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Client Name</Form.Label>
+              <Form.Control
+                name="contactName"
+                type="string"
+                placeholder="Client Name"
+              />
+              <Form.Text className="text-muted">
+                Who is the primary contact?
+              </Form.Text>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Contact Info</Form.Label>
+              <Form.Control
+                name="contactInfo"
+                type="string"
+                placeholder="Client Contact"
+              />
+              <Form.Text className="text-muted">
+                What is the primary contact information?
+              </Form.Text>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Event Date</Form.Label>
+              <Form.Control
+                name="eventDate"
+                type="date"
+                placeholder="Event Date"
+              />
+              <Form.Text className="text-muted">
+                When will the event take place?.
+              </Form.Text>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Event Location</Form.Label>
+              <Form.Select
+                name="location"
+                type="string"
+                placeholder="Event Location"
+              >
+                {locations.map((location) => (
+                  <option value={location._id}>{location.locationName}</option>
+                ))}
+              </Form.Select>
+              <Form.Text className="text-muted">
+                Which location will be used for this event?
+              </Form.Text>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Departments Needed</Form.Label>
+              <Form.Select
+                name="departments"
+                type="string"
+                placeholder="Departments Needed"
+              >
+                {departments.map((department) => (
+                  <option value={department._id}>{department.deptName}</option>
+                ))}
+              </Form.Select>
+              <Form.Text className="text-muted">
+                Which location will be used for this event?
+              </Form.Text>
+            </Form.Group>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" type="submit">
+              Submit
+            </Button>
+          </Modal.Footer>
+        </Form>
       </Modal>
     );
   }
@@ -58,9 +158,15 @@ const EventList = () => {
   function Create() {
     const [modalShow, setModalShow] = React.useState(false);
 
+    //EventList should have name, timeOf, dateOf, location
+    //On each hover edit button
+    //onMouseover opacity (like react portfolio)
+    //edit bring up modal that contains editable name, timeOf, dateOf, location, description(readonly)
+    //
+
     return (
       <>
-        <Button variant="primary" onClick={() => setModalShow(true)}>
+        <Button variant="secondary" onClick={() => setModalShow(true)}>
           Create Events
         </Button>
 
@@ -70,25 +176,32 @@ const EventList = () => {
   }
 
   return (
-    <div>
+    <div className="my-2">
       <Create />
       <h3>Your Current Events</h3>
-      {events &&
-        events.map((event) => (
-          <div key={event._id} className="card mb-3 col-6">
-            <div className="card-header">
-              <p>{event.name}</p>
+      <div className="flex-row">
+        {events &&
+          events.map((event) => (
+            <div key={event._id} className="card mb-3 col-6">
+              <Link to={`/event/${event._id}`}>
+                <div className="card-header">
+                  <p>{event.eventName}</p>
+                </div>
+                <div className="card-body row">
+                  Event Date: {event.eventDate}
+                  <br />
+                  Event Location: {event.location.locationName}
+                  <br />
+                  Contact Name: {event.contactName}
+                  <br />
+                  Contact Info: {event.contactInfo}
+                  <br />
+                  Event Status: {event.eventState}
+                </div>
+              </Link>
             </div>
-            <div className="card-body row">
-              {event.timeOf}
-              {event.dateOf}
-              <br />
-              {event.dept}
-              <br />
-              {event.completion}
-            </div>
-          </div>
-        ))}
+          ))}
+      </div>
     </div>
   );
 };

@@ -16,6 +16,10 @@ const locationSchema = new Schema(
         capacity: {
             type: Number,
             required: true,
+        },
+        active: {
+            type: Boolean,
+            deafult: true
         }
     }
 

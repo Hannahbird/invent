@@ -80,7 +80,6 @@ export const UPDATE_DEPARTMENT = gql`
     updateDepartment(deptId: $deptId, deptName: $deptName) {
       _id
       deptName
-      SignUpLink
     }
   }
 `;
@@ -159,6 +158,95 @@ export const DELETE_EVENTTASK = gql`
   mutation deleteEventTask($taskId: ID!) {
     deleteEventTask(taskId: taskId) {
       _id
+    }
+  }
+`;
+export const ADD_EVENT = gql`
+  mutation Mutation(
+    $contactName: String!
+    $eventDate: Date!
+    $eventName: String!
+    $location: ID!
+    $contactInfo: String!
+  ) {
+    addEvent(
+      contactName: $contactName
+      eventDate: $eventDate
+      eventName: $eventName
+      location: $location
+      contactInfo: $contactInfo
+    ) {
+      _id
+      eventName
+      location {
+        _id
+        locationName
+      }
+      contactInfo
+      contactName
+      eventDate
+      eventState
+    }
+  }
+`;
+export const ADD_LOCATION = gql`
+  mutation Mutation($locationName: String!, $capacity: Int!) {
+    addLocation(locationName: $locationName, capacity: $capacity) {
+      _id
+      locationName
+      capacity
+      company {
+        _id
+        title
+      }
+    }
+  }
+`;
+export const UPDATE_LOCATION = gql`
+  mutation Mutation(
+    $locationId: ID!
+    $locationName: String
+    $capacity: Int
+    $active: Boolean
+  ) {
+    updateLocation(
+      locationId: $locationId
+      locationName: $locationName
+      capacity: $capacity
+      active: $active
+    ) {
+      _id
+      locationName
+      capacity
+    }
+  }
+`;
+export const DELETE_LOCATION = gql`
+  mutation Mutation($locationId: ID!) {
+    deleteLocation(locationId: $locationId) {
+      _id
+      locationName
+      capacity
+    }
+  }
+`;
+//if you want to delete a location send update location the id and active = false
+export const UPDATE_EVENT = gql`
+  mutation Mutation($eventId: ID!, $contactName: String, $eventName: String) {
+    updateEvent(
+      eventId: $eventId
+      contactName: $contactName
+      eventName: $eventName
+    ) {
+      _id
+      eventName
+      location {
+        _id
+        locationName
+      }
+      contactInfo
+      contactName
+      eventDate
     }
   }
 `;

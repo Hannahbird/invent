@@ -2,7 +2,10 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="w-100 mt-auto p-4">
+    <footer
+      className="w-100 mt-auto p-4 text-center footer
+    flex-row justify-space-between"
+    >
       <div className="container footer">
         Created by Hannah B, Brandon Davis, Cristina Dege, Max Kottong, and Max
         Taylor{' '}
