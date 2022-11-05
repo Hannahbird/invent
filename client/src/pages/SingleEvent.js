@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-import DepartmentList from '../components/DepartmentList';
 import DateTime from '../utils/dateTime/dateTime';
 import Auth from '../utils/auth';
 import { QUERY_EVENT } from '../utils/queries';
@@ -68,13 +67,6 @@ const SingleEvent = (props) => {
     if (loading) {
         return <div>Loading...</div>;
     }
-
-    //const loadEdit = event => {
-    //    handleShow();
-    //    setEditEvent({
-    //        ...event[event.target.offsetParent.id]
-    //    })
-    //}
 
     const isUndefined = (String) => {
         if (typeof String === "undefined") {
@@ -143,7 +135,8 @@ const SingleEvent = (props) => {
                                     className="form-control"
                                     name='eventDate'
                                     value={isUndefined(editEvent.eventDate) ? eventData.eventDate : editEvent.eventDate }
-                                    onChange={handleChange} />
+                                    onChange={handleChange}
+                                />
                             </Form.Group>
                         </Form>
                     </Modal.Body>
@@ -163,6 +156,11 @@ const SingleEvent = (props) => {
                     <p>{eventData.eventName}</p>
                 </div>
                 <div className="card-body row">
+                    {eventData.eventdate}
+                    {eventData.location.locationName}
+                    {eventData.contactName}
+                    {eventData.contactInfo}
+                    {eventData.eventState }
                 </div>
             </div>
         </div>
