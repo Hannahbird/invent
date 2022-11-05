@@ -36,6 +36,10 @@ const eventSchema = new Schema({
     type: String,
     default: "planning",
   },
+  active: {
+    type: Boolean,
+    default: true
+  }
 });
 
 eventSchema.plugin(uniqueValidator);

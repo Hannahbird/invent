@@ -56,6 +56,75 @@ const resolvers = {
 
       throw new AuthenticationError("Not logged in");
     },
+    events: async (parent, args, context) => {
+      if (context.user) {
+        let companyId = context.user.department.company;
+
+        const locations = await Location.find({
+          company: companyId,
+        });
+
+        const locationIds = locations.map((location) => {
+          return location._id;
+        });
+
+        const eventData = await Event.find({
+          location: { $in: locationIds },
+          active: true,
+        }).populate("location");
+
+        return eventData;
+      }
+
+      throw new AuthenticationError("Not logged in");
+    },
+    deptEvents: async (parent, args, context) => {
+      if (context.user) {
+        let deptId = context.user.department._id;
+
+        const events = await EventTask.find({
+          department: deptId,
+        });
+
+        const eventIds = events.map((event) => {
+          return event.eventId;
+        });
+
+        const eventData = await Event.find({
+          _id: { $in: eventIds },
+          active: true,
+        }).populate("location");
+
+        return eventData;
+      }
+
+      throw new AuthenticationError("Not logged in");
+    },
+    event: async (parent, { eventId }, context) => {
+      if (context.user) {
+        let companyId = context.user.department.company;
+
+        const eventData = await Event.findOne({
+          _id: eventId,
+          active: true,
+        }).populate("location");
+
+        return eventData;
+      }
+
+      throw new AuthenticationError("Not logged in");
+    },
+    locations: async (parent, args, context) => {
+      if (context.user) {
+        let companyId = context.user.department.company;
+
+        const locations = await Location.find({
+          company: companyId,
+        });
+        return locations;
+      }
+      throw new AuthenticationError("Not logged in");
+    },
     checkEmail: async (parent, { email }) => {
       const exists = await User.findOne({
         email: email,
@@ -176,17 +245,20 @@ const resolvers = {
 
       throw new AuthenticationError("Not logged in");
     },
-    updateDepartment: async (parent, { deptId, ...deptArgs }, context) => {
+    updateDepartment: async (parent, { deptId, deptName }, context) => {
       //may need to prevent updating the admin department
+      console.log(deptName, deptId);
       if (context.user) {
         const userCompany = context.user.department.company;
 
-        const updatedDept = await Department.findOneAndReplace(
-          { _id: deptId, company: userCompany },
-          { ...deptArgs, company: userCompany },
-          { runValidators: true, context: "query", new: true }
+        const updatedDept = Department.findByIdAndUpdate(
+          deptId,
+          { deptName },
+          {
+            new: true,
+          }
         );
-
+        console.log(updatedDept);
         return updatedDept;
       }
 
@@ -237,6 +309,26 @@ const resolvers = {
       }
       throw new AuthenticationError("Not logged in");
     },
+    updateLocation: async (
+      parent,
+      { locationId, ...locationInfo },
+      context
+    ) => {
+      if (context.user) {
+        const updatedLocation = await Location.findOneAndUpdate(
+          { _id: locationId },
+          { ...locationInfo },
+          { runValidators: true, context: "query", new: true }
+        );
+        return updatedLocation;
+      }
+    },
+    deleteLocation: async (parent, { locationId }, context) => {
+      if (context.user) {
+        const deletedLocation = await Location.findByIdAndDelete(locationId);
+        return deletedLocation;
+      }
+    },
     addEvent: async (parent, eventData, context) => {
       if (context.user) {
         const event = await Event.create({
@@ -262,6 +354,19 @@ const resolvers = {
         });
         return updated;
       }
+      throw new AuthenticationError("Not logged in");
+    },
+    updateEvent: async (parent, { eventId, ...eventInfo }, context) => {
+      if (context.user) {
+        const updatedEvent = await Event.findOneAndUpdate(
+          { _id: eventId },
+          { ...eventInfo },
+          { runValidators: true, context: "query", new: true }
+        ).populate("location");
+
+        return updatedEvent;
+      }
+
       throw new AuthenticationError("Not logged in");
     },
     deleteEventTask: async (parent, { taskId }, context) => {
