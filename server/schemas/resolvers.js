@@ -61,17 +61,17 @@ const resolvers = {
         let companyId = context.user.department.company;
 
         const locations = await Location.find({
-          company: companyId
-        })
+          company: companyId,
+        });
 
-        const locationIds = locations.map(location => {
-          return location._id
-        })
+        const locationIds = locations.map((location) => {
+          return location._id;
+        });
 
         const eventData = await Event.find({
           location: { $in: locationIds },
-          active: true
-        }).populate('location')
+          active: true,
+        }).populate("location");
 
         return eventData;
       }
@@ -79,21 +79,21 @@ const resolvers = {
       throw new AuthenticationError("Not logged in");
     },
     deptEvents: async (parent, args, context) => {
-        if (context.user) {
+      if (context.user) {
         let deptId = context.user.department._id;
 
         const events = await EventTask.find({
-          department: deptId
-        })
+          department: deptId,
+        });
 
-        const eventIds = events.map(event => {
-          return event.eventId
-        })
+        const eventIds = events.map((event) => {
+          return event.eventId;
+        });
 
         const eventData = await Event.find({
           _id: { $in: eventIds },
-          active: true
-        }).populate('location')
+          active: true,
+        }).populate("location");
 
         return eventData;
       }
@@ -101,15 +101,14 @@ const resolvers = {
       throw new AuthenticationError("Not logged in");
     },
     event: async (parent, { eventId }, context) => {
-        if (context.user) {
-          let companyId = context.user.department.company;
+      if (context.user) {
+        let companyId = context.user.department.company;
 
         const eventData = await Event.findOne({
           _id: eventId,
-          active: true
-        })
-            .populate('location')
-          
+          active: true,
+        }).populate("location");
+
         return eventData;
       }
 
@@ -120,8 +119,8 @@ const resolvers = {
         let companyId = context.user.department.company;
 
         const locations = await Location.find({
-          company: companyId
-        })
+          company: companyId,
+        });
         return locations;
       }
       throw new AuthenticationError("Not logged in");
@@ -310,13 +309,25 @@ const resolvers = {
       }
       throw new AuthenticationError("Not logged in");
     },
-    updateLocation: async (parent, {locationId, ...locationInfo}, context) => {
+    updateLocation: async (
+      parent,
+      { locationId, ...locationInfo },
+      context
+    ) => {
       if (context.user) {
-        const updatedLocation = await Location.findOneAndUpdate({_id: locationId}, {...locationInfo},
-        { runValidators: true, context: "query", new: true })
+        const updatedLocation = await Location.findOneAndUpdate(
+          { _id: locationId },
+          { ...locationInfo },
+          { runValidators: true, context: "query", new: true }
+        );
         return updatedLocation;
       }
-      
+    },
+    deleteLocation: async (parent, { locationId }, context) => {
+      if (context.user) {
+        const deletedLocation = await Location.findByIdAndDelete(locationId);
+        return deletedLocation;
+      }
     },
     addEvent: async (parent, eventData, context) => {
       if (context.user) {
@@ -346,13 +357,12 @@ const resolvers = {
       throw new AuthenticationError("Not logged in");
     },
     updateEvent: async (parent, { eventId, ...eventInfo }, context) => {
-      if(context.user) {
-
+      if (context.user) {
         const updatedEvent = await Event.findOneAndUpdate(
           { _id: eventId },
           { ...eventInfo },
           { runValidators: true, context: "query", new: true }
-        ).populate('location');
+        ).populate("location");
 
         return updatedEvent;
       }

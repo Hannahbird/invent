@@ -45,6 +45,7 @@ export const QUERY_LOCATIONS = gql`
     locations {
       _id
       locationName
+      capacity
     }
   }
 `;
