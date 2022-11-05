@@ -103,7 +103,7 @@ db.once("open", async () => {
     //   startTime: "13:00",
     //   endTime: "14:00",
     // });
-    console.log(eventExample1, eventExample2, techDept, foodDept);
+    console.log(techDept.signUpLink, foodDept.signUpLink);
   } catch (err) {
     console.error(err);
     process.exit(1);

@@ -1,43 +1,43 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
-} from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
-import './App.css';
+} from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import "./App.css";
 
 //component imports
-import Header from './components/Header';
-import Footer from './components/Footer';
-import DepartmentList from './components/DepartmentList';
-import EventList from './components/EventList';
-import SpacesList from './components/SpacesList';
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import DepartmentList from "./components/DepartmentList";
+import EventList from "./components/EventList";
+import SpacesList from "./components/SpacesList";
 
 //pages imports
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import AdminDashboard from './pages/AdminDashboard';
-import DepDashboard from './pages/DepDashboard';
-import SingleEvent from './pages/SingleEvent';
-import NoMatch from './pages/NoMatch';
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import AdminDashboard from "./pages/AdminDashboard";
+import DepDashboard from "./pages/DepDashboard";
+import SingleEvent from "./pages/SingleEvent";
+import NoMatch from "./pages/NoMatch";
 
-import Pusher from 'pusher-js';
-import * as bs from 'bootstrap/dist/css/bootstrap.css';
+import Pusher from "pusher-js";
+import * as bs from "bootstrap/dist/css/bootstrap.css";
 
 const httpLink = createHttpLink({
-  uri: '/graphql',
+  uri: "/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('id_token');
+  const token = localStorage.getItem("id_token");
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : '',
+      authorization: token ? `Bearer ${token}` : "",
     },
   };
 });
@@ -47,15 +47,15 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 // set up pusher connection
-var pusher = new Pusher('b4bd3ba699f2fde524c6', {
-  cluster: 'mt1',
+var pusher = new Pusher("b4bd3ba699f2fde524c6", {
+  cluster: "mt1",
 });
 
-var channel = pusher.subscribe('test-channel');
+var channel = pusher.subscribe("test-channel");
 
 function App() {
   // pusher test
-  channel.bind('test-event', function (data) {
+  channel.bind("test-event", function (data) {
     console.log(JSON.stringify(data));
   });
   return (
@@ -71,7 +71,7 @@ function App() {
               <Route path="/admindashboard" element={<AdminDashboard />} />
               <Route path="/depdashboard" element={<DepDashboard />} />
               <Route path="/events" element={<EventList />} />
-              <Route path="/event" element={<SingleEvent />} />
+              <Route path="/event/:id" element={<SingleEvent />} />
               <Route path="/spaces" element={<SpacesList />} />
               <Route path="/departments" element={<DepartmentList />} />
               <Route path="*" element={<NoMatch />} />
