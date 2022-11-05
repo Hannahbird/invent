@@ -2,10 +2,14 @@ import React from 'react';
 import { Col } from 'react-bootstrap';
 import Auth from '../utils/auth';
 import AdminDashboard from './AdminDashboard';
+import DepDashboard from './DepDashboard';
 
 const Home = () => {
+  const deptName = 'Admin';
+  
   return (
     <div>
+      
       {Auth.loggedIn() ? (
         <AdminDashboard />
       ) : (

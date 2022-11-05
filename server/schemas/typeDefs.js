@@ -105,6 +105,13 @@ const typeDefs = gql`
     updateUser(userId: ID!, email: String, deptId: ID): User
     updateDepartment(deptId: ID!, deptName: String!): Department
     addLocation(locationName: String!, capacity: Int!): Location
+    updateLocation(
+      locationName: String
+      locationId: ID!
+      capacity: Int
+      active: Boolean
+    ): Location
+    deleteLocation(locationId: ID!): Location
     addEvent(
       eventName: String!
       location: ID!
@@ -112,6 +119,13 @@ const typeDefs = gql`
       contactInfo: String!
       contactName: String!
       eventDate: Date!
+    ): Event
+    updateEvent(
+      eventId: ID!
+      eventName: String
+      contactInfo: String
+      contactName: String
+      eventDate: Date
     ): Event
     deleteDepartment(deptId: ID!): Department
     addEventTask(

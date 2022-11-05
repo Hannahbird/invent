@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 // export const QUERY_USER = gql`
 //     query user($username: String!) {
@@ -41,11 +41,11 @@ export const QUERY_COMPANY_DEPT = gql`
 `;
 
 export const QUERY_LOCATIONS = gql`
-  query locations($deptId: String!) {
-    locations(deptId: $deptId) {
+  query locations {
+    locations {
       _id
       locationName
-      locationCapacity
+      capacity
     }
   }
 `;
@@ -69,40 +69,40 @@ export const QUERY_ME = gql`
 `;
 
 export const QUERY_EVENTS = gql`
-query Events {
-  events {
-    _id
-    eventName
-    location {
+  query Events {
+    events {
       _id
-      locationName
+      eventName
+      location {
+        _id
+        locationName
+      }
+      contactInfo
+      contactName
+      eventDate
+      eventState
     }
-    contactInfo
-    contactName
-    eventDate
-    eventState
   }
-}
 `;
 
 export const QUERY_DEPT_EVENTS = gql`
-query deptEvents {
-  deptEvents {
-    _id
-    eventName
-    location {
+  query deptEvents {
+    deptEvents {
       _id
-      locationName
+      eventName
+      location {
+        _id
+        locationName
+      }
+      contactInfo
+      contactName
+      eventDate
+      eventState
     }
-    contactInfo
-    contactName
-    eventDate
-    eventState
   }
-}
 `;
 
- export const QUERY_EVENT = gql`
+export const QUERY_EVENT = gql`
   query Event($eventId: String!) {
     event(eventId: $eventId) {
       _id
@@ -119,7 +119,6 @@ query deptEvents {
     }
   }
 `;
-
 
 //export const QUERY_EVENTTASKS = gql`
 //query eventTasks($eventId: ID!){
