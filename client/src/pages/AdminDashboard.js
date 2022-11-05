@@ -4,17 +4,15 @@ import EventList from '../components/EventList';
 import Auth from '../utils/auth';
 
 const Dashboard = () => {
-  return (
-    <div>
-      <h2>Viewing your dashboard.</h2>
-
-      <div className="flex-row justify-space-between mb-3">
+    return (
         <div>
-          <EventList />
+            <h2>Viewing your dashboard.</h2>
+
+            <div className="flex-row justify-space-between mb-3">
+                <EventList />
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Dashboard;
