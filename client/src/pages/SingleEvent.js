@@ -61,6 +61,8 @@ const SingleEvent = (props) => {
         } catch (e) {
             console.log(error);
         }
+
+        handleClose();
     }
 
     if (loading) {
