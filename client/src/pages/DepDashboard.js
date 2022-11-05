@@ -1,5 +1,6 @@
 import React from 'react';
-import EventList from '../components/EventList';
+import DeptHeader from '../components/DeptHeader';
+import DepartmentEventList from '../components/DepartmentEventList';
 
 import Auth from '../utils/auth';
 import { useQuery } from '@apollo/client';
@@ -12,7 +13,7 @@ const DepDashboard = () => {
 
       <div className="flex-row justify-space-between mb-3">
         <div>
-          <EventList />
+          <DepartmentEventList />
         </div>
       </div>
     </div>

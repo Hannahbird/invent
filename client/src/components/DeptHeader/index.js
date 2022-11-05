@@ -4,7 +4,7 @@ import Nav from 'react-bootstrap/Nav';
 
 import Auth from '../../utils/auth';
 
-const Header = () => {
+const Navigation = () => {
   const logout = (event) => {
     event.preventDefault();
     Auth.logout();
@@ -12,31 +12,17 @@ const Header = () => {
 
   return (
     <header className="mb-4 py-2 flex-row header align-center">
-      <div className="header flex-row justify-space-between-lg justify-flex-end align-left">
+      <div className="container header flex-row justify-space-between-lg justify-flex-end align-left">
         <Link to="/">
           <h1>InVent</h1>
         </Link>
       </div>
-      <div className="header container flex-row justify-space-between-lg justify-flex-end align-left">
+      <div className="flex-item-right container header">
         <nav>
           {Auth.loggedIn() ? (
-            <>
-              <Link className="navigation" to="/events">
-                Events
-              </Link>{' '}
-              ||{' '}
-              <Link className="navigation" to="/spaces">
-                Spaces
-              </Link>{' '}
-              ||{' '}
-              <Link className="navigation" to="/departments">
-                Departments
-              </Link>{' '}
-              ||{' '}
-              <a className="navigation" href="/" onClick={logout}>
-                Logout
-              </a>
-            </>
+            <a className="navigation" href="/" onClick={logout}>
+              Logout
+            </a>
           ) : (
             <>
               <Link className="navigation" to="/login">
@@ -54,4 +40,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Navigation;
