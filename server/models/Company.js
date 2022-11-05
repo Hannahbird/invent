@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const ShortUniqueId = require("short-unique-id");
 
 const companySchema = new Schema(
     {
@@ -13,6 +14,10 @@ const companySchema = new Schema(
             required: true,
             trim: true,
             match: [/.+@.+\..+/, 'Must match an email address!']
+        },
+        reserveCode: {
+            type: String,
+            trim: true
         }
     }
 );

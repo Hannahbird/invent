@@ -87,6 +87,7 @@ const typeDefs = gql`
     deptEvents: [Event]
     event(eventId: String!): Event
     locations: [Location]
+    locationsByCode(code: String!): [Location]
     checkEmail(email: String!): Check
     checkUsername(username: String!): Check
   }

@@ -125,6 +125,9 @@ const resolvers = {
       }
       throw new AuthenticationError("Not logged in");
     },
+    locationByCode: async (parent, {code}) => {
+      
+    },
     checkEmail: async (parent, { email }) => {
       const exists = await User.findOne({
         email: email,
