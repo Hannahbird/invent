@@ -10,7 +10,6 @@ import {
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import CloseButton from "react-bootstrap/esm/CloseButton";
 
 const DepartmentList = ({ id }) => {
   const [showEditModal, setShowEditModal] = useState(false);
@@ -27,7 +26,12 @@ const DepartmentList = ({ id }) => {
   }
 
   if (!data.departments.length) {
-    return <h3>No departments yet</h3>;
+    return (
+      <>
+        <h3>No departments yet</h3>
+        <Create />
+      </>
+    );
   }
 
   //Create department modal
@@ -84,6 +88,7 @@ const DepartmentList = ({ id }) => {
 
   function Create() {
     const [modalShow, setModalShow] = React.useState(false);
+    console.log("create?");
 
     return (
       <>
