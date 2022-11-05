@@ -171,7 +171,7 @@ const EventList = () => {
                                             <div className="main-body-date">
                                                 <span className="main-body-dateDay">{/*{event.eventDate}*/}13</span>
                                                 <span className="main-body-dateMonth">apr</span>
-                                            </div>
+                                            </div> 
                                             <div className="main-body-event">
                                                 <span className="main-body-location">{event.location.locationName}</span>
                                                 <span className="main-body-time">2:00 PM</span>
