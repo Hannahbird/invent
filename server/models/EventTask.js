@@ -16,10 +16,10 @@ const eventTaskSchema = new Schema({
     required: true,
   },
   startTime: {
-    type: String,
+    type: Number,
   },
   endTime: {
-    type: String,
+    type: Number,
   },
 });
 
