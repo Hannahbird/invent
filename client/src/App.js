@@ -73,6 +73,7 @@ function App() {
               <Route path="/depdashboard" element={<DepDashboard />} />
               <Route path="/events" element={<EventList />} />
               <Route path="/event/:id" element={<SingleEvent />} />
+              <Route path="/reserve/:id" element= {<Reserve />} />
               <Route path="/spaces" element={<SpacesList />} />
               <Route path="/departments" element={<DepartmentList />} />
               <Route path="*" element={<NoMatch />} />

@@ -138,7 +138,6 @@ const resolvers = {
             })
         });
 
-      console.log(company);
       if (!company) {
         throw new GraphQLError("Invalid reservation code", {
           extensions: {

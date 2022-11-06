@@ -1,23 +1,25 @@
 import React, {useState} from 'react';
 import { useParams } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
-import { QUERY_LOCATIONS } from '../utils/queries'
-import { ADD_EVENT } from '../utils/queries'
+import { QUERY_LOCATIONS_BYCODE } from '../utils/queries'
+import { ADD_EVENT } from '../utils/mutations'
 import { Card, Button, Modal, Form } from 'react-bootstrap'
 import DateTime from '../utils/dateTime/dateTime';
 
 const Reserve = () => {
     //get company id
-    const { id: companyParam } = useParams();
-    //query locations based on companyParam
-    const locations = []
-    // const { loading, locations } = useQuery(QUERY_LOCATIONS, {
-    //     variables: {
-    //         company: companyParam
-    //     }
-    // });
+    const { id: codeParam } = useParams();
+    //query locations based on reserveCode
+
+    const { loading, data} = useQuery(QUERY_LOCATIONS_BYCODE, {
+        variables: {
+            code: codeParam
+        }
+    });
+
+    const locations = data?.locationsByCode || {};
     //create mutation for reserving a location
-    //const [reserveLocation, { error }] = useMutation(ADD_EVENT);
+    const [reserveLocation, { error }] = useMutation(ADD_EVENT);
 
     //reserve form modal
     const [show, setShow] = useState(false)
@@ -33,17 +35,17 @@ const Reserve = () => {
         eventDate: ''
 
     })
-    console.log(companyParam)
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        console.log(event.target)
+
+        console.log(reservation.eventDate);
+
         setReservation({
             ...reservation,
             [name]: value,
         })
 
-        console.log(reservation);
     };
     
 
@@ -51,14 +53,14 @@ const Reserve = () => {
         event.preventDefault();
 
         try {
-            // const { data } = await reserveLocation({
-            //    variables: {
-            //    eventState: 'Pending'.
-            //    ...reservation}
-            // })
+            const { status } = await reserveLocation({
+               variables: {
+               eventState: 'Pending',
+               ...reservation}
+            })
         }
         catch (e) {
-            // console.error(error);
+            console.error(error);
         }
 
         setReservation({
@@ -67,6 +69,8 @@ const Reserve = () => {
         contactInfo: '',
         eventDate: ''
         })
+
+        handleClose()
     }
 
     const loadReserveForm = (locationId, locationName) => {
@@ -78,9 +82,9 @@ const Reserve = () => {
 
     }
 
-    // if (loading) {
-    //     return <div>Loading Spaces...</div>;
-    // }
+    if (loading) {
+        return <div>Loading Spaces...</div>;
+    }
 
     return (
         <div className='container d-flex flex-wrap justify-content-evenly'>
@@ -140,30 +144,25 @@ const Reserve = () => {
                         <Button variant="secondary" onClick={handleClose}>
                             Close
                         </Button>
-                        <Button variant="primary" onClick={handleClose}>
+                        <Button variant="primary" onClick={handleReservation}>
                             Submit
                         </Button>
                     </Modal.Footer>
                 </Modal>
             </>
             Rendering Reserve Content Successfully
-            {locations && locations.map(location => (
-                <>
-                    <div>{location.locationName}</div>
-                    
-                    <Card style={{ width: '18rem' }}>
+            {locations.map(location => (               
+                    <Card key={location._id} style={{ width: '18rem' }}>
                         <Card.Img variant="top" src="holder.js/100px180" />
                         <Card.Body>
                             <Card.Title>{location.locationName}</Card.Title>
                             <Card.Text>
                                 Capacity: {location.capacity}
                         </Card.Text>
-                            <Button variant="primary" id={location._id} onClick={loadReserveForm(location._id, location.locationName)}>Request Space</Button>
+                            <Button variant="primary" onClick={() => {loadReserveForm(location._id, location.locationName)}}>Request Space</Button>
                         </Card.Body>
                     </Card>
-                </>
-                    )
-            )}
+            ))}
         </div>
     )
 };
