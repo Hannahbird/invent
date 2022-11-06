@@ -126,10 +126,17 @@ const resolvers = {
       throw new AuthenticationError("Not logged in");
     },
     locationsByCode: async (parent, { code }) => {
-      console.log(code);
-      const company = await Company.findOne({
-        reserveCode: code
-      });
+
+      const company = await Company.find({
+      })
+        .then(companies => {
+            return companies.find(company => {
+              if (company.reserveCode === code) {
+                return true
+              }
+              return false
+            })
+        });
 
       console.log(company);
       if (!company) {
@@ -140,9 +147,7 @@ const resolvers = {
         });
       }
 
-      console.log(companyId._id);
-
-      const locations = await Location.find({ company: companyId._id });
+      const locations = await Location.find({ company: company._id });
     
       return locations;
     },
