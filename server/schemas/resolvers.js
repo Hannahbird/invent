@@ -125,8 +125,22 @@ const resolvers = {
       }
       throw new AuthenticationError("Not logged in");
     },
-    locationByCode: async (parent, {code}) => {
-      
+    locationsByCode: async (parent, {code}) => {
+      const companyId = await Company.findOne({ reserveCode: code });
+
+      if (!companyId) {
+        throw new GraphQLError("Invalid reservation code", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+          },
+        });
+      }
+
+      console.log(companyId._id);
+
+      const locations = await Location.find({ company: companyId._id });
+    
+      return locations;
     },
     checkEmail: async (parent, { email }) => {
       const exists = await User.findOne({

@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 const ShortUniqueId = require("short-unique-id");
+const uid = new ShortUniqueId({ length: 6 });
 
 const companySchema = new Schema(
     {
@@ -17,7 +18,11 @@ const companySchema = new Schema(
         },
         reserveCode: {
             type: String,
-            trim: true
+            trim: true,
+            default: "failed",
+            set: (s) => {
+                return uid();
+            }
         }
     }
 );
