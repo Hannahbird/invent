@@ -160,7 +160,7 @@ const SingleEvent = (props) => {
                     {eventData.location.locationName}
                     {eventData.contactName}
                     {eventData.contactInfo}
-                    {eventData.eventState }
+                    {eventData.eventState } 
                 </div>
             </div>
         </div>
