@@ -4,7 +4,7 @@ import { ADD_EVENTTASK } from "../../utils/mutations";
 import { QUERY_COMPANY_DEPTS } from "../../utils/queries";
 import { useMutation, useQuery } from "@apollo/client";
 import TimePicker from "react-bootstrap-time-picker";
-function CreateTaskModal({ eventId, refetch, showCreate, setShowCreate }) {
+function CreateTaskModal({ eventId, taskRefetch, showCreate, setShowCreate }) {
   const [startTime, setStartTime] = useState({ time: 0 });
   const [endTime, setEndTime] = useState({ time: 0 });
 
@@ -17,14 +17,14 @@ function CreateTaskModal({ eventId, refetch, showCreate, setShowCreate }) {
       formDataObj = Object.fromEntries(formData.entries());
     const parsedObj = {
       eventId: eventId,
-      startTime: (formDataObj.startTime / 36).toString(),
-      endTime: (formDataObj.endTime / 36).toString(),
+      startTime: formDataObj.startTime / 36,
+      endTime: formDataObj.endTime / 36,
       description: formDataObj.description,
       department: formDataObj.department,
     };
     console.log(parsedObj);
     await addEventTask({ variables: parsedObj });
-    refetch();
+    taskRefetch();
   };
   return (
     <Modal

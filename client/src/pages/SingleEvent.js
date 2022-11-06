@@ -24,7 +24,7 @@ const SingleEvent = (props) => {
       eventId: eventId,
     },
   });
-  console.log(taskData);
+
   /*const [updateEvent, { error }] = useMutation(UPDATE_EVENT);*/
   /*const events = data?.events || {};*/
 
@@ -70,9 +70,10 @@ const SingleEvent = (props) => {
   /*const event = data?.event || {};*/
 
   const event = { _id: 123, eventName: "peepeepoopoo" };
-  const tasks = taskData.eventTasks.sort(
-    (a, b) => parseInt(a.startTime) - parseInt(b.startTime)
-  );
+  // set it up like this so it's sortable
+  const rawTasks = [...taskData?.eventTasks];
+  const tasks = rawTasks?.sort((a, b) => a.startTime - b.startTime);
+  console.log(tasks);
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -185,6 +186,7 @@ const SingleEvent = (props) => {
         refetch={refetch}
         showCreate={showCreate}
         setShowCreate={setShowCreate}
+        taskRefetch={taskRefetch}
       />
       <Button
         onClick={() => {
@@ -199,6 +201,9 @@ const SingleEvent = (props) => {
           return (
             <div className="card-body">
               <div>{task.description}</div>
+              <div>{task.department.deptName}</div>
+              <div>{task.startTime}</div>
+              <div>{task.endTime}</div>
             </div>
           );
         })}

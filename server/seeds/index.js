@@ -71,15 +71,15 @@ db.once("open", async () => {
       description: "example event task",
       department: techDept._id,
       eventId: eventExample1._id,
-      startTime: "1200",
-      endTime: "1300",
+      startTime: 1200,
+      endTime: 1300,
     });
     const taskExample12 = await EventTask.create({
       description: "second example event task",
       department: foodDept._id,
       eventId: eventExample1._id,
-      startTime: "1300",
-      endTime: "1400",
+      startTime: 1300,
+      endTime: 1400,
     });
     const eventExample2 = await Event.create({
       eventName: "second example event",
@@ -93,8 +93,8 @@ db.once("open", async () => {
       description: "example event task",
       department: techDept._id,
       eventId: eventExample2._id,
-      startTime: "1200",
-      endTime: "1300",
+      startTime: 1200,
+      endTime: 1300,
     });
     // const taskExample22 = await EventTask.create({
     //   description: "second example event task",

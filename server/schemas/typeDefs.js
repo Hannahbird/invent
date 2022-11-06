@@ -54,8 +54,8 @@ const typeDefs = gql`
     department: Department
     description: String
     eventId: ID
-    startTime: String
-    endTime: String
+    startTime: Int
+    endTime: Int
   }
 
   type Event {
@@ -133,16 +133,16 @@ const typeDefs = gql`
       description: String!
       department: ID!
       eventId: ID!
-      startTime: String
-      endTime: String
+      startTime: Int
+      endTime: Int
     ): EventTask
     updateEventTask(
       taskId: ID!
       description: String
       department: ID
       eventId: ID
-      startTime: String
-      endTime: String
+      startTime: Int
+      endTime: Int
     ): EventTask
     deleteEventTask(taskId: ID!): EventTask
   }
