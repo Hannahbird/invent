@@ -24,7 +24,8 @@ function CreateTaskModal({ eventId, taskRefetch, showCreate, setShowCreate }) {
     };
     console.log(parsedObj);
     await addEventTask({ variables: parsedObj });
-    taskRefetch();
+      taskRefetch();
+      setShowCreate(false);
   };
   return (
     <Modal

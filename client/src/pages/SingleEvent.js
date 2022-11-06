@@ -31,7 +31,10 @@ const SingleEvent = (props) => {
     const event = data?.event || {};
 
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setShow(false);
+        setEditEvent({})
+    }
     const handleShow = () => setShow(true);
     const [opaque, setOpaque] = useState(false);
 
@@ -39,14 +42,7 @@ const SingleEvent = (props) => {
         setOpaque(state);
     };
 
-    const [editEvent, setEditEvent] = useState({
-        eventName: "",
-        location: "",
-        eventDate: "",
-        contactName: "",
-        contactInfo: "",
-        eventState: "",
-    });
+    const [editEvent, setEditEvent] = useState({});
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -56,16 +52,15 @@ const SingleEvent = (props) => {
             [name]: value,
         });
 
-        eventData = { ...eventData, [name]: value };
-
-        console.log(editEvent);
+        /*eventData = { ...eventData, [name]: value };*/
     };
 
     const handleUpdateEvent = async (event) => {
         try {
             const { data } = await updateEvent({
-                variables: { ...editEvent }
+                variables: { eventId: eventId, ...editEvent }
             });
+            refetch();
         } catch (e) {
             console.log(error);
         }
@@ -75,10 +70,11 @@ const SingleEvent = (props) => {
 
     let eventData = data?.event || {};
 
+    console.log(eventData);
+
     // set it up like this so it's sortable
     const rawTasks = [taskData?.eventTasks || {}];
     const tasks = rawTasks?.sort((a, b) => a.startTime - b.startTime);
-    console.log(tasks);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -162,6 +158,21 @@ const SingleEvent = (props) => {
                                     onChange={handleChange}
                                 />
                             </Form.Group>
+
+                            <Form.Group className="mb-3" controlId="formEventState">
+                                <Form.Label>State</Form.Label>
+                                <Form.Select
+                                    className="form-control"
+                                    name='eventState'
+                                    value={isUndefined(editEvent.eventState) ? eventData.eventState : editEvent.eventState}
+                                    onChange={handleChange}>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Planning">Planning</option>
+                                    <option value="InProgress">In Progress</option>
+                                    <option value="Complete">Complete</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                </Form.Select>
+                            </Form.Group>
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
@@ -210,14 +221,12 @@ const SingleEvent = (props) => {
             </Button>
             <div>
                 <h2>Task List</h2>
-                {tasks.map((task) => {
-                    return (
-                        <div className="card-body">
-                            <div>{task.description}</div>
-                            <div>{task.startTime}</div>
-                            <div>{task.endTime}</div>
-                        </div>
-                    );
+                {tasks[0].map((task) => {
+                    <div key={task._id} className="card-body">
+                        <div>{task.description}</div>
+                        <div>{task.startTime}</div>
+                        <div>{task.endTime}</div>
+                    </div>
                 })}
             </div>
         </div>

@@ -34,7 +34,7 @@ const eventSchema = new Schema({
   },
   eventState: {
     type: String,
-    default: "planning",
+    default: "Planning",
   },
   active: {
     type: Boolean,

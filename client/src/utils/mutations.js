@@ -230,11 +230,13 @@ export const DELETE_LOCATION = gql`
 `;
 //if you want to delete a location send update location the id and active = false
 export const UPDATE_EVENT = gql`
-  mutation Mutation($eventId: ID!, $contactName: String, $eventName: String) {
+  mutation Mutation($eventId: ID!, $contactName: String, $eventName: String, $contactInfo: String, $eventDate: Date) {
     updateEvent(
       eventId: $eventId
       contactName: $contactName
       eventName: $eventName
+      contactInfo: $contactInfo
+      eventDate: $eventDate
     ) {
       _id
       eventName

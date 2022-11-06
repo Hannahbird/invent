@@ -8,7 +8,7 @@ const Dashboard = () => {
   return (
     <div>
       <AdminHeader />
-      <div className="flex-row justify-space-between mb-3">
+      <div>
         <div>
           <h2>Viewing your dashboard.</h2>
           <EventList />
