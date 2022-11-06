@@ -1,26 +1,44 @@
-"use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = require("react");
-var TextField_1 = require("@mui/material/TextField");
-var AdapterLuxon_1 = require("@mui/x-date-pickers/AdapterLuxon");
-var LocalizationProvider_1 = require("@mui/x-date-pickers/LocalizationProvider");
-var MobileDateTimePicker_1 = require("@mui/x-date-pickers/MobileDateTimePicker");
-function CustomDateTimePicker() {
-    var _a = React.useState(null), dateWithNoInitialValue = _a[0], setDateWithNoInitialValue = _a[1];
-    return (React.createElement(LocalizationProvider_1.LocalizationProvider, { dateAdapter: AdapterLuxon_1.AdapterLuxon },
-        React.createElement(MobileDateTimePicker_1.MobileDateTimePicker, { value: dateWithNoInitialValue, onChange: function (newValue) { return setDateWithNoInitialValue(newValue); }, label: "Set Date and Time", onError: console.log, renderInput: function (params) { return React.createElement(TextField_1.default, __assign({}, params)); } })));
+import * as React from 'react';
+import dayjs from 'dayjs';
+import AlarmIcon from '@mui/icons-material/Alarm';
+import SnoozeIcon from '@mui/icons-material/Snooze';
+import TextField from '@mui/material/TextField';
+import ClockIcon from '@mui/icons-material/AccessTime';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
+import Stack from '@mui/material/Stack';
+
+export default function CustomDateTimePicker() {
+    const [dateWithNoInitialValue, setDateWithNoInitialValue] = React.useState(null);
+    const [dateWithInitialValue, setDateWithInitialValue] = React.useState(
+        dayjs('2019-01-01T18:54'),
+    );
+
+    return (
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Stack spacing={3}>
+                <MobileDateTimePicker
+                    value={dateWithNoInitialValue}
+                    onChange={(newValue) => {
+                        setDateWithNoInitialValue(newValue);
+                    }}
+                    label="Select Start Date"
+                    onError={console.log}
+                    inputFormat="YYYY/MM/DD hh:mm a"
+                    renderInput={(params) => <TextField {...params} />}
+                />
+                <MobileDateTimePicker
+                    value={dateWithNoInitialValue}
+                    onChange={(newValue) => {
+                        setDateWithNoInitialValue(newValue);
+                    }}
+                    label="Select End Date"
+                    onError={console.log}
+                    inputFormat="YYYY/MM/DD hh:mm a"
+                    renderInput={(params) => <TextField {...params} />}
+                />
+            </Stack>
+        </LocalizationProvider>
+    );
 }
-exports.default = CustomDateTimePicker;
-;
-//# sourceMappingURL=dateTime.js.map

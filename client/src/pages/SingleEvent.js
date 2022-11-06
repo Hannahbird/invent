@@ -70,17 +70,17 @@ const SingleEvent = (props) => {
 
     let eventData = data?.event || {};
 
-  // set it up like this so it's sortable
-  let rawTasks = [];
-  if (taskData?.eventTasks) {
-    rawTasks = [...taskData.eventTasks];
-  }
-  // const rawTasks = [...taskData.eventTasks];
-  const tasks = rawTasks?.sort((a, b) => a.startTime - b.startTime);
-  console.log(tasks);
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+    // set it up like this so it's sortable
+    let rawTasks = [];
+    if (taskData?.eventTasks) {
+        rawTasks = [...taskData.eventTasks];
+    }
+    // const rawTasks = [...taskData.eventTasks];
+    const tasks = rawTasks?.sort((a, b) => a.startTime - b.startTime);
+    console.log(tasks);
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
     //const loadEdit = (event) => {
     //    console.log(event.target);
@@ -151,7 +151,17 @@ const SingleEvent = (props) => {
                                 />
                             </Form.Group>
 
-                            <Form.Group className="mb-3" controlId="formDate">
+                            <Form.Group className="mb-3" controlId="formDateStart">
+                                <Form.Label></Form.Label>
+                                <DateTime
+                                    className="form-control"
+                                    name='eventDate'
+                                    value={isUndefined(editEvent.eventDate) ? eventData.eventDate : editEvent.eventDate}
+                                    onChange={handleChange}
+                                />
+                            </Form.Group>
+
+                            <Form.Group className="mb-3" controlId="formDateEnd">
                                 <Form.Label></Form.Label>
                                 <DateTime
                                     className="form-control"
@@ -223,13 +233,14 @@ const SingleEvent = (props) => {
             </Button>
             <div>
                 <h2>Task List</h2>
-                {tasks.map((task) => {
-                    <div key={task._id} className="card-body">
-                        <div>{task.description}</div>
-                        <div>{task.startTime}</div>
-                        <div>{task.endTime}</div>
-                    </div>
-                })}
+                {tasks.map((task) => (
+                        <div key={task._id} className="card-body">
+                            <div>{task.description}</div>
+                            <div>{task.department.deptName}</div>
+                            <div>{task.startTime}</div>
+                            <div>{task.endTime}</div>
+                        </div>
+                ))}
             </div>
         </div>
     );

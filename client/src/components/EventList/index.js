@@ -195,13 +195,14 @@ const EventList = () => {
                     <div className="main-body-meeting-info">
                       <div className="main-body-date">
                         <span className="main-body-dateDay">
-                          {/*{event.eventDate}*/}13
+                          13
                         </span>
                         <span className="main-body-dateMonth">apr</span>
                       </div>
                       <div className="main-body-event">
                         <span className="main-body-location">
-                          {event.location.locationName}
+                                            {event.location.locationName}
+                                            {event.eventDate}
                         </span>
                         <span className="main-body-time">2:00 PM</span>
                       </div>
