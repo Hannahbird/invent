@@ -148,7 +148,8 @@ const resolvers = {
       return { available: true };
     },
     eventTasks: async (parent, { eventId }, context) => {
-      const tasks = await EventTask.find({ eventId: eventId });
+        const tasks = await EventTask.find({ eventId: eventId })
+            .populate("department");
       if (context.user) {
         if (!tasks) {
           throw new GraphQLError("Couldn't find any event with this id", {
