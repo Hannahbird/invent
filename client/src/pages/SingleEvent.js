@@ -156,7 +156,8 @@ const SingleEvent = (props) => {
                                 <DateTime
                                     className="form-control"
                                     name='eventDate'
-                                    value={isUndefined(editEvent.eventDate) ? eventData.eventDate : editEvent.eventDate}
+                                    startDate={isUndefined(editEvent.eventStartDate) ? eventData.eventStartDate : editEvent.eventStartDate}
+                                    endDate={isUndefined(editEvent.eventEndDate) ? eventData.eventEndDate : editEvent.eventEndDate}
                                     onChange={handleChange}
                                 />
                             </Form.Group>
