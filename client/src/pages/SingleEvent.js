@@ -161,16 +161,6 @@ const SingleEvent = (props) => {
                                 />
                             </Form.Group>
 
-                            <Form.Group className="mb-3" controlId="formDateEnd">
-                                <Form.Label></Form.Label>
-                                <DateTime
-                                    className="form-control"
-                                    name='eventDate'
-                                    value={isUndefined(editEvent.eventDate) ? eventData.eventDate : editEvent.eventDate}
-                                    onChange={handleChange}
-                                />
-                            </Form.Group>
-
                             <Form.Group className="mb-3" controlId="formEventState">
                                 <Form.Label>State</Form.Label>
                                 <Form.Select
