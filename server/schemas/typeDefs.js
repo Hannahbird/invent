@@ -51,6 +51,7 @@ const typeDefs = gql`
 
   type EventTask {
     _id: ID
+    department: Department
     description: String
     eventId: ID
     startTime: String

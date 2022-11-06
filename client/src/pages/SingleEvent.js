@@ -1,21 +1,30 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useQuery, useMutation } from '@apollo/client';
-import DateTime from '../utils/dateTime/dateTime';
-import Auth from '../utils/auth';
-import { QUERY_EVENT } from '../utils/queries';
-import { UPDATE_EVENT } from '../utils/mutations';
-import { Card, Modal, Button, Form } from 'react-bootstrap';
-
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useQuery, useMutation } from "@apollo/client";
+import DateTime from "../utils/dateTime/dateTime";
+import Auth from "../utils/auth";
+import { QUERY_EVENT, QUERY_EVENTTASKS } from "../utils/queries";
+import { UPDATE_EVENT } from "../utils/mutations";
+import { Card, Modal, Button, Form } from "react-bootstrap";
+import CreateTaskModal from "../components/createTaskModal/index";
 const SingleEvent = (props) => {
   const { id: eventId } = useParams();
-
-  const { loading, data } = useQuery(QUERY_EVENT, {
+  const [showCreate, setShowCreate] = useState(false);
+  const {
+    loading: taskLoading,
+    data: taskData,
+    refetch: taskRefetch,
+  } = useQuery(QUERY_EVENTTASKS, {
     variables: {
-      _id: eventId,
+      eventId: eventId,
     },
   });
-
+  const { loading, data, refetch } = useQuery(QUERY_EVENT, {
+    variables: {
+      eventId: eventId,
+    },
+  });
+  console.log(taskData);
   /*const [updateEvent, { error }] = useMutation(UPDATE_EVENT);*/
   /*const events = data?.events || {};*/
 
@@ -29,12 +38,12 @@ const SingleEvent = (props) => {
   };
 
   const [editEvent, setEditEvent] = useState({
-    eventName: '',
-    location: '',
-    eventDate: '',
-    contactName: '',
-    contactInfo: '',
-    eventState: '',
+    eventName: "",
+    location: "",
+    eventDate: "",
+    contactName: "",
+    contactInfo: "",
+    eventState: "",
   });
 
   const handleChange = (event) => {
@@ -60,8 +69,10 @@ const SingleEvent = (props) => {
 
   /*const event = data?.event || {};*/
 
-  const event = { _id: 123, eventName: 'peepeepoopoo' };
-
+  const event = { _id: 123, eventName: "peepeepoopoo" };
+  const tasks = taskData.eventTasks.sort(
+    (a, b) => parseInt(a.startTime) - parseInt(b.startTime)
+  );
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -80,7 +91,7 @@ const SingleEvent = (props) => {
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>
-              {loading ? 'Loading event details' : 'Edit Event'}
+              {loading ? "Loading event details" : "Edit Event"}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -151,7 +162,7 @@ const SingleEvent = (props) => {
       </>
 
       <div
-        className={`card mb-3 col-6 ${opaque ? 'opacity-100' : 'opacity-50'}`}
+        className={`card mb-3 col-6 ${opaque ? "opacity-100" : "opacity-50"}`}
         onClick={loadEdit}
         onMouseEnter={() => handleMouseOver(true)}
         onMouseLeave={() => handleMouseOver(false)}
@@ -168,6 +179,29 @@ const SingleEvent = (props) => {
             <option value="3">Completed</option>
           </select>
         </div>
+      </div>
+      <CreateTaskModal
+        eventId={eventId}
+        refetch={refetch}
+        showCreate={showCreate}
+        setShowCreate={setShowCreate}
+      />
+      <Button
+        onClick={() => {
+          setShowCreate(true);
+        }}
+      >
+        Add Task
+      </Button>
+      <div>
+        <h2>Task List</h2>
+        {tasks.map((task) => {
+          return (
+            <div className="card-body">
+              <div>{task.description}</div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

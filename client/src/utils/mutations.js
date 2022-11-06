@@ -115,11 +115,9 @@ export const ADD_EVENTTASK = gql`
       _id
       description
       department {
-        deptName
+        _id
       }
-      eventId {
-        eventName
-      }
+      eventId
     }
   }
 `;
