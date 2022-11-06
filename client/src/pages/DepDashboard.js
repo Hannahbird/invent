@@ -8,15 +8,18 @@ import { QUERY_EVENTS } from '../utils/queries';
 
 const DepDashboard = () => {
   return (
-    <div>
-      <h2>Viewing your dashboard.</h2>
+    <>
+      <DeptHeader />
+      <div>
+        <h2>Viewing your dashboard.</h2>
 
-      <div className="flex-row justify-space-between mb-3">
-        <div>
-          <DepartmentEventList />
+        <div className="flex-row justify-space-between mb-3">
+          <div>
+            <DepartmentEventList />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

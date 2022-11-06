@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { useQuery, useMutation } from "@apollo/client";
-import { QUERY_COMPANY_DEPTS } from "../../utils/queries";
+import React, { useEffect, useState } from 'react';
+import { useQuery, useMutation } from '@apollo/client';
+import { QUERY_COMPANY_DEPTS } from '../../utils/queries';
 import {
   ADD_DEPARTMENT,
   DELETE_DEPARTMENT,
   UPDATE_DEPARTMENT,
-} from "../../utils/mutations";
+} from '../../utils/mutations';
 //Modal styling from react-bootstrap
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import Form from "react-bootstrap/Form";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+
+import AdminHeader from '../AdminHeader';
 
 const DepartmentList = ({ id }) => {
   const [showEditModal, setShowEditModal] = useState(false);
-  const [editInfo, setEditInfo] = useState({ id: "", name: "" });
+  const [editInfo, setEditInfo] = useState({ id: '', name: '' });
 
   const { loading, error, data, refetch } = useQuery(QUERY_COMPANY_DEPTS, {
     variables: { deptId: id },
@@ -28,6 +30,7 @@ const DepartmentList = ({ id }) => {
   if (!data.departments.length) {
     return (
       <>
+        <AdminHeader />
         <h3>No departments yet</h3>
         <Create />
       </>
@@ -39,7 +42,7 @@ const DepartmentList = ({ id }) => {
     const [addDepartment] = useMutation(ADD_DEPARTMENT);
 
     const deptSubmit = () => {
-      const newDept = document.getElementById("deptInput").value.trim();
+      const newDept = document.getElementById('deptInput').value.trim();
       addDepartment({ variables: { deptName: newDept } });
       refetch();
     };
@@ -88,7 +91,7 @@ const DepartmentList = ({ id }) => {
 
   function Create() {
     const [modalShow, setModalShow] = React.useState(false);
-    console.log("create?");
+    console.log('create?');
 
     return (
       <>
@@ -117,14 +120,14 @@ const DepartmentList = ({ id }) => {
     const [updateDept] = useMutation(UPDATE_DEPARTMENT);
     const [deleteDept] = useMutation(DELETE_DEPARTMENT);
     const handleChange = async (type) => {
-      if (type === "edit") {
-        const newName = document.getElementById("deptInput").value.trim();
+      if (type === 'edit') {
+        const newName = document.getElementById('deptInput').value.trim();
         await updateDept({
           variables: { deptId: editInfo.id, deptName: newName },
         });
         refetch();
       }
-      if (type === "delete") {
+      if (type === 'delete') {
         await deleteDept({ variables: { deptId: editInfo.id } });
         refetch();
       }
@@ -159,7 +162,7 @@ const DepartmentList = ({ id }) => {
           <Button
             variant="danger"
             onClick={() => {
-              handleChange("delete");
+              handleChange('delete');
               setShowEditModal(false);
             }}
           >
@@ -168,7 +171,7 @@ const DepartmentList = ({ id }) => {
           <Button
             variant="secondary"
             onClick={() => {
-              handleChange("edit");
+              handleChange('edit');
               setShowEditModal(false);
             }}
           >
@@ -180,12 +183,13 @@ const DepartmentList = ({ id }) => {
   }
   return (
     <div>
+      <AdminHeader />
       <h3>Your Current Departments</h3>
       <Create />
       {showEditModal && <EditModal />}
       <div>
         {departments.map((department) => {
-          if (department.deptName === "admin") {
+          if (department.deptName === 'admin') {
             return;
           }
           return (
