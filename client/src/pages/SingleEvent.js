@@ -70,15 +70,17 @@ const SingleEvent = (props) => {
 
     let eventData = data?.event || {};
 
-    console.log(eventData);
-
-    // set it up like this so it's sortable
-    const rawTasks = [taskData?.eventTasks || {}];
-    const tasks = rawTasks?.sort((a, b) => a.startTime - b.startTime);
-
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+  // set it up like this so it's sortable
+  let rawTasks = [];
+  if (taskData?.eventTasks) {
+    rawTasks = [...taskData.eventTasks];
+  }
+  // const rawTasks = [...taskData.eventTasks];
+  const tasks = rawTasks?.sort((a, b) => a.startTime - b.startTime);
+  console.log(tasks);
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
     //const loadEdit = (event) => {
     //    console.log(event.target);
