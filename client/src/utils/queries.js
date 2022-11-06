@@ -80,6 +80,8 @@ export const QUERY_EVENTS = gql`
       contactInfo
       contactName
       eventDate
+      eventStartDate
+      eventEndDate
       eventState
     }
   }
@@ -97,6 +99,8 @@ export const QUERY_DEPT_EVENTS = gql`
       contactInfo
       contactName
       eventDate
+      eventStartDate
+      eventEndDate
       eventState
     }
   }
@@ -115,6 +119,8 @@ export const QUERY_EVENT = gql`
       contactInfo
       contactName
       eventDate
+      eventStartDate
+      eventEndDate
       eventState
     }
   }
