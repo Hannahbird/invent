@@ -223,7 +223,7 @@ const SingleEvent = (props) => {
             </Button>
             <div>
                 <h2>Task List</h2>
-                {tasks[0].map((task) => {
+                {tasks.map((task) => {
                     <div key={task._id} className="card-body">
                         <div>{task.description}</div>
                         <div>{task.startTime}</div>
