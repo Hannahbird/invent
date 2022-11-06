@@ -76,7 +76,7 @@ const SingleEvent = (props) => {
     let eventData = data?.event || {};
 
     // set it up like this so it's sortable
-    const rawTasks = taskData?.eventTasks || {};
+    const rawTasks = [taskData?.eventTasks || {}];
     const tasks = rawTasks?.sort((a, b) => a.startTime - b.startTime);
     console.log(tasks);
 
@@ -214,7 +214,6 @@ const SingleEvent = (props) => {
                     return (
                         <div className="card-body">
                             <div>{task.description}</div>
-                            <div>{task.department.deptName}</div>
                             <div>{task.startTime}</div>
                             <div>{task.endTime}</div>
                         </div>
