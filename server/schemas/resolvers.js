@@ -125,10 +125,14 @@ const resolvers = {
       }
       throw new AuthenticationError("Not logged in");
     },
-    locationsByCode: async (parent, {code}) => {
-      const companyId = await Company.findOne({ reserveCode: code });
+    locationsByCode: async (parent, { code }) => {
+      console.log(code);
+      const company = await Company.findOne({
+        reserveCode: code
+      });
 
-      if (!companyId) {
+      console.log(company);
+      if (!company) {
         throw new GraphQLError("Invalid reservation code", {
           extensions: {
             code: "BAD_USER_INPUT",

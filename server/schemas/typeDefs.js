@@ -40,6 +40,7 @@ const typeDefs = gql`
     _id: ID
     title: String
     companyEmail: String
+    reserveCode: String
   }
 
   type Location {
