@@ -5,7 +5,7 @@ import LandingPage from '../../pages/LandingPage';
 
 import Auth from '../../utils/auth';
 
-const Navigation = () => {
+const Header = () => {
   const logout = (event) => {
     event.preventDefault();
     Auth.logout();
@@ -20,17 +20,19 @@ const Navigation = () => {
       </div>
       <div className="header container flex-row justify-space-between-lg justify-flex-end align-left">
         <nav>
-          {Auth.loggedIn() ? (
-            <a className="navigation" href="/" onClick={logout}>
-              Logout
-            </a>
-          ) : (
-            <LandingPage />
-          )}
+          <>
+            <Link className="navigation" to="/login">
+              Login
+            </Link>{' '}
+            ||{' '}
+            <Link className="navigation" to="/signup">
+              Signup
+            </Link>
+          </>
         </nav>
       </div>
     </header>
   );
 };
 
-export default Navigation;
+export default Header;
