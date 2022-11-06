@@ -10,7 +10,7 @@ import { setContext } from '@apollo/client/link/context';
 import './App.css';
 
 //component imports
-import Header from './components/Header';
+
 import Footer from './components/Footer';
 import DepartmentList from './components/DepartmentList';
 import EventList from './components/EventList';
@@ -24,6 +24,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import DepDashboard from './pages/DepDashboard';
 import SingleEvent from './pages/SingleEvent';
 import NoMatch from './pages/NoMatch';
+import LandingPage from './pages/LandingPage';
 
 import Pusher from 'pusher-js';
 import * as bs from 'bootstrap/dist/css/bootstrap.css';
@@ -62,16 +63,15 @@ function App() {
     <ApolloProvider client={client}>
       <Router>
         <div className="flex-column justify-flex-start min-100-vh">
-          <Header />
           <div className="container">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
-              <Route path="/admindashboard" element={<AdminDashboard />} />
-              <Route path="/depdashboard" element={<DepDashboard />} />
+              {/* <Route path="/admindashboard" element={<AdminDashboard />} />
+              <Route path="/depdashboard" element={<DepDashboard />} /> */}
               <Route path="/events" element={<EventList />} />
-              <Route path="/event" element={<SingleEvent />} />
+              <Route path="/event/:id" element={<SingleEvent />} />
               <Route path="/spaces" element={<SpacesList />} />
               <Route path="/departments" element={<DepartmentList />} />
               <Route path="*" element={<NoMatch />} />

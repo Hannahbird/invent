@@ -21,7 +21,7 @@ const Header = () => {
         <nav>
           {Auth.loggedIn() ? (
             <>
-              <Link className="navigation" to="/events">
+              <Link className="navigation" to="/">
                 Events
               </Link>{' '}
               ||{' '}

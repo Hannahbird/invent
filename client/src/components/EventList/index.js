@@ -13,6 +13,8 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
+import AdminHeader from '../AdminHeader';
+
 const EventList = () => {
   const { loading, error, data, refetch } = useQuery(QUERY_EVENTS);
   const { loading: locationLoading, data: locationData } =
@@ -32,6 +34,7 @@ const EventList = () => {
   if (!events.length) {
     return (
       <>
+        <AdminHeader />
         <h3>No Events Scheduled</h3>
         <Create />
       </>
@@ -176,33 +179,36 @@ const EventList = () => {
   }
 
   return (
-    <div className="my-2">
-      <Create />
-      <h3>Your Current Events</h3>
-      <div className="flex-row">
-        {events &&
-          events.map((event) => (
-            <div key={event._id} className="card mb-3 col-6">
-              <Link to={`/event/${event._id}`}>
-                <div className="card-header">
-                  <p>{event.eventName}</p>
-                </div>
-                <div className="card-body row">
-                  Event Date: {event.eventDate}
-                  <br />
-                  Event Location: {event.location.locationName}
-                  <br />
-                  Contact Name: {event.contactName}
-                  <br />
-                  Contact Info: {event.contactInfo}
-                  <br />
-                  Event Status: {event.eventState}
-                </div>
-              </Link>
-            </div>
-          ))}
+    <>
+      {/* <AdminHeader /> */}
+      <div className="my-2">
+        <Create />
+        <h3>Your Current Events</h3>
+        <div className="flex-row">
+          {events &&
+            events.map((event) => (
+              <div key={event._id} className="card mb-3 col-6">
+                <Link to={`/event/${event._id}`}>
+                  <div className="card-header">
+                    <p>{event.eventName}</p>
+                  </div>
+                  <div className="card-body row">
+                    Event Date: {event.eventDate}
+                    <br />
+                    Event Location: {event.location.locationName}
+                    <br />
+                    Contact Name: {event.contactName}
+                    <br />
+                    Contact Info: {event.contactInfo}
+                    <br />
+                    Event Status: {event.eventState}
+                  </div>
+                </Link>
+              </div>
+            ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
