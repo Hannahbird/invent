@@ -19,7 +19,11 @@ const deptSchema = new Schema({
   signUpLink: {
     type: String,
     trim: true,
-    default: uid(),
+    unique: true,
+    default: "failed",
+    set: (s) => {
+      return uid();
+    },
   },
 });
 

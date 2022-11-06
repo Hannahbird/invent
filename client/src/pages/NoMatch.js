@@ -1,7 +1,21 @@
 import React from 'react';
 
+import AdminHeader from '../components/AdminHeader';
+import Auth from '../utils/auth';
+
 const NoMatch = () => {
-  return <div>Oops, we couldn't find that page.</div>;
+  const logout = (event) => {
+    event.preventDefault();
+    Auth.logout();
+  };
+  return (
+    <>
+      <AdminHeader />
+      <div>
+        <p>Oops, we couldn't find that page.</p>
+      </div>
+    </>
+  );
 };
 
 export default NoMatch;

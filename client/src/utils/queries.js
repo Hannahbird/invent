@@ -120,31 +120,20 @@ export const QUERY_EVENT = gql`
   }
 `;
 
-//export const QUERY_EVENTTASKS = gql`
-//query eventTasks($eventId: ID!){
-//  eventTasks(eventId: $eventId){
-//    taskId: $taskId
-//      description: $description
-//      department: $department
-//      eventId: $eventId
-//      startTime: $startTime
-//      endTime: $endTime
-//    ) {
-//      _id
-//      description
-//      department {
-//        _id
-//        deptName
-//      }
-//      eventId {
-//        _id
-//        eventName
-//      }
-//      startTime
-//      endTime
-//  }
-//}
-//`;
+export const QUERY_EVENTTASKS = gql`
+  query eventTasks($eventId: String!) {
+    eventTasks(eventId: $eventId) {
+      _id
+      description
+      department {
+        _id
+        deptName
+      }
+      startTime
+      endTime
+    }
+  }
+`;
 
 export const QUERY_ME_BASIC = gql`
   {

@@ -19,6 +19,7 @@ code {
   font-size: large;
   background-color: #D6CCC2;
   align-items: stretch;
+  padding-left: 50px;
 }
 .footer{
   font-family: 'Architects Daughter';
@@ -56,4 +57,26 @@ main{
 
 .justify-flex-end {
   justify-content: flex-end;
+}
+
+.card-header {
+  font-size: xx-large
+}
+
+.card {
+  width: 85%;
+  max-width: 1200px;
+  margin-left: 10px;
+  margin-right: 10px;
+  
+}
+
+.flex-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.my-2 {
+  padding: 10px;
+  
 }

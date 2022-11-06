@@ -102,8 +102,8 @@ export const ADD_EVENTTASK = gql`
     $description: String!
     $department: ID!
     $eventId: ID!
-    $startTime: String
-    $endTime: String
+    $startTime: Int
+    $endTime: Int
   ) {
     addEventTask(
       description: $description
@@ -115,11 +115,9 @@ export const ADD_EVENTTASK = gql`
       _id
       description
       department {
-        deptName
+        _id
       }
-      eventId {
-        eventName
-      }
+      eventId
     }
   }
 `;
@@ -130,8 +128,8 @@ export const UPDATE_EVENTTASK = gql`
     $description: String
     $department: ID
     $eventId: ID
-    $startTime: String
-    $endTime: String
+    $startTime: Int
+    $endTime: Int
   ) {
     updateEventTask(
       taskId: $taskId
