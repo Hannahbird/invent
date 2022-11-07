@@ -100,7 +100,7 @@ const SingleEvent = (props) => {
         return false;
     };
 
-    console.log(eventData.eventStartDate)
+    console.log(eventData.eventStartDate);
 
     return (
         <div>
