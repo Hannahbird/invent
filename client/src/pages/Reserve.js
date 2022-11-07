@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import { QUERY_LOCATIONS_BYCODE } from '../utils/queries'
 import { ADD_EVENT } from '../utils/mutations'
@@ -87,6 +87,15 @@ const Reserve = () => {
     }
 
     return (
+        <div>
+            <header className="mb-4 py-2 flex-row header align-center">
+                <div className="header flex-row justify-space-between-lg justify-flex-end align-left">
+                    <Link to="/">
+                    <h1>InVent</h1>
+                    </Link>
+                </div>
+            </header>
+        
         <div className='container d-flex flex-wrap justify-content-evenly'>
             <Button variant="primary" onClick={handleShow}>
                 Launch demo modal
@@ -163,6 +172,7 @@ const Reserve = () => {
                         </Card.Body>
                     </Card>
             ))}
+            </div>
         </div>
     )
 };

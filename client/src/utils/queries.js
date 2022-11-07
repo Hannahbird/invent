@@ -53,9 +53,15 @@ export const QUERY_LOCATIONS = gql`
 export const QUERY_LOCATIONS_BYCODE = gql`
   query locationsByCode($code: String!) {
     locationsByCode(code: $code) {
-      _id
-      locationName
-      capacity
+      locations: { 
+        _id
+        locationName
+        capacity
+      }
+      company: {
+        title
+        companyEmail
+      }
     }
   }
 `;

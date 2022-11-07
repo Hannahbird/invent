@@ -19,7 +19,7 @@ const locationSchema = new Schema(
         },
         active: {
             type: Boolean,
-            deafult: true
+            default: true
         }
     }
 

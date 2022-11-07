@@ -43,6 +43,11 @@ const typeDefs = gql`
     reserveCode: String
   }
 
+  type Reserve {
+    locations: [Location]
+    company: Company
+  }
+
   type Location {
     _id: ID
     locationName: String
@@ -91,7 +96,7 @@ const typeDefs = gql`
     deptEvents: [Event]
     event(eventId: String!): Event
     locations: [Location]
-    locationsByCode(code: String!): [Location]
+    locationsByCode(code: String!): Reserve
     checkEmail(email: String!): Check
     checkUsername(username: String!): Check
   }

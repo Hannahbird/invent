@@ -146,9 +146,12 @@ const resolvers = {
         });
       }
 
-      const locations = await Location.find({ company: company._id });
+      const locations = await Location.find({
+        company: company._id,
+        active: true
+      });
     
-      return locations;
+      return { locations, company };
     },
     checkEmail: async (parent, { email }) => {
       const exists = await User.findOne({
