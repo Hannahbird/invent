@@ -8,6 +8,7 @@ import { UPDATE_EVENT } from "../utils/mutations";
 import { Card, Modal, Button, Form } from "react-bootstrap";
 import CreateTaskModal from "../components/createTaskModal/index";
 import dayjs from 'dayjs';
+import '../assets/css/SingleEvent.css';
 
 const SingleEvent = (props) => {
     const { id: eventId } = useParams();
@@ -195,43 +196,6 @@ const SingleEvent = (props) => {
                 </Modal>
             </>
 
-            <div className="col-sm-12 col-md-6">
-                <div key={eventData._id}
-                    className="card"
-                    onClick={handleShow}
-                    onMouseEnter={() => handleMouseOver(true)}
-                    onMouseLeave={() => handleMouseOver(false)}
-                >
-                    <div className="card-header border-0 text-black">
-                        <p>{eventData.eventName}</p>
-                    </div>
-                    <div className="card-body row text-black">
-                        <div className="main-body">
-                            <div className="main-body-meeting-info">
-                                <div className="main-body-date">
-                                    <span className="main-body-dateDay">
-                                        {dayjs(eventData.eventStartDate).format('DD')}
-                                    </span>
-                                    <span className="main-body-dateMonth">{dayjs(eventData.eventStartDate).format('MMM')}</span>
-                                </div>
-                                <div className="main-body-event">
-                                    <span className="main-body-location">
-                                        {eventData.location.locationName}
-                                    </span>
-                                    <span className="main-body-time">{dayjs(eventData.eventStartDate).format('hh:mm A')} - {dayjs(eventData.eventEndDate).format('hh:mm A')} </span>
-                                </div>
-                            </div>
-                            <div className="main-body-contact">
-                                <span>{eventData.contactName}</span>
-                                <span>{eventData.contactInfo}</span>
-                            </div>
-                            <div className="main-body-eventState">
-                                <span>Event Status: {eventData.eventState}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <CreateTaskModal
                 eventId={eventId}
                 refetch={refetch}
@@ -239,23 +203,55 @@ const SingleEvent = (props) => {
                 setShowCreate={setShowCreate}
                 taskRefetch={taskRefetch}
             />
-            <Button
-                onClick={() => {
-                    setShowCreate(true);
-                }}
-            >
-                Add Task
-            </Button>
-            <div>
-                <h2>Task List</h2>
-                {tasks.map((task) => (
-                    <div key={task._id} className="card-body">
-                        <div>{task.description}</div>
-                        <div>{task.department.deptName}</div>
-                        <div>{task.startTime}</div>
-                        <div>{task.endTime}</div>
+
+            <div className="container">
+                <div className="row">
+                    <div className="col-4 event-wrapper">
+                        <button
+                            className="edit-event-btn btn btn-primary"
+                            onClick={handleShow}>
+                            Edit Event
+                        </button>
+                        <button className="add-task-btn btn btn-primary"
+                            onClick={() => {
+                                setShowCreate(true);
+                            }}>
+                            Add Task
+                        </button>
+
+                        <div className="eventDataHolder">
+                            <div>
+                                <span className="single-event-name">{eventData.eventName}</span>
+                            </div>
+                            <div>
+                                <span className="single-event-date">{dayjs(eventData.eventStartDate).format('MMM DD')} - {dayjs(eventData.eventEndDate).format('MMM DD')}</span>
+                            </div>
+                            <div>
+                                <span className="single-event-time">{dayjs(eventData.eventStartDate).format('hh:mm A')} - {dayjs(eventData.eventEndDate).format('hh:mm A')} </span>
+                            </div>
+                            <div>
+                                <span className="single-event-location">{eventData.location.locationName}</span>
+                            </div>
+                            <div className="contactHolder">
+                                <span className="single-event-contactName">{eventData.contactName}</span>
+                                <span className="single-event-contactInfo">{eventData.contactInfo}</span>
+                            </div>
+                            <div>
+                                {eventData.eventState} >>> DROPDOWN
+                            </div>
+                        </div>
                     </div>
-                ))}
+                    <div className="col-8 task-wrapper">
+                        {tasks.map((task) => (
+                            <div key={task._id} className="card-body">
+                                <div>{task.description}</div>
+                                <div>{task.department.deptName}</div>
+                                <div>{task.startTime}</div>
+                                <div>{task.endTime}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
         </div>
     );
