@@ -1,12 +1,14 @@
 import React from 'react';
 import EventList from '../components/EventList';
+import AdminHeader from '../components/AdminHeader';
 
 import Auth from '../utils/auth';
 
 const Dashboard = () => {
   return (
     <div>
-      <div className="flex-row justify-space-between mb-3">
+      <AdminHeader />
+      <div>
         <div>
           <h2>Viewing your dashboard.</h2>
           <EventList />

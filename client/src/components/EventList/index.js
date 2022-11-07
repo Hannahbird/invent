@@ -13,6 +13,8 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
+import AdminHeader from '../AdminHeader';
+
 const EventList = () => {
   const { loading, error, data, refetch } = useQuery(QUERY_EVENTS);
   const { loading: locationLoading, data: locationData } =
@@ -32,6 +34,7 @@ const EventList = () => {
   if (!events.length) {
     return (
       <>
+        <AdminHeader />
         <h3>No Events Scheduled</h3>
         <Create />
       </>
@@ -175,45 +178,50 @@ const EventList = () => {
     );
   }
 
-    return (
-        <div>
-            <Create />
-            <h3>Your Current Events</h3>
-            {events &&
-                events.map((event) => (
-                    <div className="col-sm-12 col-md-6">
-                        <div key={event._id} className="card">
-                            <Link to={`/event/${event._id}`}>
-                                <div className="card-header border-0 text-black">
-                                    <p>{event.eventName}</p>
-                                </div>
-                                <div className="card-body row text-black">
-                                    <div className="main-body">
-                                        <div className="main-body-meeting-info">
-                                            <div className="main-body-date">
-                                                <span className="main-body-dateDay">{/*{event.eventDate}*/}13</span>
-                                                <span className="main-body-dateMonth">apr</span>
-                                            </div> 
-                                            <div className="main-body-event">
-                                                <span className="main-body-location">{event.location.locationName}</span>
-                                                <span className="main-body-time">2:00 PM</span>
-                                            </div>
-                                        </div>
-                                        <div className="main-body-contact">
-                                            <span>{event.contactName}</span>
-                                            <span>{event.contactInfo}</span>
-                                        </div>
-                                        <div className="main-body-eventState">
-                                            <span>Event Status: {event.eventState}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>
-                        </div>
+  return (
+    <div>
+      <Create />
+      <h3>Your Current Events</h3>
+      {events &&
+        events.map((event) => (
+          <div className="col-sm-12 col-md-6">
+            <div key={event._id} className="card">
+              <Link to={`/event/${event._id}`}>
+                <div className="card-header border-0 text-black">
+                  <p>{event.eventName}</p>
+                </div>
+                <div className="card-body row text-black">
+                  <div className="main-body">
+                    <div className="main-body-meeting-info">
+                      <div className="main-body-date">
+                        <span className="main-body-dateDay">
+                          13
+                        </span>
+                        <span className="main-body-dateMonth">apr</span>
+                      </div>
+                      <div className="main-body-event">
+                        <span className="main-body-location">
+                                            {event.location.locationName}
+                                            {event.eventDate}
+                        </span>
+                        <span className="main-body-time">2:00 PM</span>
+                      </div>
                     </div>
-                ))}
-        </div>
-    );
+                    <div className="main-body-contact">
+                      <span>{event.contactName}</span>
+                      <span>{event.contactInfo}</span>
+                    </div>
+                    <div className="main-body-eventState">
+                      <span>Event Status: {event.eventState}</span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          </div>
+        ))}
+    </div>
+  );
 };
 
 export default EventList;

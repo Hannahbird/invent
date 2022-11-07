@@ -64,37 +64,41 @@ db.once("open", async () => {
       location: locationExample._id,
       departments: [techDept._id, foodDept._id],
       contactInfo: "customer@customer.com",
-      contactName: "Big Dave",
-      eventDate: Date(),
+        contactName: "Big Dave",
+        eventDate: Date(),
+        eventStartDate: Date(),
+        eventEndDate: Date() + 1
     });
     const taskExample1 = await EventTask.create({
       description: "example event task",
       department: techDept._id,
       eventId: eventExample1._id,
-      startTime: "12:00",
-      endTime: "13:00",
+      startTime: 1200,
+      endTime: 1300,
     });
     const taskExample12 = await EventTask.create({
       description: "second example event task",
       department: foodDept._id,
       eventId: eventExample1._id,
-      startTime: "13:00",
-      endTime: "14:00",
+      startTime: 1300,
+      endTime: 1400,
     });
     const eventExample2 = await Event.create({
       eventName: "second example event",
       location: locationExample._id,
       departments: [techDept._id, foodDept._id],
       contactInfo: "customer2@customer.com",
-      contactName: "Big Dave",
-      eventDate: Date(),
+        contactName: "Big Dave",
+        eventDate: Date(),
+        eventStartDate: Date(),
+        eventEndDate: Date() + 1,
     });
     const taskExample2 = await EventTask.create({
       description: "example event task",
       department: techDept._id,
       eventId: eventExample2._id,
-      startTime: "12:00",
-      endTime: "13:00",
+      startTime: 1200,
+      endTime: 1300,
     });
     // const taskExample22 = await EventTask.create({
     //   description: "second example event task",
