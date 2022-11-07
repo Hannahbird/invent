@@ -7,6 +7,7 @@ import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 
 export default function CustomDateTimePicker(props) {
     console.log(props.startDate);
+    console.log(props.endDate);
 
     const [startDateWithInitialValue, setStartDateWithInitialValue] = React.useState(props.startDate);
 
