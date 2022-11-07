@@ -7,6 +7,7 @@ import { QUERY_EVENT, QUERY_EVENTTASKS } from "../utils/queries";
 import { UPDATE_EVENT } from "../utils/mutations";
 import { Card, Modal, Button, Form } from "react-bootstrap";
 import CreateTaskModal from "../components/createTaskModal/index";
+import dayjs from 'dayjs'
 
 const SingleEvent = (props) => {
     const { id: eventId } = useParams();
@@ -205,18 +206,15 @@ const SingleEvent = (props) => {
                     <p>{event.eventName}</p>
                 </div>
                 <div className="card-body row">
+                        Start Date: {eventData.eventStartDate}
+                        End Date: {eventData.eventEndDate}
+                        Current State: {eventData.eventState}
                     <DateTime
                                     className="form-control"
                                     name='staticDates'
                                     startDate={isUndefined(editEvent.eventStartDate) ? eventData.eventStartDate : editEvent.eventStartDate}
                                     endDate={isUndefined(editEvent.eventEndDate) ? eventData.eventEndDate : editEvent.eventEndDate}
                                 />
-                    <select className="form-select" aria-label="Default select example">
-                        <option selected>Completion Level</option>
-                        <option value="1">Not Started</option>
-                        <option value="2">In Progress</option>
-                        <option value="3">Completed</option>
-                    </select>
                 </div>
             </div>
             <CreateTaskModal
