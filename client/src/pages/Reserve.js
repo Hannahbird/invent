@@ -17,7 +17,7 @@ const Reserve = () => {
         }
     });
 
-    const locations = data?.locationsByCode || {};
+    const { locations, company } = data?.locationsByCode || {};
     //create mutation for reserving a location
     const [reserveLocation, { error }] = useMutation(ADD_EVENT);
 
@@ -93,13 +93,14 @@ const Reserve = () => {
                     <Link to="/">
                     <h1>InVent</h1>
                     </Link>
+
                 </div>
             </header>
         
         <div className='container d-flex flex-wrap justify-content-evenly'>
-            <Button variant="primary" onClick={handleShow}>
-                Launch demo modal
-            </Button>
+                {/*<Button variant="primary" onClick={handleShow}>
+                    Launch demo modal
+    </Button>*/}
             <>
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
@@ -159,19 +160,23 @@ const Reserve = () => {
                     </Modal.Footer>
                 </Modal>
             </>
-            Rendering Reserve Content Successfully
-            {locations.map(location => (               
-                    <Card key={location._id} style={{ width: '18rem' }}>
-                        <Card.Img variant="top" src="holder.js/100px180" />
-                        <Card.Body>
-                            <Card.Title>{location.locationName}</Card.Title>
-                            <Card.Text>
-                                Capacity: {location.capacity}
-                        </Card.Text>
-                            <Button variant="primary" onClick={() => {loadReserveForm(location._id, location.locationName)}}>Request Space</Button>
-                        </Card.Body>
-                    </Card>
-            ))}
+                <div className="container justify-content-center d-flex">
+                    <h2>Select and request a space for your event at {company.title}</h2>
+                </div>
+                <div className="d-flex flex-wrap justify-content-evenly mt-3">
+                    {locations.map(location => (               
+                            <Card className="mt-3" key={location._id} style={{ width: '10rem' }}>
+                                <Card.Img variant="top" src="holder.js/100px180" />
+                                <Card.Body>
+                                    <Card.Title>{location.locationName}</Card.Title>
+                                    <Card.Text>
+                                        Capacity: {location.capacity}
+                                </Card.Text>
+                                    <Button variant="primary" onClick={() => {loadReserveForm(location._id, location.locationName)}}>Request Space</Button>
+                                </Card.Body>
+                            </Card>
+                    ))}
+                </div>
             </div>
         </div>
     )

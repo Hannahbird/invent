@@ -51,20 +51,19 @@ export const QUERY_LOCATIONS = gql`
 `;
 
 export const QUERY_LOCATIONS_BYCODE = gql`
-  query locationsByCode($code: String!) {
-    locationsByCode(code: $code) {
-      locations: { 
-        _id
-        locationName
-        capacity
-      }
-      company: {
-        title
-        companyEmail
-      }
+query LocationsByCode($code: String!) {
+  locationsByCode(code: $code) {
+    locations {
+      _id
+      locationName
+      capacity
+    }
+    company {
+      title
+      companyEmail
     }
   }
-`;
+}`
 
 export const QUERY_ME = gql`
   {
