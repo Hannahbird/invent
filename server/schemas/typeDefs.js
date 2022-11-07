@@ -133,6 +133,7 @@ const typeDefs = gql`
       eventDate: Date
       eventStartDate: Date
       eventEndDate: Date
+      eventState: String
     ): Event
     deleteDepartment(deptId: ID!): Department
     addEventTask(
