@@ -7,6 +7,7 @@ import { QUERY_EVENT, QUERY_EVENTTASKS } from "../utils/queries";
 import { UPDATE_EVENT } from "../utils/mutations";
 import { Card, Modal, Button, Form } from "react-bootstrap";
 import CreateTaskModal from "../components/createTaskModal/index";
+import dayjs from 'dayjs';
 
 const SingleEvent = (props) => {
     const { id: eventId } = useParams();
@@ -28,7 +29,6 @@ const SingleEvent = (props) => {
     });
 
     const [updateEvent, { error }] = useMutation(UPDATE_EVENT);
-    const event = data?.event || {};
 
     const [show, setShow] = useState(false);
     const handleClose = () => {
@@ -195,28 +195,41 @@ const SingleEvent = (props) => {
                 </Modal>
             </>
 
-            <div
-                className={`card mb-3 col-6 ${opaque ? "opacity-100" : "opacity-50"}`}
-                onClick={handleShow}
-                onMouseEnter={() => handleMouseOver(true)}
-                onMouseLeave={() => handleMouseOver(false)}
-            >
-                <div className="card-header">
-                    <p>{event.eventName}</p>
-                </div>
-                <div className="card-body row">
-                    <DateTime
-                                    className="form-control"
-                                    name='staticDates'
-                                    startDate={isUndefined(editEvent.eventStartDate) ? eventData.eventStartDate : editEvent.eventStartDate}
-                                    endDate={isUndefined(editEvent.eventEndDate) ? eventData.eventEndDate : editEvent.eventEndDate}
-                                />
-                    <select className="form-select" aria-label="Default select example">
-                        <option selected>Completion Level</option>
-                        <option value="1">Not Started</option>
-                        <option value="2">In Progress</option>
-                        <option value="3">Completed</option>
-                    </select>
+            <div className="col-sm-12 col-md-6">
+                <div key={eventData._id}
+                    className="card"
+                    onClick={handleShow}
+                    onMouseEnter={() => handleMouseOver(true)}
+                    onMouseLeave={() => handleMouseOver(false)}
+                >
+                    <div className="card-header border-0 text-black">
+                        <p>{eventData.eventName}</p>
+                    </div>
+                    <div className="card-body row text-black">
+                        <div className="main-body">
+                            <div className="main-body-meeting-info">
+                                <div className="main-body-date">
+                                    <span className="main-body-dateDay">
+                                        {dayjs(eventData.eventStartDate).format('DD')}
+                                    </span>
+                                    <span className="main-body-dateMonth">{dayjs(eventData.eventStartDate).format('MMM')}</span>
+                                </div>
+                                <div className="main-body-event">
+                                    <span className="main-body-location">
+                                        {eventData.location.locationName}
+                                    </span>
+                                    <span className="main-body-time">{dayjs(eventData.eventStartDate).format('hh:mm A')} - {dayjs(eventData.eventEndDate).format('hh:mm A')} </span>
+                                </div>
+                            </div>
+                            <div className="main-body-contact">
+                                <span>{eventData.contactName}</span>
+                                <span>{eventData.contactInfo}</span>
+                            </div>
+                            <div className="main-body-eventState">
+                                <span>Event Status: {eventData.eventState}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <CreateTaskModal
@@ -236,12 +249,12 @@ const SingleEvent = (props) => {
             <div>
                 <h2>Task List</h2>
                 {tasks.map((task) => (
-                        <div key={task._id} className="card-body">
-                            <div>{task.description}</div>
-                            <div>{task.department.deptName}</div>
-                            <div>{task.startTime}</div>
-                            <div>{task.endTime}</div>
-                        </div>
+                    <div key={task._id} className="card-body">
+                        <div>{task.description}</div>
+                        <div>{task.department.deptName}</div>
+                        <div>{task.startTime}</div>
+                        <div>{task.endTime}</div>
+                    </div>
                 ))}
             </div>
         </div>
