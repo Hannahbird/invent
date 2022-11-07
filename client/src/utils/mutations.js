@@ -244,7 +244,7 @@ export const UPDATE_EVENT = gql`
     $eventDate: Date
     $eventStartDate: Date
     $eventEndDate: Date
-    eventState: String) {
+    $eventState: String) {
       updateEvent(
         eventId: $eventId
         contactName: $contactName
