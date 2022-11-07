@@ -45,6 +45,7 @@ const SingleEvent = (props) => {
     const [editEvent, setEditEvent] = useState({});
 
     const handleChange = (event) => {
+        console.log(event);
         const { name, value } = event.target;
 
         setEditEvent({
@@ -56,6 +57,7 @@ const SingleEvent = (props) => {
     };
 
     const handleUpdateEvent = async (event) => {
+        console.log(editEvent);
         try {
             const { data } = await updateEvent({
                 variables: { eventId: eventId, ...editEvent }
@@ -97,6 +99,8 @@ const SingleEvent = (props) => {
 
         return false;
     };
+
+    console.log(eventData.eventStartDate)
 
     return (
         <div>
@@ -159,6 +163,8 @@ const SingleEvent = (props) => {
                                     startDate={isUndefined(editEvent.eventStartDate) ? eventData.eventStartDate : editEvent.eventStartDate}
                                     endDate={isUndefined(editEvent.eventEndDate) ? eventData.eventEndDate : editEvent.eventEndDate}
                                     onChange={handleChange}
+                                    stateMgr={setEditEvent}
+                                    stateObj={editEvent}
                                 />
                             </Form.Group>
 
@@ -199,7 +205,12 @@ const SingleEvent = (props) => {
                     <p>{event.eventName}</p>
                 </div>
                 <div className="card-body row">
-                    <DateTime className="form-control" />
+                    <DateTime
+                                    className="form-control"
+                                    name='staticDates'
+                                    startDate={isUndefined(editEvent.eventStartDate) ? eventData.eventStartDate : editEvent.eventStartDate}
+                                    endDate={isUndefined(editEvent.eventEndDate) ? eventData.eventEndDate : editEvent.eventEndDate}
+                                />
                     <select className="form-select" aria-label="Default select example">
                         <option selected>Completion Level</option>
                         <option value="1">Not Started</option>
