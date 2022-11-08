@@ -6,12 +6,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 
 export default function CustomDateTimePicker({startDate, endDate, stateMgr, stateObj}) {
-    console.log(startDate);
-
-    const [startDateWithInitialValue, setStartDateWithInitialValue] = React.useState(startDate);
-
-    const [endDateWithInitialValue, setEndDateWithInitialValue] = React.useState(endDate);
-
     return (
         <div>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
