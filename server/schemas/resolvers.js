@@ -148,8 +148,9 @@ const resolvers = {
       return { available: true };
     },
     eventTasks: async (parent, { eventId }, context) => {
-        const tasks = await EventTask.find({ eventId: eventId })
-            .populate("department");
+      const tasks = await EventTask.find({ eventId: eventId }).populate(
+        "department"
+      );
       if (context.user) {
         if (!tasks) {
           throw new GraphQLError("Couldn't find any event with this id", {
@@ -168,10 +169,6 @@ const resolvers = {
       parent,
       { newCompany, signUpCode, companyTitle, ...userArgs }
     ) => {
-      //   pusher test, logs hellow world to console in front end when addUser is called
-      pusher.trigger("test-channel", "test-event", {
-        message: "hello world",
-      });
       let company;
       let department;
       //check for new company
@@ -343,8 +340,12 @@ const resolvers = {
     addEventTask: async (parent, taskData, context) => {
       if (context.user) {
         const newTask = await EventTask.create(taskData);
+        pusher.trigger(newTask.department.toString(), "newTask", {
+          newTask,
+        });
         return newTask;
       }
+
       throw new AuthenticationError("Not logged in");
     },
     updateEventTask: async (parent, args, context) => {
@@ -352,6 +353,12 @@ const resolvers = {
         const { taskId, ...data } = args;
         const updated = await EventTask.findByIdAndUpdate(taskId, data, {
           new: true,
+        });
+
+        //   pusher test, logs hellow world to console in front end when addUser is called
+        console.log(updated.department.toString());
+        pusher.trigger(updated.department.toString(), "taskChange", {
+          updated,
         });
         return updated;
       }
