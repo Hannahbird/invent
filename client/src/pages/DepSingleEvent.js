@@ -1,18 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
-import DateTime from "../utils/dateTime/dateTime";
+
 import Auth from "../utils/auth";
 import { QUERY_EVENT, QUERY_EVENTTASKS } from "../utils/queries";
-import { UPDATE_EVENT } from "../utils/mutations";
-import { Card, Modal, Button, Form } from "react-bootstrap";
-import EditTaskModal from "../components/editTaskModal";
-import CreateTaskModal from "../components/createTaskModal/index";
+
 import auth from "../utils/auth";
 import dayjs from "dayjs";
 import "../assets/css/SingleEvent.css";
-
+import Pusher from "pusher-js";
 function DepSingleEvent() {
+  var pusher = new Pusher("b4bd3ba699f2fde524c6", {
+    cluster: "mt1",
+  });
+
+  var channel = pusher.subscribe(
+    Auth.getProfile().data.department._id.toString()
+  );
   const { id: eventId } = useParams();
   const { loading, data, refetch } = useQuery(QUERY_EVENT, {
     variables: { eventId: eventId },
@@ -35,6 +39,19 @@ function DepSingleEvent() {
   const tasks = rawTasks?.filter(
     (task) => task.department._id === auth.getProfile().data.department._id
   );
+  //   pusher channels
+  channel.bind("taskChange", function (data) {
+    console.log(data);
+    // check if the affected task id is any of this events task id
+    if (tasks.map((task) => task._id).indexOf(data.updated._id) !== -1)
+      taskRefetch();
+  });
+  channel.bind("newTask", function (data) {
+    console.log(data);
+    // check if the new task is in this event
+    if (data.newTask.eventId === eventId) taskRefetch();
+  });
+
   if (loading) {
     return <div>Loading...</div>;
   }

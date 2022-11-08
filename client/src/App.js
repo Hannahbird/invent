@@ -48,18 +48,8 @@ const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
-// set up pusher connection
-var pusher = new Pusher("b4bd3ba699f2fde524c6", {
-  cluster: "mt1",
-});
-
-var channel = pusher.subscribe("test-channel");
 
 function App() {
-  // pusher test
-  channel.bind("test-event", function (data) {
-    console.log(JSON.stringify(data));
-  });
   return (
     <ApolloProvider client={client}>
       <Router>
