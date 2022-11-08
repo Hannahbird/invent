@@ -16,6 +16,7 @@ const Signup = () => {
     username: '',
     email: '',
     companyTitle: '',
+    signUpLink: '',
     newCompany: false,
     password: '',
   });
@@ -72,7 +73,7 @@ const Signup = () => {
                     Enter your user name.
                   </Form.Text>
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Group className="mb-3" /*controlId="formBasicEmail"*/>
                   <Form.Label>Email address</Form.Label>
                   <Form.Control
                     type="email"
@@ -114,7 +115,7 @@ const Signup = () => {
                   </Form.Group>
                 </Row>
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Group className="mb-3" /*controlId="formBasicPassword"*/>
                   <Form.Label>Password</Form.Label>
                   <Form.Control
                     type="password"

@@ -13,12 +13,6 @@ const eventSchema = new Schema({
     ref: "Location",
     required: true,
   },
-  departments: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Department",
-    },
-  ],
   contactInfo: {
     type: String,
     required: true,
@@ -28,13 +22,15 @@ const eventSchema = new Schema({
     type: String,
     required: true,
   },
-  eventDate: {
-    type: Date,
-    required: true,
+  eventStartDate: {
+    type: Date
+  },
+  eventEndDate: {
+    type: Date
   },
   eventState: {
     type: String,
-    default: "planning",
+    default: "Planning",
   },
   active: {
     type: Boolean,

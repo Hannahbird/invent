@@ -12,6 +12,8 @@
     background-clip: border-box;
     border: 1px solid #e6e4e9;
     border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
 }
 
 .card-header {
