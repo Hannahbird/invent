@@ -14,8 +14,9 @@ code {
 
 @import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
 
-body {
-  background-color: cornsilk !important;
+.big-page-container {
+  background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgb(255, 201, 64) 100%) !important;
+
 }
 
 .header {
@@ -31,7 +32,7 @@ body {
 
 .footer {
   font-family: 'Architects Daughter';
-  background-color: rgba(255, 255, 255, .5);
+  background-color: rgba(255, 255, 255, .8);
   align-items: center;
   position: fixed;
   bottom: 0px;
@@ -39,13 +40,14 @@ body {
 
 #footer-spacer {
   height: 10vh;
+  background: none;
 }
 
 .header h1 {
   border-radius: 50%;
   font-size: 100px;
   font-weight: bold;
-  color: grey;
+  color: goldenrod;
 
   background-color: rgba(255, 255, 255, .8);
 }
@@ -114,8 +116,9 @@ main {
 }
 
 header {
-  background-image: url(./images/eventspace9.webp);
+  background-image: url(./images/background.jpg);
   background-size: cover;
+  background-position: center;
 
 }
 

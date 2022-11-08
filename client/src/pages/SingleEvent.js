@@ -85,7 +85,7 @@ const SingleEvent = (props) => {
     const tasks = rawTasks?.sort((a, b) => a.startTime - b.startTime);
 
     if (loading) {
-        return <div>Loading...</div>;
+        return (<><AdminHeader /><div>Loading...</div></>);
     }
 
     //const loadEdit = (event) => {
