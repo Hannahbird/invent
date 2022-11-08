@@ -15,20 +15,20 @@ import { Link } from 'react-router-dom';
 import "../assets/css/SingleEvent.css";
 
 const SingleEvent = (props) => {
-  const { id: eventId } = useParams();
-  const [showCreate, setShowCreate] = useState(false);
-  const [showEdit, setShowEdit] = useState(false);
-  const [taskToEdit, setTaskToEdit] = useState({});
+    const { id: eventId } = useParams();
+    const [showCreate, setShowCreate] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
+    const [taskToEdit, setTaskToEdit] = useState({});
 
-  const {
-    loading: taskLoading,
-    data: taskData,
-    refetch: taskRefetch,
-  } = useQuery(QUERY_EVENTTASKS, {
-    variables: {
-      eventId: eventId,
-    },
-  });
+    const {
+        loading: taskLoading,
+        data: taskData,
+        refetch: taskRefetch,
+    } = useQuery(QUERY_EVENTTASKS, {
+        variables: {
+            eventId: eventId,
+        },
+    });
 
     const { loading, data, refetch } = useQuery(QUERY_EVENT, {
         variables: {
@@ -226,19 +226,19 @@ const SingleEvent = (props) => {
                 </Modal>
             </>
 
-      <CreateTaskModal
-        eventData={eventData}
-        refetch={refetch}
-        showCreate={showCreate}
-        setShowCreate={setShowCreate}
-        taskRefetch={taskRefetch}
-      />
-      <EditTaskModal
-        task={taskToEdit}
-        taskRefetch={taskRefetch}
-        showEdit={showEdit}
-        setShowEdit={setShowEdit}
-      />
+            <CreateTaskModal
+                eventData={eventData}
+                refetch={refetch}
+                showCreate={showCreate}
+                setShowCreate={setShowCreate}
+                taskRefetch={taskRefetch}
+            />
+            <EditTaskModal
+                task={taskToEdit}
+                taskRefetch={taskRefetch}
+                showEdit={showEdit}
+                setShowEdit={setShowEdit}
+            />
 
             <div className="container">
                 <Link
@@ -247,7 +247,7 @@ const SingleEvent = (props) => {
                     <ArrowBarLeft size={30} />
                 </Link>
                 <div className="row">
-                    <div className="col-4 event-wrapper">
+                    <div className="col-12 col-md-4 event-wrapper">
                         <h1>Event</h1>
                         <div className="eventDataHolder">
                             <div>
@@ -309,7 +309,7 @@ const SingleEvent = (props) => {
                         </button>
                     </div>
 
-                    <div className="col-8 task-wrapper">
+                    <div className="col-12 col-md-8 task-wrapper">
                         <h1>Tasks</h1>
                         {tasks.map((task) => (
                             <div key={task._id} className="card-body card task-card">

@@ -14,26 +14,51 @@ code {
 
 @import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
 
+body {
+  background-color: cornsilk !important;
+}
+
 .header {
   font-family: 'Architects Daughter';
   font-size: large;
-  background-color: #D6CCC2;
+  height: inherit;
+  width: inherit;
   align-items: stretch;
-  padding-left: 50px;
+  padding-left: 10px;
+  position: sticky;
+
 }
-.footer{
+
+.footer {
   font-family: 'Architects Daughter';
-  background-color: #D6CCC2;
+  background-color: rgba(255, 255, 255, .5);
   align-items: center;
   position: fixed;
   bottom: 0px;
 }
-.header h1 {
-  font-size: 100px;
-  font-weight: bold;
-  color: black
+
+#footer-spacer {
+  height: 10vh;
 }
 
+.header h1 {
+  border-radius: 50%;
+  font-size: 100px;
+  font-weight: bold;
+  color: grey;
+  mix-blend-mode: difference;
+  background-color: rgba(255, 255, 255, .8);
+}
+
+#in {
+  color: black;
+}
+
+.header nav {
+  background-color: rgba(255, 255, 255, .8);
+  padding: 10px;
+  border-radius: 3px;
+}
 
 .navigation {
   color: black
@@ -51,7 +76,8 @@ body {
   font: 'Arial';
   background-color: #EDEDE9
 }
-main{
+
+main {
   align-self: center;
 }
 
@@ -68,7 +94,7 @@ main{
   max-width: 1200px;
   margin-left: 10px;
   margin-right: 10px;
-  
+
 }
 
 .flex-row {
@@ -78,5 +104,18 @@ main{
 
 .my-2 {
   padding: 10px;
-  
+
+}
+
+/* fix overflow on smaller screens */
+.card-body {
+  margin: 0 !important;
+}
+
+header {
+  background-image: url(./images/eventspace9.webp);
+}
+
+.event-wrapper {
+  background-color: white;
 }

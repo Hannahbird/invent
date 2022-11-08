@@ -69,6 +69,7 @@ function App() {
               <Route path="*" element={<NoMatch />} />
             </Routes>
           </div>
+          <div id='footer-spacer'></div>
           <Footer />
         </div>
       </Router>
