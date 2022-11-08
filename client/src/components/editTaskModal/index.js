@@ -1,23 +1,16 @@
 import React, { useState } from "react";
 import { Form, Modal, Button } from "react-bootstrap";
-import { ADD_EVENTTASK } from "../../utils/mutations";
+import { DELETE_EVENTTASK, UPDATE_EVENTTASK } from "../../utils/mutations";
 import { QUERY_COMPANY_DEPTS } from "../../utils/queries";
 import { useMutation, useQuery } from "@apollo/client";
 import DateTime from "../../utils/dateTime/dateTimeTasks";
-
-function CreateTaskModal({
-  eventData,
-  taskRefetch,
-  showCreate,
-  setShowCreate,
-}) {
-  const eventId = eventData._id;
+function EditTaskModal({ task, taskRefetch, showEdit, setShowEdit }) {
   const [editDate, setEditDate] = useState({
-    startTime: eventData.eventStartDate,
-    endTime: eventData.eventEndDate,
+    startTime: task.startTime,
+    endTime: task.endTime,
   });
-
-  const [addEventTask] = useMutation(ADD_EVENTTASK);
+  const [delEventTask] = useMutation(DELETE_EVENTTASK);
+  const [addEventTask] = useMutation(UPDATE_EVENTTASK);
   const { loading, data } = useQuery(QUERY_COMPANY_DEPTS);
   const departments = data?.departments || [];
   const onFormSubmit = async (e) => {
@@ -30,28 +23,26 @@ function CreateTaskModal({
       ...formDataObj,
       startTime: editDate.startTime,
       endTime: editDate.endTime,
-      eventId: eventId,
+      taskId: task?._id,
     };
     console.log(reqObj);
     await addEventTask({ variables: reqObj });
     taskRefetch();
-    setShowCreate(false);
+    setShowEdit(false);
   };
 
-  const handleChange = (Task) => {
-    const { name, value } = Task.target;
-
-    setEditDate({
-      ...editDate,
-      [name]: value,
-    });
-  };
+  async function handleDelete() {
+    console.log(task._id);
+    setShowEdit(false);
+    await delEventTask({ variables: { taskId: task._id } });
+    taskRefetch();
+  }
 
   return (
     <Modal
-      show={showCreate}
+      show={showEdit}
       onHide={() => {
-        setShowCreate(false);
+        setShowEdit(false);
       }}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
@@ -60,17 +51,18 @@ function CreateTaskModal({
       <Form onSubmit={onFormSubmit}>
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Create Task
+            Edit Task
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h4>Create a new task</h4>
+          <h4>Edit Task</h4>
           <Form.Group className="mb-3">
             <Form.Label>Task Description</Form.Label>
             <Form.Control
               name="description"
               type="string"
               placeholder="Task Description"
+              defaultValue={task.description}
             />
             <Form.Text className="text-muted">
               A short description of expected duties
@@ -85,10 +77,6 @@ function CreateTaskModal({
               type="string"
               startDate={editDate.startTime}
               endDate={editDate.endTime}
-              onChange={() => {
-                console.log("changing");
-                handleChange();
-              }}
               stateMgr={setEditDate}
               stateObj={editDate}
             />
@@ -97,6 +85,7 @@ function CreateTaskModal({
           <Form.Group className="mb-3">
             <Form.Label>Department</Form.Label>
             <Form.Select
+              defaultValue={task.department?._id}
               name="department"
               type="string"
               placeholder="Department Needed"
@@ -106,7 +95,7 @@ function CreateTaskModal({
                   return;
                 }
                 return (
-                  <option value={department._id}>{department.deptName}</option>
+                  <option value={department?._id}>{department.deptName}</option>
                 );
               })}
             </Form.Select>
@@ -116,6 +105,9 @@ function CreateTaskModal({
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
+          <Button onClick={handleDelete} variant="danger">
+            Delete
+          </Button>
           <Button variant="secondary" type="submit">
             Submit
           </Button>
@@ -124,4 +116,4 @@ function CreateTaskModal({
     </Modal>
   );
 }
-export default CreateTaskModal;
+export default EditTaskModal;

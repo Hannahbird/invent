@@ -140,8 +140,8 @@ const typeDefs = gql`
       description: String!
       department: ID!
       eventId: ID!
-      startTime: String!
-      endTime: String!
+      startTime: String
+      endTime: String
     ): EventTask
     updateEventTask(
       taskId: ID!

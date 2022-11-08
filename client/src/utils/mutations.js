@@ -144,9 +144,7 @@ export const UPDATE_EVENTTASK = gql`
       department {
         deptName
       }
-      eventId {
-        eventName
-      }
+
       startTime
       endTime
     }
@@ -154,7 +152,7 @@ export const UPDATE_EVENTTASK = gql`
 `;
 export const DELETE_EVENTTASK = gql`
   mutation deleteEventTask($taskId: ID!) {
-    deleteEventTask(taskId: taskId) {
+    deleteEventTask(taskId: $taskId) {
       _id
     }
   }
