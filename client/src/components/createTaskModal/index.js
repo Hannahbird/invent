@@ -16,6 +16,7 @@ function CreateTaskModal({
     startTime: eventData.eventStartDate,
     endTime: eventData.eventEndDate,
   });
+  // loads in new start time whenever a new task is created/selected
   useEffect(() => {
     setEditDate({
       startTime: eventData.eventStartDate,

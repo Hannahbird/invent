@@ -9,6 +9,7 @@ function EditTaskModal({ task, taskRefetch, showEdit, setShowEdit }) {
     startTime: task.startTime,
     endTime: task.endTime,
   });
+  // loads in new start time whenever a new task is created/selected
   useEffect(() => {
     setEditDate({ startTime: task.startTime, endTime: task.endTime });
   }, [showEdit]);
