@@ -20,6 +20,7 @@ code {
   background-color: #D6CCC2;
   align-items: stretch;
   padding-left: 50px;
+  
 }
 .footer{
   font-family: 'Architects Daughter';
@@ -31,7 +32,8 @@ code {
 .header h1 {
   font-size: 100px;
   font-weight: bold;
-  color: black
+  color: black;
+  
 }
 
 
@@ -49,7 +51,10 @@ p {
 
 body {
   font: 'Arial';
-  background-color: #EDEDE9
+  background-color: #EDEDE9;
+  
+  
+  
 }
 main{
   align-self: center;
@@ -79,4 +84,12 @@ main{
 .my-2 {
   padding: 10px;
   
+}
+
+.background {
+  background-image: url("../src/assets/images/eventspace1.jpeg");
+    background-size: cover;
+    position: absolute;
+    background-position: center;
+    
 }
