@@ -160,7 +160,6 @@ export const DELETE_EVENTTASK = gql`
 export const ADD_EVENT = gql`
   mutation Mutation(
     $contactName: String!
-    $eventDate: Date!
     $eventStartDate: Date
     $eventEndDate: Date
     $eventName: String!
@@ -169,7 +168,6 @@ export const ADD_EVENT = gql`
   ) {
     addEvent(
       contactName: $contactName
-      eventDate: $eventDate
       eventStartDate: $eventStartDate
       eventEndDate: $eventEndDate
       eventName: $eventName

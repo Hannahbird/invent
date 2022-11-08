@@ -22,10 +22,6 @@ const eventSchema = new Schema({
     type: String,
     required: true,
   },
-  eventDate: {
-    type: Date,
-    required: true,
-  },
   eventStartDate: {
     type: Date
   },

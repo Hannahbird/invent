@@ -121,7 +121,6 @@ const typeDefs = gql`
       departments: [ID]
       contactInfo: String!
       contactName: String!
-      eventDate: Date!
       eventStartDate: Date
       eventEndDate: Date
     ): Event
