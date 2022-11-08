@@ -241,7 +241,7 @@ const SingleEvent = (props) => {
                         <h1>Event</h1>
                         <div className="eventDataHolder">
                             <div>
-                                <span className="single-event-name-label">Event Name: </span>
+                                <span className="single-event-name-label">Name: </span>
                                 <span className="single-event-name">{eventData.eventName}</span>
                             </div>
                             <hr />
