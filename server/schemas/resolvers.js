@@ -188,7 +188,27 @@ const resolvers = {
         });
       } else if (signUpCode) {
         //decode signup code and create user for department
-        department = "placeholder"; //placeholder
+
+          department = await Department.find()
+            .then(departments => departments.filter(
+              department => {
+                if (department.signUpLink === signUpCode) {
+                  return true
+                }
+                return false
+            }
+          ))
+          
+          if (!department) {
+            throw new GraphQLError("Invalid SignUp Code", {
+            extensions: {
+              code: "BAD_USER_INPUT",
+            },
+          });
+        }
+        
+        department = department[0]
+        //placeholder
       } else {
         throw new GraphQLError("Some data is missing", {
           extensions: {

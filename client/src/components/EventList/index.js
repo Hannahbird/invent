@@ -122,8 +122,6 @@ const EventList = () => {
                                 name='eventDate'
                                 startDate={dayjs()}
                                 endDate={dayjs()}
-                                stateMgr={}
-                                stateObj={}
                             />
                         </Form.Group>
 

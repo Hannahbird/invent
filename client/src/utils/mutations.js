@@ -23,7 +23,7 @@ export const ADD_USER = gql`
     $username: String!
     $email: String!
     $password: String!
-    $signUpCode: String
+    $signUpLink: String
     $newCompany: Boolean
     $companyTitle: String
   ) {
@@ -31,7 +31,7 @@ export const ADD_USER = gql`
       username: $username
       email: $email
       password: $password
-      signUpCode: $signUpCode
+      signUpCode: $signUpLink
       newCompany: $newCompany
       companyTitle: $companyTitle
     ) {
