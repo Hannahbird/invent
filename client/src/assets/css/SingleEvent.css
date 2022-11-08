@@ -1,5 +1,5 @@
-#single-event-container {
-    border: 1px solid #000;
+* {
+    /*border: 1px solid #000;*/
 }
 
 .add-task-btn {

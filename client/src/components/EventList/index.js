@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 import {
@@ -12,6 +12,7 @@ import '../../assets/css/EventList.css';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import DateTime from '../../utils/dateTime/dateTime';
 import dayjs from 'dayjs';
 
 import AdminHeader from '../AdminHeader';
@@ -23,6 +24,16 @@ const EventList = () => {
 
     const { loading: departmentLoading, data: departmentData } =
         useQuery(QUERY_COMPANY_DEPTS);
+
+    const [newEvent, setNewEvent] = useState({
+        eventName: '',
+        contactName: '',
+        contactInfo: '',
+        eventStartDate: '',
+        eventEndDate: '',
+        location: '',
+        departments: ''
+    })
 
     const locations = locationData?.locations || [];
     const departments = departmentData?.departments || [];
@@ -106,15 +117,14 @@ const EventList = () => {
                         </Form.Group>
 
                         <Form.Group className="mb-3">
-                            <Form.Label>Event Date</Form.Label>
-                            <Form.Control
-                                name="eventDate"
-                                type="date"
-                                placeholder="Event Date"
+                            <DateTime
+                                className="form-control"
+                                name='eventDate'
+                                startDate={dayjs()}
+                                endDate={dayjs()}
+                                stateMgr={}
+                                stateObj={}
                             />
-                            <Form.Text className="text-muted">
-                                When will the event take place?.
-                            </Form.Text>
                         </Form.Group>
 
                         <Form.Group className="mb-3">
@@ -161,12 +171,6 @@ const EventList = () => {
 
     function Create() {
         const [modalShow, setModalShow] = React.useState(false);
-
-        //EventList should have name, timeOf, dateOf, location
-        //On each hover edit button
-        //onMouseover opacity (like react portfolio)
-        //edit bring up modal that contains editable name, timeOf, dateOf, location, description(readonly)
-        //
 
         return (
             <>
