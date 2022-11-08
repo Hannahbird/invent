@@ -201,11 +201,11 @@ const SpacesList = ({ id }) => {
         <h3>Your Current Spaces</h3>
         <Create />
         {showEditModal && <EditModal />}
-        <div className="d-flex flex-wrap justify-content-between mt-3">
+        <div className="d-flex flex-wrap justify-content-evenly mt-3">
         {spaces &&
           spaces.map((space) => {
             return (
-              <div key={space._id} className="mb-3 mx-3 col-3 border rounded">
+              <div key={space._id} className="mb-3 mx-3 col-lg-3 col-md-5 col-sm-12 border rounded">
                 {space.locationName}
                 <button
                   id={space._id}
