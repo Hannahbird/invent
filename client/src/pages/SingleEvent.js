@@ -316,6 +316,15 @@ const SingleEvent = (props) => {
                                 <div className="single-event-task-name">{task.description}</div>
                                 <div className="single-event-task-dept"><span>Assigned to: </span>{task.department.deptName}</div>
                                 <div className="single-event-task-time"><span>Duration: </span>{dayjs(task.startTime).format("hh:mm A")} - {dayjs(task.endTime).format("hh:mm A")}</div>
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={() => {
+                                        setTaskToEdit(task);
+                                        setShowEdit(true);
+                                    }}
+                                >
+                                    Edit
+                                </button>
                             </div>
                         ))}
                     </div>
