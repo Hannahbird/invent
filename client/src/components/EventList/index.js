@@ -22,11 +22,20 @@ const EventList = () => {
   const { loading: locationLoading, data: locationData } =
     useQuery(QUERY_LOCATIONS);
 
-  const { loading: departmentLoading, data: departmentData } =
-    useQuery(QUERY_COMPANY_DEPTS);
+  const [addEvent] = useMutation(ADD_EVENT);
+
+  const [modalShow, setModalShow] = React.useState(false);
+
+  const [newEvent, setNewEvent] = useState({
+    eventName: "",
+    contactName: "",
+    contactInfo: "",
+    eventStartDate: "",
+    eventEndDate: "",
+    location: "",
+  });
 
   const locations = locationData?.locations || [];
-  const departments = departmentData?.departments || [];
   const events = data?.events || {};
 
   if (loading) {
@@ -38,40 +47,51 @@ const EventList = () => {
       <>
         <AdminHeader />
         <h3>No Events Scheduled</h3>
-        <Create />
       </>
     );
   }
 
-  //Create Event Modal
-  function AddEventsModal(props) {
-    const [editDate, setEditDate] = useState({
-      eventStartDate: Date(),
-      eventEndDate: Date(),
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setNewEvent({
+      ...newEvent,
+      [name]: value,
     });
-    const [addEvent] = useMutation(ADD_EVENT);
-    const onFormSubmit = async (e) => {
-      e.preventDefault();
-      const formData = new FormData(e.target),
-        formDataObj = Object.fromEntries(formData.entries());
-      const reqObj = {
-        ...formDataObj,
-        eventDate: editDate.eventStartDate,
-        eventStartDate: editDate.eventStartDate,
-        eventEndDate: editDate.eventEndDate,
-      };
-      props.onHide();
-      await addEvent({ variables: reqObj });
+  };
+
+  const handleNewEvent = async (event) => {
+    event.preventDefault();
+    console.log(newEvent);
+
+    try {
+      const { data } = await addEvent({
+        variables: { ...newEvent },
+      });
+      setNewEvent({
+        eventName: "",
+        contactName: "",
+        contactInfo: "",
+        eventStartDate: "",
+        eventEndDate: "",
+        location: "",
+      });
       refetch();
-    };
-    return (
+    } catch (e) {}
+
+    setModalShow(false);
+  };
+
+  return (
+    <div>
       <Modal
-        {...props}
+        show={modalShow}
+        onHide={() => setModalShow(false)}
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
-        <Form onSubmit={onFormSubmit}>
+        <Form>
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
               Create Events
@@ -85,6 +105,8 @@ const EventList = () => {
                 name="eventName"
                 type="string"
                 placeholder="Event Name"
+                value={newEvent.eventName}
+                onChange={handleChange}
               />
               <Form.Text className="text-muted">
                 What is the Event's Name?
@@ -97,6 +119,8 @@ const EventList = () => {
                 name="contactName"
                 type="string"
                 placeholder="Client Name"
+                value={newEvent.contactName}
+                onChange={handleChange}
               />
               <Form.Text className="text-muted">
                 Who is the primary contact?
@@ -109,6 +133,8 @@ const EventList = () => {
                 name="contactInfo"
                 type="string"
                 placeholder="Client Contact"
+                value={newEvent.contactInfo}
+                onChange={handleChange}
               />
               <Form.Text className="text-muted">
                 What is the primary contact information?
@@ -116,15 +142,13 @@ const EventList = () => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label></Form.Label>
               <DateTime
                 className="form-control"
                 name="eventDate"
-                type="string"
-                startDate={editDate.eventStartDate}
-                endDate={editDate.eventEndDate}
-                stateMgr={setEditDate}
-                stateObj={editDate}
+                stateMgr={setNewEvent}
+                stateObj={newEvent}
+                startDate={newEvent.eventStartDate}
+                endDate={newEvent.eventEndDate}
               />
             </Form.Group>
 
@@ -134,7 +158,9 @@ const EventList = () => {
                 name="location"
                 type="string"
                 placeholder="Event Location"
+                onChange={handleChange}
               >
+                <option selected>Select Location</option>
                 {locations.map((location) => (
                   <option value={location._id}>{location.locationName}</option>
                 ))}
@@ -143,63 +169,25 @@ const EventList = () => {
                 Which location will be used for this event?
               </Form.Text>
             </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Departments Needed</Form.Label>
-              <Form.Select
-                name="departments"
-                type="string"
-                placeholder="Departments Needed"
-              >
-                {departments.map((department) => {
-                  if (department.deptName === "admin") {
-                    return;
-                  }
-                  return (
-                    <option value={department._id}>
-                      {department.deptName}
-                    </option>
-                  );
-                })}
-              </Form.Select>
-              <Form.Text className="text-muted">
-                Which location will be used for this event?
-              </Form.Text>
-            </Form.Group>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" type="submit">
+            <Button variant="secondary" type="submit" onClick={handleNewEvent}>
               Submit
             </Button>
           </Modal.Footer>
         </Form>
       </Modal>
-    );
-  }
-
-  function Create() {
-    const [modalShow, setModalShow] = React.useState(false);
-
-    return (
       <>
         <Button variant="secondary" onClick={() => setModalShow(true)}>
           Create Events
         </Button>
-
-        <AddEventsModal show={modalShow} onHide={() => setModalShow(false)} />
       </>
-    );
-  }
-
-  return (
-    <div>
-      <Create />
       <h3>Your Current Events</h3>
       <div className="row">
         {events &&
           events.map((event) => (
             <div className="col-sm-12 col-md-6">
-              <div key={event._id} className="card">
+              <div key={event._id} className="card mt-3">
                 <Link to={`/event/${event._id}`}>
                   <div className="card-header border-0 text-black">
                     <p>{event.eventName}</p>
