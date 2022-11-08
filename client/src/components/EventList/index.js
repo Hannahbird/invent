@@ -39,7 +39,7 @@ const EventList = () => {
   const events = data?.events || {};
 
   if (loading) {
-    return <div>Loading...</div>;
+    <><AdminHeader /> <div>Loading...</div></>
   }
 
   if (!events.length) {
@@ -77,7 +77,7 @@ const EventList = () => {
         location: '',
       });
       refetch();
-    } catch (e) {}
+    } catch (e) { }
 
     setModalShow(false);
   };

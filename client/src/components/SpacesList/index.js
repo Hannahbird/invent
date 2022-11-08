@@ -38,7 +38,7 @@ const SpacesList = ({ id }) => {
   }
 
   if (loading) {
-    return <div>Loading...</div>;
+    <><AdminHeader /> <div>Loading...</div></>
   }
 
   //add spaces modal
@@ -201,33 +201,34 @@ const SpacesList = ({ id }) => {
         <h3>Your Current Spaces</h3>
         <Create />
         {showEditModal && <EditModal />}
-        <div className="d-flex flex-wrap justify-content-evenly mt-3">
-        {spaces &&
-          spaces.map((space) => {
-            return (
-              <div key={space._id} className="mb-3 mx-3 col-lg-3 col-md-5 col-sm-12 border rounded">
-                {space.locationName}
-                <button
-                  id={space._id}
-                  data-capacity={space.capacity}
-                  value={space.locationName}
-                  className="btn col-6"
-                  onClick={() => {
-                    setShowEditModal(true);
-                    setEditInfo({
-                      locationId: space._id,
-                      locationName: space.locationName,
-                      capacity: space.capacity,
-                    });
-                    console.log(editInfo);
-                  }}
-                >
-                  edit
-                </button>
-              </div>
-            );
-          })}
-          </div>
+        <div className="d-flex flex-wrap row mt-3">
+          {spaces &&
+            spaces.map((space) => {
+              return (
+                <div key={space._id} className="mb-3 col-lg-3 col-md-6 col-sm-12 border rounded d-flex justify-content-between">
+
+                  <div className='m-auto'>{space.locationName}</div>
+                  <button
+                    id={space._id}
+                    data-capacity={space.capacity}
+                    value={space.locationName}
+                    className="btn col-6"
+                    onClick={() => {
+                      setShowEditModal(true);
+                      setEditInfo({
+                        locationId: space._id,
+                        locationName: space.locationName,
+                        capacity: space.capacity,
+                      });
+                      console.log(editInfo);
+                    }}
+                  >
+                    edit
+                  </button>
+                </div>
+              );
+            })}
+        </div>
       </div>
     </>
   );

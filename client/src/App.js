@@ -53,7 +53,7 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
-        <div className="flex-column justify-flex-start min-100-vh">
+        <div className="flex-column justify-flex-start min-100-vh big-page-container">
           <div>
             <Routes>
               <Route path="/" element={<Home />} />
@@ -69,6 +69,7 @@ function App() {
               <Route path="*" element={<NoMatch />} />
             </Routes>
           </div>
+          <div id='footer-spacer'></div>
           <Footer />
         </div>
       </Router>

@@ -14,28 +14,54 @@ code {
 
 @import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
 
+.big-page-container {
+  background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgb(255, 201, 64) 100%) !important;
+
+}
+
 .header {
   font-family: 'Architects Daughter';
   font-size: large;
-  background-color: #D6CCC2;
+  height: inherit;
+  width: inherit;
   align-items: stretch;
-  padding-left: 50px;
-  
+  padding-left: 10px;
+  position: sticky;
+
 }
-.footer{
+
+.footer {
   font-family: 'Architects Daughter';
-  background-color: #D6CCC2;
+  background-color: rgba(255, 255, 255, .8);
   align-items: center;
   position: fixed;
   bottom: 0px;
 }
-.header h1 {
-  font-size: 100px;
-  font-weight: bold;
-  color: black;
-  
+
+#footer-spacer {
+  height: 10vh;
+  background: none;
 }
 
+.header h1 {
+  border-radius: 50%;
+  font-size: 100px;
+  font-weight: bold;
+  color: goldenrod;
+
+  background-color: rgba(255, 255, 255, .8);
+}
+
+#in {
+  color: black;
+}
+
+.header nav {
+  background-color: rgba(255, 255, 255, .8);
+  padding: 10px;
+  border-radius: 3px;
+  max-height: 50px !important;
+}
 
 .navigation {
   color: black
@@ -56,7 +82,8 @@ body {
   
   
 }
-main{
+
+main {
   align-self: center;
 }
 
@@ -73,7 +100,7 @@ main{
   max-width: 1200px;
   margin-left: 10px;
   margin-right: 10px;
-  
+
 }
 
 .flex-row {
@@ -83,19 +110,21 @@ main{
 
 .my-2 {
   padding: 10px;
-  
+
 }
 
-.background {
-  background-image: url("../src/assets/images/eventspace2.jpeg");
-    background-size: cover;
-    /* position: absolute; */
-    background-position: center;
-    
+/* fix overflow on smaller screens */
+.card-body {
+  margin: 0 !important;
 }
 
+header {
+  background-image: url(./images/background.jpg);
+  background-size: cover;
+  background-position: center;
 
-.about {
-font-size: xx-large;
-background-image: url('../src/assets/images/eventspace3.jpeg');
+}
+
+.event-wrapper {
+  background-color: white;
 }
