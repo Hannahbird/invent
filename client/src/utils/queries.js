@@ -26,6 +26,7 @@ export const QUERY_COMPANY_DEPTS = gql`
     departments {
       _id
       deptName
+      signUpLink
     }
   }
 `;

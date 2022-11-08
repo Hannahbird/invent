@@ -25,16 +25,6 @@ const EventList = () => {
   const { loading: departmentLoading, data: departmentData } =
     useQuery(QUERY_COMPANY_DEPTS);
 
-  const [newEvent, setNewEvent] = useState({
-    eventName: "",
-    contactName: "",
-    contactInfo: "",
-    eventStartDate: "",
-    eventEndDate: "",
-    location: "",
-    departments: "",
-  });
-
   const locations = locationData?.locations || [];
   const departments = departmentData?.departments || [];
   const events = data?.events || {};
@@ -55,14 +45,23 @@ const EventList = () => {
 
   //Create Event Modal
   function AddEventsModal(props) {
+    const [editDate, setEditDate] = useState({
+      eventStartDate: Date(),
+      eventEndDate: Date(),
+    });
     const [addEvent] = useMutation(ADD_EVENT);
     const onFormSubmit = async (e) => {
       e.preventDefault();
       const formData = new FormData(e.target),
         formDataObj = Object.fromEntries(formData.entries());
-      console.log(formDataObj);
+      const reqObj = {
+        ...formDataObj,
+        eventDate: editDate.eventStartDate,
+        eventStartDate: editDate.eventStartDate,
+        eventEndDate: editDate.eventEndDate,
+      };
       props.onHide();
-      await addEvent({ variables: formDataObj });
+      await addEvent({ variables: reqObj });
       refetch();
     };
     return (
@@ -116,12 +115,18 @@ const EventList = () => {
               </Form.Text>
             </Form.Group>
 
-                        <Form.Group className="mb-3">
-                            <DateTime
-                                className="form-control"
-                                name='eventDate'
-                            />
-                        </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label></Form.Label>
+              <DateTime
+                className="form-control"
+                name="eventDate"
+                type="string"
+                startDate={editDate.eventStartDate}
+                endDate={editDate.eventEndDate}
+                stateMgr={setEditDate}
+                stateObj={editDate}
+              />
+            </Form.Group>
 
             <Form.Group className="mb-3">
               <Form.Label>Event Location</Form.Label>
@@ -146,9 +151,16 @@ const EventList = () => {
                 type="string"
                 placeholder="Departments Needed"
               >
-                {departments.map((department) => (
-                  <option value={department._id}>{department.deptName}</option>
-                ))}
+                {departments.map((department) => {
+                  if (department.deptName === "admin") {
+                    return;
+                  }
+                  return (
+                    <option value={department._id}>
+                      {department.deptName}
+                    </option>
+                  );
+                })}
               </Form.Select>
               <Form.Text className="text-muted">
                 Which location will be used for this event?
@@ -179,51 +191,56 @@ const EventList = () => {
     );
   }
 
-    return (
-        <div>
-            <Create />
-            <h3>Your Current Events</h3>
-            <div className="row">
-                {events &&
-                    events.map((event) => (
-                        <div className="col-sm-12 col-md-6">
-                            <div key={event._id} className="card">
-                                <Link to={`/event/${event._id}`}>
-                                    <div className="card-header border-0 text-black">
-                                        <p>{event.eventName}</p>
-                                    </div>
-                                    <div className="card-body row text-black">
-                                        <div className="main-body">
-                                            <div className="main-body-meeting-info">
-                                                <div className="main-body-date">
-                                                    <span className="main-body-dateDay">
-                                                        {dayjs(event.eventStartDate).format('DD')}
-                                                    </span>
-                                                    <span className="main-body-dateMonth">{dayjs(event.eventStartDate).format('MMM')}</span>
-                                                </div>
-                                                <div className="main-body-event">
-                                                    <span className="main-body-location">
-                                                        {event.location.locationName}
-                                                    </span>
-                                                    <span className="main-body-time">{dayjs(event.eventStartDate).format('hh:mm A')} - {dayjs(event.eventEndDate).format('hh:mm A')} </span>
-                                                </div>
-                                            </div>
-                                            <div className="main-body-contact">
-                                                <span>{event.contactName}</span>
-                                                <span>{event.contactInfo}</span>
-                                            </div>
-                                            <div className="main-body-eventState">
-                                                <span>Event Status: {event.eventState}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </div>
+  return (
+    <div>
+      <Create />
+      <h3>Your Current Events</h3>
+      <div className="row">
+        {events &&
+          events.map((event) => (
+            <div className="col-sm-12 col-md-6">
+              <div key={event._id} className="card">
+                <Link to={`/event/${event._id}`}>
+                  <div className="card-header border-0 text-black">
+                    <p>{event.eventName}</p>
+                  </div>
+                  <div className="card-body row text-black">
+                    <div className="main-body">
+                      <div className="main-body-meeting-info">
+                        <div className="main-body-date">
+                          <span className="main-body-dateDay">
+                            {dayjs(event.eventStartDate).format("DD")}
+                          </span>
+                          <span className="main-body-dateMonth">
+                            {dayjs(event.eventStartDate).format("MMM")}
+                          </span>
                         </div>
-                    ))}
+                        <div className="main-body-event">
+                          <span className="main-body-location">
+                            {event.location.locationName}
+                          </span>
+                          <span className="main-body-time">
+                            {dayjs(event.eventStartDate).format("hh:mm A")} -{" "}
+                            {dayjs(event.eventEndDate).format("hh:mm A")}{" "}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="main-body-contact">
+                        <span>{event.contactName}</span>
+                        <span>{event.contactInfo}</span>
+                      </div>
+                      <div className="main-body-eventState">
+                        <span>Event Status: {event.eventState}</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </div>
             </div>
-        </div>
-    );
+          ))}
+      </div>
+    </div>
+  );
 };
 
 export default EventList;
