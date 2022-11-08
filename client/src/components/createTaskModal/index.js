@@ -3,10 +3,20 @@ import { Form, Modal, Button } from "react-bootstrap";
 import { ADD_EVENTTASK } from "../../utils/mutations";
 import { QUERY_COMPANY_DEPTS } from "../../utils/queries";
 import { useMutation, useQuery } from "@apollo/client";
+import DateTime from "../../utils/dateTime/dateTime";
+import dayjs from "dayjs";
 import TimePicker from "react-bootstrap-time-picker";
-function CreateTaskModal({ eventId, taskRefetch, showCreate, setShowCreate }) {
-  const [startTime, setStartTime] = useState({ time: 0 });
-  const [endTime, setEndTime] = useState({ time: 0 });
+function CreateTaskModal({
+  eventData,
+  taskRefetch,
+  showCreate,
+  setShowCreate,
+}) {
+  const eventId = eventData._id;
+  const [editDate, setEditDate] = useState({
+    startTime: eventData.eventStartDate,
+    endTime: eventData.eventEndDate,
+  });
 
   const [addEventTask] = useMutation(ADD_EVENTTASK);
   const { loading, data } = useQuery(QUERY_COMPANY_DEPTS);
@@ -15,18 +25,29 @@ function CreateTaskModal({ eventId, taskRefetch, showCreate, setShowCreate }) {
     e.preventDefault();
     const formData = new FormData(e.target),
       formDataObj = Object.fromEntries(formData.entries());
-    const parsedObj = {
+    formData.startTime = editDate.startTime;
+    formData.endTime = editDate.endTime;
+    const reqObj = {
+      ...formDataObj,
+      startTime: editDate.startTime,
+      endTime: editDate.endTime,
       eventId: eventId,
-      startTime: formDataObj.startTime / 36,
-      endTime: formDataObj.endTime / 36,
-      description: formDataObj.description,
-      department: formDataObj.department,
     };
-    console.log(parsedObj);
-    await addEventTask({ variables: parsedObj });
-      taskRefetch();
-      setShowCreate(false);
+    console.log(reqObj);
+    await addEventTask({ variables: reqObj });
+    taskRefetch();
+    setShowCreate(false);
   };
+
+  const handleChange = (Task) => {
+    const { name, value } = Task.target;
+
+    setEditDate({
+      ...editDate,
+      [name]: value,
+    });
+  };
+
   return (
     <Modal
       show={showCreate}
@@ -50,33 +71,24 @@ function CreateTaskModal({ eventId, taskRefetch, showCreate, setShowCreate }) {
             <Form.Control
               name="description"
               type="string"
-              placeholder="Event Name"
+              placeholder="Task Description"
             />
             <Form.Text className="text-muted">
               A short description of expected duties
             </Form.Text>
           </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Start Time</Form.Label>
-            <TimePicker
-              name="startTime"
-              start="10:00"
-              end="21:00"
-              step={30}
-              value={startTime}
-              onChange={(time) => setStartTime(time)}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>End Time</Form.Label>
-            <TimePicker
-              name="endTime"
-              start="10:00"
-              end="21:00"
-              step={30}
-              value={endTime}
-              onChange={(time) => setEndTime(time)}
+          <Form.Group className="mb-3" controlId="formDateStart">
+            <Form.Label></Form.Label>
+            <DateTime
+              className="form-control"
+              name="eventDate"
+              type="string"
+              startDate={editDate.startTime}
+              endDate={editDate.endTime}
+              onChange={handleChange}
+              stateMgr={setEditDate}
+              stateObj={editDate}
             />
           </Form.Group>
 
