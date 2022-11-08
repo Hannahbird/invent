@@ -184,10 +184,11 @@ const DepartmentList = ({ id }) => {
   return (
     <div>
       <AdminHeader />
+      <div className="container">
       <h3>Your Current Departments</h3>
       <Create />
       {showEditModal && <EditModal />}
-      <div>
+      <div className="mt-3">
         {departments.map((department) => {
           if (department.deptName === "admin") {
             return;
@@ -195,7 +196,7 @@ const DepartmentList = ({ id }) => {
           return (
             <div
               key={department._id}
-              className="d-flex justify-content-between border"
+              className="d-flex justify-content-between border rounded mt-1"
               type="div"
             >
               <p className="col-4 flex m-auto">{department.deptName}</p>
@@ -211,7 +212,8 @@ const DepartmentList = ({ id }) => {
             </div>
           );
         })}
-      </div>
+        </div>
+        </div>
     </div>
   );
 };
