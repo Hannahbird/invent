@@ -102,8 +102,8 @@ export const ADD_EVENTTASK = gql`
     $description: String!
     $department: ID!
     $eventId: ID!
-    $startTime: Int
-    $endTime: Int
+    $startTime: String!
+    $endTime: String!
   ) {
     addEventTask(
       description: $description
@@ -128,8 +128,8 @@ export const UPDATE_EVENTTASK = gql`
     $description: String
     $department: ID
     $eventId: ID
-    $startTime: Int
-    $endTime: Int
+    $startTime: String!
+    $endTime: String!
   ) {
     updateEventTask(
       taskId: $taskId
@@ -244,28 +244,29 @@ export const UPDATE_EVENT = gql`
     $eventDate: Date
     $eventStartDate: Date
     $eventEndDate: Date
-    $eventState: String) {
-      updateEvent(
-        eventId: $eventId
-        contactName: $contactName
-        contactInfo: $contactInfo
-        eventName: $eventName
-        eventDate: $eventDate
-        eventStartDate: $eventStartDate
-        eventEndDate: $eventEndDate
-        eventState: $eventState
-      ) {
+    $eventState: String
+  ) {
+    updateEvent(
+      eventId: $eventId
+      contactName: $contactName
+      contactInfo: $contactInfo
+      eventName: $eventName
+      eventDate: $eventDate
+      eventStartDate: $eventStartDate
+      eventEndDate: $eventEndDate
+      eventState: $eventState
+    ) {
+      _id
+      eventName
+      location {
         _id
-        eventName
-        location {
-          _id
-          locationName
-        }
-        contactInfo
-        contactName
-        eventDate
-        eventStartDate
-        eventEndDate
+        locationName
       }
+      contactInfo
+      contactName
+      eventDate
+      eventStartDate
+      eventEndDate
+    }
   }
 `;
