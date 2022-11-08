@@ -20,12 +20,10 @@ import SpacesList from './components/SpacesList';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import AdminDashboard from './pages/AdminDashboard';
-import DepDashboard from './pages/DepDashboard';
+
 import DepSingleEvent from './pages/DepSingleEvent';
 import SingleEvent from './pages/SingleEvent';
 import NoMatch from './pages/NoMatch';
-import LandingPage from './pages/LandingPage';
 
 import Pusher from 'pusher-js';
 import * as bs from 'bootstrap/dist/css/bootstrap.css';
@@ -59,8 +57,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
-              {/* <Route path="/admindashboard" element={<AdminDashboard />} />
-    <Route path="/depdashboard" element={<DepDashboard />} /> */}
+
               <Route path="/events" element={<EventList />} />
               <Route path="/event/:id" element={<SingleEvent />} />
               <Route path="/depevent/:id" element={<DepSingleEvent />} />
@@ -69,7 +66,7 @@ function App() {
               <Route path="*" element={<NoMatch />} />
             </Routes>
           </div>
-          <div id='footer-spacer'></div>
+          <div id="footer-spacer"></div>
           <Footer />
         </div>
       </Router>

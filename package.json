@@ -24,6 +24,7 @@
   "dependencies": {
     "concurrently": "^7.5.0",
     "react-router-dom": "^6.4.3",
+    "react-simple-image-slider": "^2.4.1",
     "react-slideshow-image": "^4.0.5"
   }
 }
