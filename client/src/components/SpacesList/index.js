@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_LOCATIONS } from '../../utils/queries';
@@ -26,9 +26,19 @@ const SpacesList = ({ id }) => {
     locationImage: {}
   });
   const [image, setImage] = useState({});
+  const [imageLoading, setImageLoading] = useState(true)
   const { loading, data, refetch } = useQuery(QUERY_LOCATIONS);
   const [addLocation] = useMutation(ADD_LOCATION);
   const spaces = data?.locations || {};
+
+  useEffect(() => {
+    if (image.encodedImage) {
+      setImageLoading(false);
+    }
+    else {
+      setImageLoading(true);
+    }
+  }, [image, imageLoading])
 
   const handleChange = async (event) => {
     //event.preventDefault();
@@ -38,22 +48,6 @@ const SpacesList = ({ id }) => {
       console.log("Image is larger than 1 mb")
       //throw error
     }
-
-    // try {
-    //   let reader = new FileReader();
-    //   reader.onloadend = function () {
-    //     setImage({
-    //       encodedImage: reader.result,
-    //       imageName: imageData.name
-    //     })
-    //   }
-    //   reader.readAsDataURL(imageData);
-    // }
-    // catch (e) {
-    //   console.log(e);
-    // }
-
-    
   }
 
   if (!spaces.length) {
@@ -76,7 +70,7 @@ const SpacesList = ({ id }) => {
       e.preventDefault();
       const formData = new FormData(e.target),
         formDataObj = Object.fromEntries(formData.entries());
-      
+      let test
       console.log(formDataObj)
 
       if (formDataObj.image.name.length) {
@@ -90,8 +84,13 @@ const SpacesList = ({ id }) => {
               encodedImage: reader.result,
               imageName: formDataObj.image.name
             })
+
           }
-          await reader.readAsDataURL(formDataObj.image);
+          reader.readAsDataURL(formDataObj.image);
+
+          while (imageLoading) {
+            //waiting
+          }
         }
         catch (e) {
           console.log(e);

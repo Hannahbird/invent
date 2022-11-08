@@ -190,7 +190,8 @@ export const ADD_EVENT = gql`
   }
 `;
 export const ADD_LOCATION = gql`
-  mutation Mutation($locationName: String!
+  mutation Mutation(
+    $locationName: String!
     $capacity: Int!
     $encodedImage: String
     $imageName: String) {

@@ -315,18 +315,21 @@ const resolvers = {
 
       throw new AuthenticationError("Not logged in");
     },
-    addLocation: async(parent, {encodedImage = "", imageName = "", ...locationData}, context) => {
+    addLocation: async (parent, args, context) => {
       if (context.user) {
+        let { input = "", ...locationData } = args;
+
         const userCompany = context.user.department.company;
 
-        if (encodedImage.length) {
-          locationData = {
-            ...locationData,
-            image: {
-              encodedImage: encodedImage,
-              imageName: imageName
-            }
+        console.log(input.encodedImage);
+        if (input) {
+          console.log('seeing valid input')
+          locationData['image'] = {
+            encodedImage: input.encodedImage,
+            imageName: input.imageName
           }
+
+          console.log(locationData)
         }
 
         const location = await Location.create({
