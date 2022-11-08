@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Modal, Button } from "react-bootstrap";
 import { DELETE_EVENTTASK, UPDATE_EVENTTASK } from "../../utils/mutations";
 import { QUERY_COMPANY_DEPTS } from "../../utils/queries";
@@ -9,6 +9,10 @@ function EditTaskModal({ task, taskRefetch, showEdit, setShowEdit }) {
     startTime: task.startTime,
     endTime: task.endTime,
   });
+  useEffect(() => {
+    setEditDate({ startTime: task.startTime, endTime: task.endTime });
+  }, [showEdit]);
+
   const [delEventTask] = useMutation(DELETE_EVENTTASK);
   const [addEventTask] = useMutation(UPDATE_EVENTTASK);
   const { loading, data } = useQuery(QUERY_COMPANY_DEPTS);
