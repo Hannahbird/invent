@@ -6,9 +6,6 @@ const imageSchema = new Schema(
             type: String,
             required: true
         },
-        imageType: {
-        type: String
-        },
         imageName: {
         type: String
         }

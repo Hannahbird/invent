@@ -190,16 +190,29 @@ export const ADD_EVENT = gql`
   }
 `;
 export const ADD_LOCATION = gql`
-  mutation Mutation($locationName: String!, $capacity: Int!) {
-    addLocation(locationName: $locationName, capacity: $capacity) {
-      _id
-      locationName
-      capacity
-      company {
-        _id
-        title
+  mutation Mutation($locationName: String!
+    $capacity: Int!
+    $encodedImage: String
+    $imageName: String) {
+      addLocation(
+        locationName: $locationName
+        capacity: $capacity
+        input: {
+          encodedImage: $encodedImage
+          imageName: $imageName
+        }) {
+          _id
+          locationName
+          capacity
+          company {
+            _id
+            title
+          }
+          image {
+            encodedImage
+            imageName
+          }
       }
-    }
   }
 `;
 export const UPDATE_LOCATION = gql`

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_LOCATIONS } from '../../utils/queries';
+import imageToBase64 from 'image-to-base64/browser'
 
 //Modal styling from react-bootstrap
 import Button from 'react-bootstrap/Button';
@@ -22,10 +23,38 @@ const SpacesList = ({ id }) => {
     locationId: '',
     locationName: '',
     capacity: '',
+    locationImage: {}
   });
+  const [image, setImage] = useState({});
   const { loading, data, refetch } = useQuery(QUERY_LOCATIONS);
   const [addLocation] = useMutation(ADD_LOCATION);
   const spaces = data?.locations || {};
+
+  const handleChange = async (event) => {
+    //event.preventDefault();
+    const imageData = event.target.files[0]
+
+    if (imageData.size > 1000000) {
+      console.log("Image is larger than 1 mb")
+      //throw error
+    }
+
+    // try {
+    //   let reader = new FileReader();
+    //   reader.onloadend = function () {
+    //     setImage({
+    //       encodedImage: reader.result,
+    //       imageName: imageData.name
+    //     })
+    //   }
+    //   reader.readAsDataURL(imageData);
+    // }
+    // catch (e) {
+    //   console.log(e);
+    // }
+
+    
+  }
 
   if (!spaces.length) {
     return (
@@ -47,9 +76,33 @@ const SpacesList = ({ id }) => {
       e.preventDefault();
       const formData = new FormData(e.target),
         formDataObj = Object.fromEntries(formData.entries());
+      
+      console.log(formDataObj)
+
+      if (formDataObj.image.name.length) {
+        console.log("there is an image")
+        
+        try {
+
+          let reader = new FileReader();
+          reader.onloadend = function () {
+            setImage({
+              encodedImage: reader.result,
+              imageName: formDataObj.image.name
+            })
+          }
+          await reader.readAsDataURL(formDataObj.image);
+        }
+        catch (e) {
+          console.log(e);
+        }
+      }
+
+      console.log(image);
       const parsedObj = {
         locationName: formDataObj.locationName,
         capacity: parseInt(formDataObj.capacity),
+        ...image
       };
 
       props.onHide();
@@ -62,6 +115,7 @@ const SpacesList = ({ id }) => {
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
+        backdrop='static'
       >
         <Form onSubmit={onFormSubmit}>
           <Modal.Header closeButton>
@@ -93,6 +147,15 @@ const SpacesList = ({ id }) => {
               <Form.Text className="text-muted">
                 What is the capacity of this space?
               </Form.Text>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId='formFile'>
+              <Form.Label>Upload Image</Form.Label>
+              <Form.Control
+                name='image'
+                type='file'
+                onChange={handleChange}
+                /*Come back add type and size validation */
+              />
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>

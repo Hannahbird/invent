@@ -315,9 +315,19 @@ const resolvers = {
 
       throw new AuthenticationError("Not logged in");
     },
-    addLocation: async (parent, locationData, context) => {
+    addLocation: async(parent, {encodedImage = "", imageName = "", ...locationData}, context) => {
       if (context.user) {
         const userCompany = context.user.department.company;
+
+        if (encodedImage.length) {
+          locationData = {
+            ...locationData,
+            image: {
+              encodedImage: encodedImage,
+              imageName: imageName
+            }
+          }
+        }
 
         const location = await Location.create({
           company: userCompany,
