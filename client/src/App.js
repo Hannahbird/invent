@@ -60,7 +60,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               {/* <Route path="/admindashboard" element={<AdminDashboard />} />
-              <Route path="/depdashboard" element={<DepDashboard />} /> */}
+    <Route path="/depdashboard" element={<DepDashboard />} /> */}
               <Route path="/events" element={<EventList />} />
               <Route path="/event/:id" element={<SingleEvent />} />
               <Route path="/depevent/:id" element={<DepSingleEvent />} />

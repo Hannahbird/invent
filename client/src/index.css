@@ -87,9 +87,15 @@ main{
 }
 
 .background {
-  background-image: url("../src/assets/images/eventspace1.jpeg");
+  background-image: url("../src/assets/images/eventspace2.jpeg");
     background-size: cover;
-    position: absolute;
+    /* position: absolute; */
     background-position: center;
     
+}
+
+
+.about {
+font-size: xx-large;
+background-image: url('../src/assets/images/eventspace3.jpeg');
 }

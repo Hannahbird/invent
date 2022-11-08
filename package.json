@@ -23,6 +23,7 @@
   "homepage": "https://github.com/Hannahbird/invent#readme",
   "dependencies": {
     "concurrently": "^7.5.0",
-    "react-router-dom": "^6.4.3"
+    "react-router-dom": "^6.4.3",
+    "react-slideshow-image": "^4.0.5"
   }
 }
