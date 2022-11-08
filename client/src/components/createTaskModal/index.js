@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Modal, Button } from "react-bootstrap";
 import { ADD_EVENTTASK } from "../../utils/mutations";
 import { QUERY_COMPANY_DEPTS } from "../../utils/queries";
@@ -16,7 +16,12 @@ function CreateTaskModal({
     startTime: eventData.eventStartDate,
     endTime: eventData.eventEndDate,
   });
-
+  useEffect(() => {
+    setEditDate({
+      startTime: eventData.eventStartDate,
+      endTime: eventData.eventEndDate,
+    });
+  }, [showCreate]);
   const [addEventTask] = useMutation(ADD_EVENTTASK);
   const { loading, data } = useQuery(QUERY_COMPANY_DEPTS);
   const departments = data?.departments || [];
