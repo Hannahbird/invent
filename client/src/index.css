@@ -46,7 +46,7 @@ body {
   font-size: 100px;
   font-weight: bold;
   color: grey;
-  mix-blend-mode: difference;
+
   background-color: rgba(255, 255, 255, .8);
 }
 
@@ -58,6 +58,7 @@ body {
   background-color: rgba(255, 255, 255, .8);
   padding: 10px;
   border-radius: 3px;
+  max-height: 50px !important;
 }
 
 .navigation {
@@ -114,6 +115,8 @@ main {
 
 header {
   background-image: url(./images/eventspace9.webp);
+  background-size: cover;
+
 }
 
 .event-wrapper {
