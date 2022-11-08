@@ -11,7 +11,7 @@ const DepartmentEventList = () => {
     return <div>Loading...</div>;
   }
 
-  if (events.length) {
+  if (!events.length) {
     return (
       <>
         <h3>No Events Scheduled</h3>

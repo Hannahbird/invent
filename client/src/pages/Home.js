@@ -6,6 +6,7 @@ import DepDashboard from './DepDashboard';
 import LandingPage from './LandingPage';
 import { useQuery, useMutation } from '@apollo/client';
 import {
+  QUERY_ME,
   QUERY_COMPANY_DEPTS,
   QUERY_EVENTS,
   QUERY_LOCATIONS,
@@ -13,31 +14,27 @@ import {
 import { useParams } from 'react-router-dom';
 
 const Home = () => {
-  const { department: admin } = useParams();
-
-  const { loading, data } = useQuery(QUERY_COMPANY_DEPTS, {
-    variables: {
-      deptName: admin,
-    },
-  });
 
   const isAdmin = () => {
-    if (admin === 'admin') {
+    const profile = Auth.getProfile();
+
+    if (profile.data.department.deptName.toLowerCase() === 'admin') {
+      console.log('User is an Admin!')
       return true;
-    } else {
-      return false;
     }
-  };
-  console.log(isAdmin());
+    console.log('User does not have the power :(');
+    return false;
+  }
+
+  if (Auth.loggedIn()) {
+    console.log(Auth.getProfile());
+  }
+
   return (
     <div>
-      {Auth.loggedIn() ? (
-        <>
-          {/* <>{isAdmin() ? <AdminDashboard /> : <DepDashboard />}</> */}
-          <AdminDashboard />
-          {/* <DepDashboard /> */}
-        </>
-      ) : (
+      {Auth.loggedIn()
+        ? (isAdmin() ? <AdminDashboard /> : <DepDashboard />)
+        : (
         <LandingPage />
         // <section className="about">
         //   <div className="row justify-content-center" id="about-container">
