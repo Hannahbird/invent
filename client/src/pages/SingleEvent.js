@@ -6,6 +6,7 @@ import Auth from "../utils/auth";
 import { QUERY_EVENT, QUERY_EVENTTASKS } from "../utils/queries";
 import { UPDATE_EVENT } from "../utils/mutations";
 import { Card, Modal, Button, Form } from "react-bootstrap";
+import EditTaskModal from "../components/editTaskModal";
 import CreateTaskModal from "../components/createTaskModal/index";
 import dayjs from "dayjs";
 import "../assets/css/SingleEvent.css";
@@ -13,6 +14,9 @@ import "../assets/css/SingleEvent.css";
 const SingleEvent = (props) => {
   const { id: eventId } = useParams();
   const [showCreate, setShowCreate] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+  const [taskToEdit, setTaskToEdit] = useState({});
+
   const {
     loading: taskLoading,
     data: taskData,
@@ -225,6 +229,12 @@ const SingleEvent = (props) => {
         setShowCreate={setShowCreate}
         taskRefetch={taskRefetch}
       />
+      <EditTaskModal
+        task={taskToEdit}
+        taskRefetch={taskRefetch}
+        showEdit={showEdit}
+        setShowEdit={setShowEdit}
+      />
 
       <div className="container">
         <div className="row">
@@ -278,11 +288,30 @@ const SingleEvent = (props) => {
           </div>
           <div className="col-8 task-wrapper">
             {tasks.map((task) => (
-              <div key={task._id} className="card-body border">
-                <div>{task.description}</div>
-                <div>{task.department.deptName}</div>
-                <div>{dayjs(taskData.startTime).format("hh:mm A")}</div>
-                <div>{dayjs(taskData.startTime).format("hh:mm A")}</div>
+              <div key={task._id} className="card-body border row">
+                <div className="col-6">
+                  <div>{task.description}</div>
+                  <div>{task.department.deptName}</div>
+                  <div>
+                    {dayjs(task.startTime).format("MMM DD")}{" "}
+                    {dayjs(task.startTime).format("hh:mm A")}
+                  </div>
+                  <div>
+                    {dayjs(task.endTime).format("MMM DD")}{" "}
+                    {dayjs(task.endTime).format("hh:mm A")}
+                  </div>
+                </div>
+                <div className="col-6">
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => {
+                      setTaskToEdit(task);
+                      setShowEdit(true);
+                    }}
+                  >
+                    Edit
+                  </button>
+                </div>
               </div>
             ))}
           </div>
