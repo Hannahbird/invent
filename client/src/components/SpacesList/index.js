@@ -19,7 +19,6 @@ const SpacesList = ({ id }) => {
     locationId: '',
     locationName: '',
     capacity: '',
-    locationImage: {}
   });
   const [image, setImage] = useState({});
   const [imageLoading, setImageLoading] = useState(true)
@@ -27,25 +26,55 @@ const SpacesList = ({ id }) => {
   const [addLocation, {error}] = useMutation(ADD_LOCATION);
   const spaces = data?.locations || {};
 
-  useEffect(() => {
-    console.log(image.encodedImage)
-    if (image) {
-      setImageLoading(false);
-    }
-    else {
-      setImageLoading(true);
-    }
-  }, [image, imageLoading])
+  // useEffect(() => {
+  //   console.log(image);
+  //   if (image.encodedImage) {
+  //     setImageLoading(false);
+  //     console.log("ImageLoading set to false")
+  //   }
+  //   else {
+  //     setImageLoading(true);
+  //     console.log("imageloading set to true")
+  //   }
+  // }, [image])
 
   const handleChange = async (event) => {
-    //event.preventDefault();
+    event.preventDefault();
     const imageData = event.target.files[0]
 
     if (imageData.size > 1000000) {
       console.log("Image is larger than 1 mb")
       //throw error
     }
+
+    try {
+
+          let reader = new FileReader();
+          reader.onloadend = function () {
+          //  setImage({
+          //     encodedImage: reader.result,
+          //     imageName: imageData.name
+          //  })
+            
+            image['encodedImage'] = reader.result
+            image['imageName'] = imageData.name
+
+          }
+          await reader.readAsDataURL(imageData);
+          
+          //   console.log("Waiting for image to be set: ",image);
+          //    //waiting
+          // }
+        }
+        catch (e) {
+          console.log(e);
+    }
+    
+    console.log(image);
+    
   }
+
+          
 
   if (!spaces.length) {
     return (
@@ -70,29 +99,29 @@ const SpacesList = ({ id }) => {
       const formData = new FormData(e.target),
         formDataObj = Object.fromEntries(formData.entries());
 
-      if (formDataObj.image.name.length) {
-        console.log("there is an image")
-        
-        try {
+      // if (formDataObj.image.name.length) {
+      //   console.log("loading image",imageLoading, image)
+      //   try {
 
-          let reader = new FileReader();
-          reader.onloadend = function () {
-            setImage({
-              encodedImage: reader.result,
-              imageName: formDataObj.image.name
-            })
+      //     let reader = new FileReader();
+      //     reader.onloadend = function () {
+      //       setImage({
+      //         encodedImage: reader.result,
+      //         imageName: formDataObj.image.name
+      //       })
 
-          }
-          await reader.readAsDataURL(formDataObj.image);
+      //     }
+      //     await reader.readAsDataURL(formDataObj.image);
 
-          while (imageLoading) {
-             //waiting
-          }
-        }
-        catch (e) {
-          console.log(e);
-        }
-      }
+      //     // while (imageLoading) {
+      //     //   console.log("Waiting for image to be set: ",image);
+      //     //    //waiting
+      //     // }
+      //   }
+      //   catch (e) {
+      //     console.log(e);
+      //   }
+      // }
 
       console.log(image);
       const parsedObj = {
@@ -104,6 +133,7 @@ const SpacesList = ({ id }) => {
       props.onHide();
       await addLocation({ variables: parsedObj });
       setImage({})
+      console.log("Image Loading should now be false")
       refetch();
     };
     return (
@@ -147,7 +177,7 @@ const SpacesList = ({ id }) => {
                 What is the capacity of this space?
               </Form.Text>
             </Form.Group>
-            <Form.Group className="mb-3" controlId='formFile'>
+            <Form.Group className="mb-3" controlId='formNewFile'>
               <Form.Label>Upload Image</Form.Label>
               <Form.Control
                 name='image'
@@ -188,25 +218,6 @@ const SpacesList = ({ id }) => {
       const formData = new FormData(e.target),
         formDataObj = Object.fromEntries(formData.entries());
       
-      if (formDataObj.image.name.length) { //convert to base64
-      
-        try {
-          let reader = new FileReader();
-          reader.onloadend = function () {
-            setImage({
-              encodedImage: reader.result,
-              imageName: formDataObj.image.name
-            })
-          }
-          reader.readAsDataURL(formDataObj.image);
-          while (imageLoading) { //wait for setImageState to finish setting
-            //waiting
-          }
-        }
-        catch (e) {
-          console.log(e);
-        }
-      }
       
       const parsedObj = {
         locationId: editInfo.locationId,
@@ -312,7 +323,7 @@ const SpacesList = ({ id }) => {
             spaces.map((space) => {
               return (
                 <Card key={space._id} className="mt-3 text-center d-flex justify-content-center col-lg-3 col-md-5">
-                  {space.image && <Card.Img variant="top" src={space.image.encodedImage} />}
+                  {space.image && <Card.Img variant="top" className='opacity-100 img-fluid' src={space.image.encodedImage} />}
                   <Card.Body>
                     <Card.Title className='m-auto'>{space.locationName}</Card.Title>
                     <Card.Text>
