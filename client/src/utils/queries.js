@@ -47,6 +47,9 @@ export const QUERY_LOCATIONS = gql`
       _id
       locationName
       capacity
+      image {
+        encodedImage
+      }
     }
   }
 `;

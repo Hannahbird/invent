@@ -315,9 +315,22 @@ const resolvers = {
 
       throw new AuthenticationError("Not logged in");
     },
-    addLocation: async (parent, locationData, context) => {
+    addLocation: async (parent, args, context) => {
       if (context.user) {
+        let { input = "", ...locationData } = args;
+
         const userCompany = context.user.department.company;
+
+        console.log(input.encodedImage);
+        if (input) {
+          console.log('seeing valid input')
+          locationData['image'] = {
+            encodedImage: input.encodedImage,
+            imageName: input.imageName
+          }
+
+          console.log(locationData)
+        }
 
         const location = await Location.create({
           company: userCompany,
@@ -329,10 +342,21 @@ const resolvers = {
     },
     updateLocation: async (
       parent,
-      { locationId, ...locationInfo },
+      { locationId, input = "", ...locationInfo },
       context
     ) => {
       if (context.user) {
+
+        console.log(input.encodedImage)
+        if (input) {
+          console.log('seeing valid input')
+          locationInfo['image'] = {
+            encodedImage: input.encodedImage,
+            imageName: input.imageName
+          }
+          console.log(locationInfo)
+        }
+
         const updatedLocation = await Location.findOneAndUpdate(
           { _id: locationId },
           { ...locationInfo },

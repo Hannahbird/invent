@@ -1,16 +1,13 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useMutation, useQuery } from "@apollo/client";
-import { QUERY_LOCATIONS } from "../../utils/queries";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useMutation, useQuery } from '@apollo/client';
+import { QUERY_LOCATIONS } from '../../utils/queries';
 
 //Modal styling from react-bootstrap
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import Form from "react-bootstrap/Form";
+import {Card, Button, Modal, Form} from 'react-bootstrap'
 import {
   ADD_LOCATION,
   DELETE_LOCATION,
-  UPDATE_EVENTTASK,
   UPDATE_LOCATION,
 } from "../../utils/mutations";
 
@@ -19,13 +16,46 @@ import AdminHeader from "../AdminHeader";
 const SpacesList = ({ id }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editInfo, setEditInfo] = useState({
-    locationId: "",
-    locationName: "",
-    capacity: "",
+    locationId: '',
+    locationName: '',
+    capacity: '',
   });
+  const [image, setImage] = useState({});
+  const [imageLoading, setImageLoading] = useState(true)
   const { loading, data, refetch } = useQuery(QUERY_LOCATIONS);
-  const [addLocation] = useMutation(ADD_LOCATION);
+  const [addLocation, {error}] = useMutation(ADD_LOCATION);
   const spaces = data?.locations || {};
+
+  const handleChange = async (event) => {
+    event.preventDefault();
+    const imageData = event.target.files[0]
+
+    if (imageData.size > 1000000) {
+      console.log("Image is larger than 1 mb")
+      //throw error
+    }
+
+    try {
+
+          let reader = new FileReader();
+          reader.onloadend = function () {
+            
+            image['encodedImage'] = reader.result
+            image['imageName'] = imageData.name
+
+          }
+          await reader.readAsDataURL(imageData);
+          
+        }
+        catch (e) {
+          console.log(e);
+    }
+    
+    console.log(image)
+
+  }
+
+          
 
   if (!spaces.length) {
     return (
@@ -49,13 +79,18 @@ const SpacesList = ({ id }) => {
       e.preventDefault();
       const formData = new FormData(e.target),
         formDataObj = Object.fromEntries(formData.entries());
+
+      console.log(image);
       const parsedObj = {
         locationName: formDataObj.locationName,
         capacity: parseInt(formDataObj.capacity),
+        ...image
       };
 
       props.onHide();
       await addLocation({ variables: parsedObj });
+      setImage({})
+      console.log("Image Loading should now be false")
       refetch();
     };
     return (
@@ -64,6 +99,7 @@ const SpacesList = ({ id }) => {
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
+        backdrop='static'
       >
         <Form onSubmit={onFormSubmit}>
           <Modal.Header closeButton>
@@ -98,6 +134,15 @@ const SpacesList = ({ id }) => {
                 What is the capacity of this space?
               </Form.Text>
             </Form.Group>
+            <Form.Group className="mb-3" controlId='formNewFile'>
+              <Form.Label>Upload Image</Form.Label>
+              <Form.Control
+                name='image'
+                type='file'
+                onChange={handleChange}
+                /*Come back add type and size validation */
+              />
+            </Form.Group>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" type="submit">
@@ -109,24 +154,38 @@ const SpacesList = ({ id }) => {
     );
   }
   function EditModal() {
-    const [updateLocation] = useMutation(UPDATE_LOCATION);
-    const [deleteLocation] = useMutation(DELETE_LOCATION);
+    const [updateLocation, {error: updateError}] = useMutation(UPDATE_LOCATION);
+    const [deleteLocation, {error: deleteError}] = useMutation(DELETE_LOCATION);
     const handleDeleteLocation = async () => {
-      await deleteLocation({ variables: { locationId: editInfo.locationId } });
+      try {
+        let deletedLocation = await deleteLocation({
+          variables: {
+            locationId: editInfo.locationId
+          }
+        });
+      }
+      catch (e) {
+        console.log(deleteError)
+      }
+      
       refetch();
     };
     const onFormSubmit = async (e) => {
       e.preventDefault();
       const formData = new FormData(e.target),
         formDataObj = Object.fromEntries(formData.entries());
+      
+      
       const parsedObj = {
         locationId: editInfo.locationId,
         locationName: formDataObj.locationName,
         capacity: parseInt(formDataObj.capacity),
+        ...image
       };
 
       setShowEditModal(false);
       await updateLocation({ variables: parsedObj });
+      setImage({})
       refetch();
     };
     return (
@@ -165,6 +224,15 @@ const SpacesList = ({ id }) => {
               <Form.Text className="text-muted">
                 What is the capacity of this space?
               </Form.Text>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId='formFile'>
+              <Form.Label>Upload/Replace Image</Form.Label>
+              <Form.Control
+                name='image'
+                type='file'
+                onChange={handleChange}
+                /*Come back add type and size validation */
+              />
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
@@ -207,33 +275,36 @@ const SpacesList = ({ id }) => {
         <h3>Your Current Spaces</h3>
         <Create />
         {showEditModal && <EditModal />}
-        <div className="d-flex flex-wrap row mt-3">
+        <div className="d-flex flex-wrap mt-3 justify-content-evenly">
           {spaces &&
             spaces.map((space) => {
               return (
-                <div
-                  key={space._id}
-                  className="listitem mb-3 col-lg-3 col-md-6 col-sm-12 border rounded d-flex justify-content-between"
-                >
-                  <div className="m-auto">{space.locationName}</div>
-                  <button
-                    id={space._id}
-                    data-capacity={space.capacity}
-                    value={space.locationName}
-                    className="btn col-6"
-                    onClick={() => {
-                      setShowEditModal(true);
-                      setEditInfo({
-                        locationId: space._id,
-                        locationName: space.locationName,
-                        capacity: space.capacity,
+                <Card key={space._id} className="mt-3 text-center d-flex justify-content-center col-lg-3 col-md-5 h-25">
+                  {space.image && <Card.Img variant="top" className='opacity-100 img-fluid' src={space.image.encodedImage} />}
+                  <Card.Body>
+                    <Card.Title className='m-auto'>{space.locationName}</Card.Title>
+                    <Card.Text>
+                        Capacity: {space.capacity}
+                    </Card.Text>
+                    <Button
+                      variant="primary"
+                      id={space._id}
+                      data-capacity={space.capacity}
+                      value={space.locationName}
+                      className="btn btn-warning col-8"
+                      onClick={() => {
+                        setShowEditModal(true);
+                        setEditInfo({
+                          locationId: space._id,
+                          locationName: space.locationName,
+                          capacity: space.capacity,
                       });
                       console.log(editInfo);
-                    }}
-                  >
-                    edit
-                  </button>
-                </div>
+                      }}
+                    >edit</Button>
+                  </Card.Body>
+                  
+                </Card>
               );
             })}
         </div>
