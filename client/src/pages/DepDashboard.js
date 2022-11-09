@@ -14,6 +14,9 @@ const DepDashboard = () => {
   var channel = pusher.subscribe(
     Auth.getProfile().data.department._id.toString()
   );
+  var eventChannel = pusher.subscribe(
+    Auth.getProfile().data.department.company
+  );
 
   return (
     <>
@@ -21,7 +24,7 @@ const DepDashboard = () => {
       <div className="container background">
         <div>
           <h2>Viewing your dashboard.</h2>
-          <DepartmentEventList channel={channel} />
+          <DepartmentEventList eventChannel={eventChannel} channel={channel} />
         </div>
       </div>
     </>
