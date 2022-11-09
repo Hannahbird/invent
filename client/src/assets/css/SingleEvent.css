@@ -1,0 +1,81 @@
+* {
+    /*border: 1px solid #000;*/
+}
+
+.go-back-btn {
+    margin-bottom: 10px;
+}
+
+.event-wrapper {
+    border: 0;
+    box-shadow: 0px 0px 10px 0px rgba(82, 63, 105, 0.1);
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(82, 63, 105, 0.1);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(82, 63, 105, 0.1);
+}
+
+.task-wrapper {
+
+}
+
+.add-task-btn {
+    float: right;
+}
+
+.edit-event-btn {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.add-task-btn {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.contactHolder {
+    display: flex;
+    flex-direction: column;
+}
+
+.single-event-name-label {
+    font-size: 20px;
+}
+
+.single-event-date-label {
+    font-size: 20px;
+}
+
+.single-event-time-label {
+    font-size: 20px;
+}
+
+.single-event-location-label {
+    font-size: 20px;
+}
+
+.single-event-contact-label {
+    font-size: 20px;
+}
+
+.single-event-email {
+    text-decoration: none;
+}
+
+.single-event-state-label {
+    font-size: 20px;
+}
+
+.single-event-state {
+    margin-bottom: 20px;
+}
+
+.task-card {
+    margin-bottom: 10px;
+}
+
+.single-event-task-name {
+    font-size: 20px;
+}
+
+.task-card {
+    cursor: default !important;
+}

@@ -16,9 +16,11 @@ const Signup = () => {
     username: '',
     email: '',
     companyTitle: '',
+    signUpLink: '',
     newCompany: false,
     password: '',
   });
+  const [isError, setError] = useState(true);
   const [addUser, { error }] = useMutation(ADD_USER);
 
   // update state based on form input changes
@@ -29,6 +31,12 @@ const Signup = () => {
       ...formState,
       [name]: value,
     });
+    if(!formState.email || !formState.password || !formState.username || !formState.companyTitle){
+      setError(true);
+    }
+    else{
+      setError(false);
+    }
   };
 
   // submit form
@@ -53,27 +61,28 @@ const Signup = () => {
   return (
     <>
       <LoggedOutHeader />
-      <main className="flex-row justify-center mb-4">
+      <main className="container flex-row justify-center mb-4">
         <div className="col-12 col-md-6">
           <div className="card">
             <h4 className="card-header">Sign Up</h4>
             <div className="card-body">
               <form onSubmit={handleFormSubmit}>
                 <Form.Group className="mb-3">
-                  <Form.Label>User Name</Form.Label>
+                  <Form.Label>User Name*</Form.Label>
                   <Form.Control
                     name="username"
                     type="username"
                     id="username"
                     value={formState.username}
                     onChange={handleChange}
+                    required
                   />
                   <Form.Text className="text-muted">
                     Enter your user name.
                   </Form.Text>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label>Email address</Form.Label>
+                  <Form.Label>Email address*</Form.Label>
                   <Form.Control
                     type="email"
                     placeholder="Enter email"
@@ -82,6 +91,7 @@ const Signup = () => {
                     id="email"
                     value={formState.email}
                     onChange={handleChange}
+                    required
                   />
                   <Form.Text className="text-muted">
                     We'll never share your email with anyone else.
@@ -90,7 +100,7 @@ const Signup = () => {
 
                 <Row className="mb-3">
                   <Form.Group as={Col}>
-                    <Form.Label>Company</Form.Label>
+                    <Form.Label>New Company</Form.Label>
                     <Form.Control
                       placeholder="Your Company"
                       name="companyTitle"
@@ -98,11 +108,12 @@ const Signup = () => {
                       id="companyTitle"
                       value={formState.companyTitle}
                       onChange={handleChange}
+                      
                     />
                   </Form.Group>
                   OR
                   <Form.Group as={Col}>
-                    <Form.Label>Sign Up Link</Form.Label>
+                    <Form.Label>Sign Up Code</Form.Label>
                     <Form.Control
                       placeholder="Sign Up Link"
                       name="signUpLink"
@@ -110,12 +121,13 @@ const Signup = () => {
                       id="signUpLink"
                       value={formState.signUpLink}
                       onChange={handleChange}
+                      
                     />
                   </Form.Group>
                 </Row>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
-                  <Form.Label>Password</Form.Label>
+                  <Form.Label>Password*</Form.Label>
                   <Form.Control
                     type="password"
                     className="form-input"
@@ -124,9 +136,10 @@ const Signup = () => {
                     id="password"
                     value={formState.password}
                     onChange={handleChange}
+                    required
                   />
                 </Form.Group>
-                <Button variant="secondary" type="submit">
+                <Button  variant="secondary" type="submit">
                   Submit
                 </Button>
               </form>

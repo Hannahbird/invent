@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
   ApolloClient,
@@ -20,8 +20,9 @@ import SpacesList from './components/SpacesList';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import AdminDashboard from './pages/AdminDashboard';
-import DepDashboard from './pages/DepDashboard';
+import About from './pages/About';
+
+import DepSingleEvent from './pages/DepSingleEvent';
 import SingleEvent from './pages/SingleEvent';
 import NoMatch from './pages/NoMatch';
 import Reserve from './pages/Reserve'
@@ -47,42 +48,36 @@ const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
-// set up pusher connection
-var pusher = new Pusher('b4bd3ba699f2fde524c6', {
-  cluster: 'mt1',
-});
 
-var channel = pusher.subscribe('test-channel');
+export default class App extends Component {
+  render() {
+    return (
+      <ApolloProvider client={client}>
+        <Router>
+          <div className="flex-column justify-flex-start min-100-vh big-page-container">
+            <div>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/events" element={<EventList />} />
+                <Route path="/event/:id" element={<SingleEvent />} />
+                <Route path="/depevent/:id" element={<DepSingleEvent />} />
+                <Route path="/spaces" element={<SpacesList />} />
+                <Route path="/reserve/:id" element= {<Reserve />} />
+                <Route path="/departments" element={<DepartmentList />} />
+                <Route path="*" element={<NoMatch />} />
+              </Routes>
+            </div>
 
-function App() {
-  // pusher test
-  channel.bind('test-event', function (data) {
-    console.log(JSON.stringify(data));
-  });
-  return (
-    <ApolloProvider client={client}>
-      <Router>
-        <div className="flex-column justify-flex-start min-100-vh">
-          <div>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              {/* <Route path="/admindashboard" element={<AdminDashboard />} />
-              <Route path="/depdashboard" element={<DepDashboard />} /> */}
-              <Route path="/events" element={<EventList />} />
-              <Route path="/event/:id" element={<SingleEvent />} />
-              <Route path="/reserve/:id" element= {<Reserve />} />
-              <Route path="/spaces" element={<SpacesList />} />
-              <Route path="/departments" element={<DepartmentList />} />
-              <Route path="*" element={<NoMatch />} />
-            </Routes>
+            <div id="footer-spacer"></div>
+            <Footer />
           </div>
-          <Footer />
-        </div>
-      </Router>
-    </ApolloProvider>
-  );
+        </Router>
+      </ApolloProvider>
+    );
+  }
 }
 
-export default App;
+// export default App;

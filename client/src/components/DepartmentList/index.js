@@ -1,30 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
-import { QUERY_COMPANY_DEPTS } from '../../utils/queries';
+import React, { useEffect, useState } from "react";
+import { useQuery, useMutation } from "@apollo/client";
+import { QUERY_COMPANY_DEPTS } from "../../utils/queries";
 import {
   ADD_DEPARTMENT,
   DELETE_DEPARTMENT,
   UPDATE_DEPARTMENT,
-} from '../../utils/mutations';
+} from "../../utils/mutations";
 //Modal styling from react-bootstrap
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
 
-import AdminHeader from '../AdminHeader';
+import AdminHeader from "../AdminHeader";
 
 const DepartmentList = ({ id }) => {
   const [showEditModal, setShowEditModal] = useState(false);
-  const [editInfo, setEditInfo] = useState({ id: '', name: '' });
+  const [editInfo, setEditInfo] = useState({ id: "", name: "" });
 
   const { loading, error, data, refetch } = useQuery(QUERY_COMPANY_DEPTS, {
     variables: { deptId: id },
   });
 
   const departments = data?.departments || {};
-
+  console.log(departments);
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <>
+        <AdminHeader /> <div>Loading...</div>
+      </>
+    );
   }
 
   if (!data.departments.length) {
@@ -41,9 +45,10 @@ const DepartmentList = ({ id }) => {
   function AddDepartmentModal(props) {
     const [addDepartment] = useMutation(ADD_DEPARTMENT);
 
-    const deptSubmit = () => {
-      const newDept = document.getElementById('deptInput').value.trim();
-      addDepartment({ variables: { deptName: newDept } });
+    const deptSubmit = async () => {
+      const newDept = document.getElementById("deptInput").value.trim();
+      props.onHide()
+      await addDepartment({ variables: { deptName: newDept } });
       refetch();
     };
     return (
@@ -53,6 +58,7 @@ const DepartmentList = ({ id }) => {
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
+          <Form onSubmit={deptSubmit}>
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
             Create Department
@@ -60,38 +66,35 @@ const DepartmentList = ({ id }) => {
         </Modal.Header>
         <Modal.Body>
           <h4>Create Department</h4>
-          <Form>
             <Form.Group className="mb-3">
-              <Form.Label>Department Name</Form.Label>
+              <Form.Label>Department Name*</Form.Label>
               <Form.Control
                 type="string"
                 placeholder="Department Name"
                 id="deptInput"
+                required
               />
               <Form.Text className="text-muted">
                 What is the Department's Name?
               </Form.Text>
             </Form.Group>
-          </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button
             variant="secondary"
-            onClick={() => {
-              deptSubmit();
-              props.onHide();
-            }}
-          >
+            type = 'submit'
+            >
             Save
           </Button>
         </Modal.Footer>
+            </Form>
       </Modal>
     );
   }
 
   function Create() {
     const [modalShow, setModalShow] = React.useState(false);
-    console.log('create?');
+    console.log("create?");
 
     return (
       <>
@@ -120,14 +123,14 @@ const DepartmentList = ({ id }) => {
     const [updateDept] = useMutation(UPDATE_DEPARTMENT);
     const [deleteDept] = useMutation(DELETE_DEPARTMENT);
     const handleChange = async (type) => {
-      if (type === 'edit') {
-        const newName = document.getElementById('deptInput').value.trim();
+      if (type === "edit") {
+        const newName = document.getElementById("deptInput").value.trim();
         await updateDept({
           variables: { deptId: editInfo.id, deptName: newName },
         });
         refetch();
       }
-      if (type === 'delete') {
+      if (type === "delete") {
         await deleteDept({ variables: { deptId: editInfo.id } });
         refetch();
       }
@@ -162,7 +165,7 @@ const DepartmentList = ({ id }) => {
           <Button
             variant="danger"
             onClick={() => {
-              handleChange('delete');
+              handleChange("delete");
               setShowEditModal(false);
             }}
           >
@@ -171,7 +174,7 @@ const DepartmentList = ({ id }) => {
           <Button
             variant="secondary"
             onClick={() => {
-              handleChange('edit');
+              handleChange("edit");
               setShowEditModal(false);
             }}
           >
@@ -184,32 +187,37 @@ const DepartmentList = ({ id }) => {
   return (
     <div>
       <AdminHeader />
-      <h3>Your Current Departments</h3>
-      <Create />
-      {showEditModal && <EditModal />}
-      <div>
-        {departments.map((department) => {
-          if (department.deptName === 'admin') {
-            return;
-          }
-          return (
-            <div
-              key={department._id}
-              className="d-flex justify-content-between"
-              type="div"
-            >
-              <p className="col-6 flex">{department.deptName}</p>
-              <button
-                onClick={editDept}
-                id={department._id}
-                value={department.deptName}
-                className="btn col-6"
+      <div className="container">
+        <h3>Your Current Departments</h3>
+        <Create />
+        {showEditModal && <EditModal />}
+        <div className="mt-3">
+          {departments.map((department) => {
+            if (department.deptName.toLowerCase() === "admin") {
+              return;
+            }
+            return (
+              <div
+                key={department._id}
+                className="d-flex justify-content-between border rounded mt-1 listitem"
+                type="div"
               >
-                edit
-              </button>
-            </div>
-          );
-        })}
+                <p className="col-4 flex m-auto">{department.deptName}</p>
+                <p className="col-4 m-auto">
+                  Join code: {department.signUpLink}
+                </p>
+                <button
+                  onClick={editDept}
+                  id={department._id}
+                  value={department.deptName}
+                  className="btn col-2"
+                >
+                  edit
+                </button>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ const { AuthenticationError } = require("apollo-server-express");
 const { GraphQLError } = require("graphql");
 const { signToken } = require("../utils/auth");
 const pusher = require("../utils/pusher");
+const { update } = require("../models/User");
 const resolvers = {
   Query: {
     me: async (parent, args, context) => {
@@ -176,8 +177,9 @@ const resolvers = {
       return { available: true };
     },
     eventTasks: async (parent, { eventId }, context) => {
-        const tasks = await EventTask.find({ eventId: eventId })
-            .populate("department");
+      const tasks = await EventTask.find({ eventId: eventId }).populate(
+        "department"
+      );
       if (context.user) {
         if (!tasks) {
           throw new GraphQLError("Couldn't find any event with this id", {
@@ -196,10 +198,6 @@ const resolvers = {
       parent,
       { newCompany, signUpCode, companyTitle, ...userArgs }
     ) => {
-      //   pusher test, logs hellow world to console in front end when addUser is called
-      pusher.trigger("test-channel", "test-event", {
-        message: "hello world",
-      });
       let company;
       let department;
       //check for new company
@@ -209,6 +207,7 @@ const resolvers = {
           title: companyTitle,
           companyEmail: userArgs.email,
         });
+        
 
         department = await Department.create({
           company: company._id,
@@ -216,7 +215,26 @@ const resolvers = {
         });
       } else if (signUpCode) {
         //decode signup code and create user for department
-        department = "placeholder"; //placeholder
+
+        department = await Department.find().then((departments) =>
+          departments.filter((department) => {
+            if (department.signUpLink === signUpCode) {
+              return true;
+            }
+            return false;
+          })
+        );
+
+        if (!department) {
+          throw new GraphQLError("Invalid SignUp Code", {
+            extensions: {
+              code: "BAD_USER_INPUT",
+            },
+          });
+        }
+
+        department = department[0];
+        //placeholder
       } else {
         throw new GraphQLError("Some data is missing", {
           extensions: {
@@ -256,7 +274,6 @@ const resolvers = {
       if (!correctPw) {
         throw new AuthenticationError("Incorrect credentials");
       }
-
       const token = signToken(user);
       return { token, user };
     },
@@ -326,9 +343,22 @@ const resolvers = {
 
       throw new AuthenticationError("Not logged in");
     },
-    addLocation: async (parent, locationData, context) => {
+    addLocation: async (parent, args, context) => {
       if (context.user) {
+        let { input = "", ...locationData } = args;
+
         const userCompany = context.user.department.company;
+
+        console.log(input.encodedImage);
+        if (input) {
+          console.log('seeing valid input')
+          locationData['image'] = {
+            encodedImage: input.encodedImage,
+            imageName: input.imageName
+          }
+
+          console.log(locationData)
+        }
 
         const location = await Location.create({
           company: userCompany,
@@ -340,10 +370,21 @@ const resolvers = {
     },
     updateLocation: async (
       parent,
-      { locationId, ...locationInfo },
+      { locationId, input = "", ...locationInfo },
       context
     ) => {
       if (context.user) {
+
+        console.log(input.encodedImage)
+        if (input) {
+          console.log('seeing valid input')
+          locationInfo['image'] = {
+            encodedImage: input.encodedImage,
+            imageName: input.imageName
+          }
+          console.log(locationInfo)
+        }
+
         const updatedLocation = await Location.findOneAndUpdate(
           { _id: locationId },
           { ...locationInfo },
@@ -371,15 +412,33 @@ const resolvers = {
     addEventTask: async (parent, taskData, context) => {
       if (context.user) {
         const newTask = await EventTask.create(taskData);
+        console.log(newTask.department.toString());
+        pusher.trigger(newTask.department.toString(), "newTask", {
+          newTask,
+        });
         return newTask;
       }
+
       throw new AuthenticationError("Not logged in");
     },
     updateEventTask: async (parent, args, context) => {
       if (context.user) {
         const { taskId, ...data } = args;
+        // alerts old department if department is changed
+        if (data.department) {
+          const updated = await EventTask.findById(taskId);
+          pusher.trigger(updated.department.toString(), "taskChange", {
+            updated,
+          });
+        }
         const updated = await EventTask.findByIdAndUpdate(taskId, data, {
           new: true,
+        });
+
+        //   pusher test, logs hellow world to console in front end when addUser is called
+        console.log(updated.department.toString());
+        pusher.trigger(updated.department.toString(), "taskChange", {
+          updated,
         });
         return updated;
       }
@@ -392,7 +451,13 @@ const resolvers = {
           { ...eventInfo },
           { runValidators: true, context: "query", new: true }
         ).populate("location");
-
+        pusher.trigger(
+          updatedEvent.location.company.toString(),
+          "updatedEvent",
+          {
+            updatedEvent,
+          }
+        );
         return updatedEvent;
       }
 
@@ -401,6 +466,11 @@ const resolvers = {
     deleteEventTask: async (parent, { taskId }, context) => {
       if (context.user) {
         const deleted = await EventTask.findByIdAndDelete(taskId);
+        // this is just to make pusher trigger easier
+        const updated = deleted;
+        pusher.trigger(updated.department.toString(), "taskChange", {
+          updated,
+        });
         return deleted;
       }
       throw new AuthenticationError("Not logged in");

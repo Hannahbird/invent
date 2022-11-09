@@ -26,6 +26,7 @@ export const QUERY_COMPANY_DEPTS = gql`
     departments {
       _id
       deptName
+      signUpLink
     }
   }
 `;
@@ -46,6 +47,9 @@ export const QUERY_LOCATIONS = gql`
       _id
       locationName
       capacity
+      image {
+        encodedImage
+      }
     }
   }
 `;

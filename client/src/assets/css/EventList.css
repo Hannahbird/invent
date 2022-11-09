@@ -12,8 +12,20 @@
     background-clip: border-box;
     border: 1px solid #e6e4e9;
     border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    
+    
 }
 
+.imageOpc {
+    content: "";
+    background-image: url("../images/eventspace1.jpeg");
+    background-size: cover;
+    position: absolute;
+    background-position: center;
+    opacity: 0.2;
+}
 .card-header {
     font-size: 20px;
     background-color: #fff !important;
@@ -26,6 +38,7 @@
 .main-body .main-body-meeting-info {
     display: flex;
     align-items: center;
+    color: black;
 }
 
 .main-body .main-body-meeting-info .main-body-date {
@@ -74,4 +87,8 @@
 .main-body-eventState {
     margin-top: 15px;
     float: left;
+}
+
+img {
+    
 }

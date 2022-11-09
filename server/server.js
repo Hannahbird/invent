@@ -5,7 +5,7 @@ const path = require('path');
 const db = require('./config/connection');
 //const routes = require('./routes');
 const { typeDefs, resolvers } = require('./schemas');
-
+const limit = '2mb'
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -15,8 +15,9 @@ const server = new ApolloServer({
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.urlencoded({ extended: true, limit: limit }));
+app.use(express.json({limit: limit}));
+
 
 // if we're in production, serve client/build as static assets
 const startApolloServer = async (typeDefs, resolvers) => {

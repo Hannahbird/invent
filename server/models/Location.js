@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const imageSchema = require('./Image');
 const uniqueValidator = require('mongoose-unique-validator');
 
 const locationSchema = new Schema(
@@ -17,6 +18,7 @@ const locationSchema = new Schema(
             type: Number,
             required: true,
         },
+        image: imageSchema,
         active: {
             type: Boolean,
             default: true

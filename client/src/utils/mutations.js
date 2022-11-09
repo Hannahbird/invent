@@ -23,7 +23,7 @@ export const ADD_USER = gql`
     $username: String!
     $email: String!
     $password: String!
-    $signUpCode: String
+    $signUpLink: String
     $newCompany: Boolean
     $companyTitle: String
   ) {
@@ -31,7 +31,7 @@ export const ADD_USER = gql`
       username: $username
       email: $email
       password: $password
-      signUpCode: $signUpCode
+      signUpCode: $signUpLink
       newCompany: $newCompany
       companyTitle: $companyTitle
     ) {
@@ -102,8 +102,8 @@ export const ADD_EVENTTASK = gql`
     $description: String!
     $department: ID!
     $eventId: ID!
-    $startTime: Int
-    $endTime: Int
+    $startTime: String!
+    $endTime: String!
   ) {
     addEventTask(
       description: $description
@@ -128,8 +128,8 @@ export const UPDATE_EVENTTASK = gql`
     $description: String
     $department: ID
     $eventId: ID
-    $startTime: Int
-    $endTime: Int
+    $startTime: String!
+    $endTime: String!
   ) {
     updateEventTask(
       taskId: $taskId
@@ -144,9 +144,7 @@ export const UPDATE_EVENTTASK = gql`
       department {
         deptName
       }
-      eventId {
-        eventName
-      }
+
       startTime
       endTime
     }
@@ -154,7 +152,7 @@ export const UPDATE_EVENTTASK = gql`
 `;
 export const DELETE_EVENTTASK = gql`
   mutation deleteEventTask($taskId: ID!) {
-    deleteEventTask(taskId: taskId) {
+    deleteEventTask(taskId: $taskId) {
       _id
     }
   }
@@ -162,7 +160,6 @@ export const DELETE_EVENTTASK = gql`
 export const ADD_EVENT = gql`
   mutation Mutation(
     $contactName: String!
-    $eventDate: Date!
     $eventStartDate: Date
     $eventEndDate: Date
     $eventName: String!
@@ -171,7 +168,6 @@ export const ADD_EVENT = gql`
   ) {
     addEvent(
       contactName: $contactName
-      eventDate: $eventDate
       eventStartDate: $eventStartDate
       eventEndDate: $eventEndDate
       eventName: $eventName
@@ -194,16 +190,30 @@ export const ADD_EVENT = gql`
   }
 `;
 export const ADD_LOCATION = gql`
-  mutation Mutation($locationName: String!, $capacity: Int!) {
-    addLocation(locationName: $locationName, capacity: $capacity) {
-      _id
-      locationName
-      capacity
-      company {
-        _id
-        title
+  mutation Mutation(
+    $locationName: String!
+    $capacity: Int!
+    $encodedImage: String
+    $imageName: String) {
+      addLocation(
+        locationName: $locationName
+        capacity: $capacity
+        input: {
+          encodedImage: $encodedImage
+          imageName: $imageName
+        }) {
+          _id
+          locationName
+          capacity
+          company {
+            _id
+            title
+          }
+          image {
+            encodedImage
+            imageName
+          }
       }
-    }
   }
 `;
 export const UPDATE_LOCATION = gql`
@@ -211,17 +221,27 @@ export const UPDATE_LOCATION = gql`
     $locationId: ID!
     $locationName: String
     $capacity: Int
+    $encodedImage: String
+    $imageName: String
     $active: Boolean
   ) {
     updateLocation(
       locationId: $locationId
       locationName: $locationName
       capacity: $capacity
+      input: {
+        encodedImage: $encodedImage
+        imageName: $imageName
+      }
       active: $active
     ) {
       _id
       locationName
       capacity
+      image {
+        encodedImage
+        imageName
+      }
     }
   }
 `;
@@ -236,7 +256,16 @@ export const DELETE_LOCATION = gql`
 `;
 //if you want to delete a location send update location the id and active = false
 export const UPDATE_EVENT = gql`
-  mutation Mutation($eventId: ID!, $contactName: String, $eventName: String, $contactInfo: String, $eventDate: Date, $eventStartDate: Date, $eventEndDate: Date) {
+  mutation Mutation(
+    $eventId: ID!
+    $contactName: String
+    $eventName: String
+    $contactInfo: String
+    $eventDate: Date
+    $eventStartDate: Date
+    $eventEndDate: Date
+    $eventState: String
+  ) {
     updateEvent(
       eventId: $eventId
       contactName: $contactName
@@ -245,6 +274,7 @@ export const UPDATE_EVENT = gql`
       eventDate: $eventDate
       eventStartDate: $eventStartDate
       eventEndDate: $eventEndDate
+      eventState: $eventState
     ) {
       _id
       eventName

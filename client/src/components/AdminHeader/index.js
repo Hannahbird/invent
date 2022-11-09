@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Nav from 'react-bootstrap/Nav';
+import Carousel from 'react-bootstrap/Carousel';
 
 import Auth from '../../utils/auth';
 
-const Header = () => {
+const Header = (props) => {
   const logout = (event) => {
     event.preventDefault();
     Auth.logout();
   };
 
   return (
+    // <Carousel variant="dark">
     <header className="mb-4 py-2 flex-row header align-center">
-      <div className="header flex-row justify-space-between-lg justify-flex-end align-left">
+      <div className="header">
         <Link to="/">
-          <h1>InVent</h1>
+          <h1>
+            <span id="in">in</span>Vent
+          </h1>
         </Link>
       </div>
-      <div className="header container flex-row justify-space-between-lg justify-flex-end align-left">
+      <div className="container flex-row justify-space-between-lg justify-flex-end align-left">
         <nav>
           {Auth.loggedIn() ? (
             <>
@@ -51,6 +54,7 @@ const Header = () => {
         </nav>
       </div>
     </header>
+    // </Carousel>
   );
 };
 

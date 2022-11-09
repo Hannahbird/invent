@@ -6,7 +6,6 @@ const eventSchema = new Schema({
     type: String,
     required: true,
     trim: true,
-    unique: true,
   },
   location: {
     type: Schema.Types.ObjectId,
@@ -22,15 +21,11 @@ const eventSchema = new Schema({
     type: String,
     required: true,
   },
-  eventDate: {
-    type: Date,
-    required: true,
-  },
   eventStartDate: {
-    type: Date
+    type: Date,
   },
   eventEndDate: {
-    type: Date
+    type: Date,
   },
   eventState: {
     type: String,
@@ -38,8 +33,8 @@ const eventSchema = new Schema({
   },
   active: {
     type: Boolean,
-    default: true
-  }
+    default: true,
+  },
 });
 
 eventSchema.plugin(uniqueValidator);

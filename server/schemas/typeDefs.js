@@ -53,6 +53,18 @@ const typeDefs = gql`
     locationName: String
     company: Company
     capacity: Int
+    image: Image
+  }
+
+  type Image {
+    _id: ID
+    encodedImage: String
+    imageName: String
+  }
+
+  input imageInput {
+    encodedImage: String
+    imageName: String
   }
 
   type EventTask {
@@ -60,8 +72,8 @@ const typeDefs = gql`
     department: Department
     description: String
     eventId: ID
-    startTime: Int
-    endTime: Int
+    startTime: String
+    endTime: String
   }
 
   type Event {
@@ -114,11 +126,12 @@ const typeDefs = gql`
     addDepartment(deptName: String!): Department
     updateUser(userId: ID!, email: String, deptId: ID): User
     updateDepartment(deptId: ID!, deptName: String!): Department
-    addLocation(locationName: String!, capacity: Int!): Location
+    addLocation(locationName: String!, capacity: Int!, input: imageInput): Location
     updateLocation(
       locationName: String
       locationId: ID!
       capacity: Int
+      input: imageInput
       active: Boolean
     ): Location
     deleteLocation(locationId: ID!): Location
@@ -128,7 +141,6 @@ const typeDefs = gql`
       departments: [ID]
       contactInfo: String!
       contactName: String!
-      eventDate: Date!
       eventStartDate: Date
       eventEndDate: Date
     ): Event
@@ -140,22 +152,23 @@ const typeDefs = gql`
       eventDate: Date
       eventStartDate: Date
       eventEndDate: Date
+      eventState: String
     ): Event
     deleteDepartment(deptId: ID!): Department
     addEventTask(
       description: String!
       department: ID!
       eventId: ID!
-      startTime: Int
-      endTime: Int
+      startTime: String
+      endTime: String
     ): EventTask
     updateEventTask(
       taskId: ID!
       description: String
       department: ID
       eventId: ID
-      startTime: Int
-      endTime: Int
+      startTime: String
+      endTime: String
     ): EventTask
     deleteEventTask(taskId: ID!): EventTask
   }
