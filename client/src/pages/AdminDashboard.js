@@ -1,8 +1,8 @@
-import React from 'react';
-import EventList from '../components/EventList';
-import AdminHeader from '../components/AdminHeader';
+import React from "react";
+import EventList from "../components/EventList";
+import AdminHeader from "../components/AdminHeader";
 
-import Auth from '../utils/auth';
+import Auth from "../utils/auth";
 
 const Dashboard = () => {
   return (
