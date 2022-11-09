@@ -78,4 +78,5 @@
 
 .task-card {
     cursor: default !important;
+    margin-bottom: 15px !important;
 }
