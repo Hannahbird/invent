@@ -57,6 +57,7 @@ const EventList = () => {
         event.preventDefault();
         console.log(newEvent);
 
+<<<<<<< HEAD
         try {
             const { data } = await addEvent({
                 variables: { ...newEvent },
@@ -239,6 +240,88 @@ const EventList = () => {
             </Accordian>
         </div>
     );
+=======
+            <Form.Group className="mb-3">
+              <Form.Label>Event Location</Form.Label>
+              <Form.Select
+                name="location"
+                type="string"
+                placeholder="Event Location"
+                onChange={handleChange}
+                required
+              >
+                <option selected>Select Location</option>
+                {locations.map((location) => (
+                  <option value={location._id}>{location.locationName}</option>
+                ))}
+              </Form.Select>
+              <Form.Text className="text-muted">
+                Which location will be used for this event?
+              </Form.Text>
+            </Form.Group>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" type="submit" >
+              Submit
+            </Button>
+          </Modal.Footer>
+        </Form>
+      </Modal>
+      <>
+        <Button variant="secondary" onClick={() => setModalShow(true)}>
+          Create Events
+        </Button>
+      </>
+      <h3>{events.length ? "Your Current Events" : "No events yet..."}</h3>
+      <Accordian variant='warning' flush defaultActiveKey={['0']}>
+        <Accordian.Item eventKey='0'>
+          <Accordian.Header>Planning: ({events.length && events.filter(event => event.eventState === 'Planning').length})</Accordian.Header>
+          <Accordian.Body>
+            <div className="row">
+              {events.length &&
+                events.filter(event => event.eventState === 'Planning').map((event) => (
+                  <EventCard event={event} />
+                ))}
+            </div>
+          </Accordian.Body>
+        </Accordian.Item>
+        <Accordian.Item eventKey='2'>
+          <Accordian.Header>Pending: ({events.length && events.filter(event => event.eventState === 'Pending').length})</Accordian.Header>
+          <Accordian.Body>
+            <div className="row">
+              {events.length &&
+                events.filter(event => event.eventState === 'Pending').map((event) => (
+                  <EventCard event={event} />
+                ))}
+            </div>
+          </Accordian.Body>
+        </Accordian.Item>
+        <Accordian.Item eventKey='3'>
+          <Accordian.Header>Completed: ({events.length && events.filter(event => event.eventState === 'Complete').length})</Accordian.Header>
+          <Accordian.Body>
+            <div className="row">
+              {events.length &&
+                events.filter(event => event.eventState === 'Complete').map((event) => (
+                  <EventCard event={event} />
+                ))}
+            </div>
+          </Accordian.Body>
+        </Accordian.Item>
+        <Accordian.Item eventKey='4'>
+          <Accordian.Header>Cancelled: ({events.length && events.filter(event => event.eventState === 'Cancelled').length})</Accordian.Header>
+          <Accordian.Body>
+            <div className="row">
+              {events.length &&
+                events.filter(event => event.eventState === 'Cancelled').map((event) => (
+                  <EventCard event={event} />
+                ))}
+            </div>
+          </Accordian.Body>
+        </Accordian.Item>
+      </Accordian>
+    </div>
+  );
+>>>>>>> max/userexperrience
 };
 
 export default EventList;
