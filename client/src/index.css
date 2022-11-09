@@ -80,9 +80,9 @@ p {
 body {
   font: 'Arial';
   background-color: #EDEDE9;
-  
-  
-  
+
+
+
 }
 
 main {
@@ -131,7 +131,7 @@ header {
   background-color: white;
 }
 
-.listitem{
+.listitem {
   background-color: white;
 }
 
@@ -141,4 +141,21 @@ img {
   height: 600px;
   width: 200px;
   opacity: .7;
+}
+
+/* custom colors for accordian */
+
+.accordion-button:not(.collapsed) {
+  background-color: rgba(218, 165, 32, 0.6) !important;
+  color: white !important;
+
+}
+
+.accordion-button:not(.collapsed)::after {
+  filter: brightness(0) invert(1) !important;
+}
+
+.accordion-button {
+  border: none !important;
+  box-shadow: none !important;
 }

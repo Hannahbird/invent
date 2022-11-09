@@ -180,7 +180,7 @@ const EventList = () => {
         </Button>
       </>
       <h3>{events.length ? "Your Current Events" : "No events yet..."}</h3>
-      <Accordian flush defaultActiveKey={['0']}>
+      <Accordian variant='warning' flush defaultActiveKey={['0']}>
         <Accordian.Item eventKey='0'>
           <Accordian.Header>Planning: ({events.length && events.filter(event => event.eventState === 'Planning').length})</Accordian.Header>
           <Accordian.Body>
