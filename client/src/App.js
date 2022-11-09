@@ -20,6 +20,7 @@ import SpacesList from './components/SpacesList';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import About from './pages/About';
 
 import DepSingleEvent from './pages/DepSingleEvent';
 import SingleEvent from './pages/SingleEvent';
@@ -58,7 +59,7 @@ export default class App extends Component {
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
-
+                <Route path="/about" element={<About />} />
                 <Route path="/events" element={<EventList />} />
                 <Route path="/event/:id" element={<SingleEvent />} />
                 <Route path="/depevent/:id" element={<DepSingleEvent />} />
