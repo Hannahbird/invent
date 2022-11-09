@@ -26,18 +26,6 @@ const SpacesList = ({ id }) => {
   const [addLocation, {error}] = useMutation(ADD_LOCATION);
   const spaces = data?.locations || {};
 
-  // useEffect(() => {
-  //   console.log(image);
-  //   if (image.encodedImage) {
-  //     setImageLoading(false);
-  //     console.log("ImageLoading set to false")
-  //   }
-  //   else {
-  //     setImageLoading(true);
-  //     console.log("imageloading set to true")
-  //   }
-  // }, [image])
-
   const handleChange = async (event) => {
     event.preventDefault();
     const imageData = event.target.files[0]
@@ -51,10 +39,6 @@ const SpacesList = ({ id }) => {
 
           let reader = new FileReader();
           reader.onloadend = function () {
-          //  setImage({
-          //     encodedImage: reader.result,
-          //     imageName: imageData.name
-          //  })
             
             image['encodedImage'] = reader.result
             image['imageName'] = imageData.name
@@ -62,16 +46,13 @@ const SpacesList = ({ id }) => {
           }
           await reader.readAsDataURL(imageData);
           
-          //   console.log("Waiting for image to be set: ",image);
-          //    //waiting
-          // }
         }
         catch (e) {
           console.log(e);
     }
     
-    console.log(image);
-    
+    console.log(image)
+
   }
 
           
@@ -98,30 +79,6 @@ const SpacesList = ({ id }) => {
       e.preventDefault();
       const formData = new FormData(e.target),
         formDataObj = Object.fromEntries(formData.entries());
-
-      // if (formDataObj.image.name.length) {
-      //   console.log("loading image",imageLoading, image)
-      //   try {
-
-      //     let reader = new FileReader();
-      //     reader.onloadend = function () {
-      //       setImage({
-      //         encodedImage: reader.result,
-      //         imageName: formDataObj.image.name
-      //       })
-
-      //     }
-      //     await reader.readAsDataURL(formDataObj.image);
-
-      //     // while (imageLoading) {
-      //     //   console.log("Waiting for image to be set: ",image);
-      //     //    //waiting
-      //     // }
-      //   }
-      //   catch (e) {
-      //     console.log(e);
-      //   }
-      // }
 
       console.log(image);
       const parsedObj = {
@@ -322,7 +279,7 @@ const SpacesList = ({ id }) => {
           {spaces &&
             spaces.map((space) => {
               return (
-                <Card key={space._id} className="mt-3 text-center d-flex justify-content-center col-lg-3 col-md-5">
+                <Card key={space._id} className="mt-3 text-center d-flex justify-content-center col-lg-3 col-md-5 h-25">
                   {space.image && <Card.Img variant="top" className='opacity-100 img-fluid' src={space.image.encodedImage} />}
                   <Card.Body>
                     <Card.Title className='m-auto'>{space.locationName}</Card.Title>
@@ -334,7 +291,7 @@ const SpacesList = ({ id }) => {
                       id={space._id}
                       data-capacity={space.capacity}
                       value={space.locationName}
-                      className="btn col-8"
+                      className="btn btn-warning col-8"
                       onClick={() => {
                         setShowEditModal(true);
                         setEditInfo({
