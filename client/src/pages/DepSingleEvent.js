@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 
@@ -10,8 +10,10 @@ import auth from "../utils/auth";
 import dayjs from "dayjs";
 import "../assets/css/SingleEvent.css";
 import Pusher from "pusher-js";
-import DeptHeader from '../components/DeptHeader'
+import DeptHeader from "../components/DeptHeader";
 function DepSingleEvent() {
+  const [notifications, setNotifications] = useState({});
+  const [eventNotification, setEventNotification] = useState(false);
   var pusher = new Pusher("b4bd3ba699f2fde524c6", {
     cluster: "mt1",
   });
@@ -19,11 +21,15 @@ function DepSingleEvent() {
   var channel = pusher.subscribe(
     Auth.getProfile().data.department._id.toString()
   );
+  var eventChannel = pusher.subscribe(
+    Auth.getProfile().data.department.company
+  );
   const { id: eventId } = useParams();
   const { loading, data, refetch } = useQuery(QUERY_EVENT, {
     variables: { eventId: eventId },
   });
   const eventData = data?.event;
+
   const {
     loading: taskLoading,
     data: taskData,
@@ -42,29 +48,48 @@ function DepSingleEvent() {
     (task) => task.department._id === auth.getProfile().data.department._id
   );
   //   pusher channels
+
   channel.bind("taskChange", function (data) {
     console.log(data);
     // check if the affected task id is any of this events task id
-    if (tasks.map((task) => task._id).indexOf(data.updated._id) !== -1)
-      taskRefetch();
+    if (eventData?._id === data.updated.eventId) taskRefetch();
+    setNotifications({ ...notifications, [data.updated._id]: true });
   });
   channel.bind("newTask", function (data) {
     console.log(data);
     // check if the new task is in this event
     if (data.newTask.eventId === eventId) taskRefetch();
+    setNotifications({ ...notifications, [data.newTask._id]: true });
+  });
+  eventChannel.bind("updatedEvent", function (data) {
+    console.log(data);
+    if (eventData._id === data.updatedEvent._id) {
+      refetch();
+      setEventNotification(true);
+    }
   });
 
   if (loading) {
-    return (<><DeptHeader /><div>Loading...</div></>);
+    return (
+      <>
+        <DeptHeader />
+        <div>Loading...</div>
+      </>
+    );
   }
   return (
-    <><DeptHeader />
+    <>
+      <DeptHeader />
       <div className="container">
         <Link to={"/"} className="btn go-back-btn">
           <ArrowBarLeft size={30} />
         </Link>
         <div className="row">
-          <div className=" col-12 col-md-4 event-wrapper">
+          <div
+            className={`col-12 col-md-4 event-wrapper
+                ${eventNotification && "border border-primary"}`}
+            onClick={() => setEventNotification(false)}
+          >
             <h1>Event</h1>
             <div className="eventDataHolder">
               <div>
@@ -112,16 +137,28 @@ function DepSingleEvent() {
               <hr />
               <div className="eventStateHolder">
                 <span className="single-event-state-label">State: </span>
-                <span className="single-event-state">{eventData.eventState}</span>
+                <span className="single-event-state">
+                  {eventData.eventState}
+                </span>
               </div>
             </div>
           </div>
           <div className="col -12 col-md-8 task-wrapper">
             <h3>Your Tasks</h3>
             {tasks.map((task) => (
-              <div key={task._id} className="card-body card task-card ">
+              <div
+                key={task._id}
+                className={`card-body card task-card ${
+                  notifications[task._id] && "border border-danger"
+                }`}
+                onClick={() => {
+                  setNotifications({ ...notifications, [task._id]: false });
+                }}
+              >
                 <div className="col-12">
-                  <div className="single-event-task-name">{task.description}</div>
+                  <div className="single-event-task-name">
+                    {task.description}
+                  </div>
 
                   <div className="single-event-task-time">
                     <span>Start: </span>

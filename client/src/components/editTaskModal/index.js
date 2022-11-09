@@ -99,7 +99,7 @@ function EditTaskModal({ task, taskRefetch, showEdit, setShowEdit }) {
               placeholder="Department Needed"
             >
               {departments.map((department) => {
-                if (department.deptName === "admin") {
+                if (department.deptName.toLowerCase() === "admin") {
                   return;
                 }
                 return (
