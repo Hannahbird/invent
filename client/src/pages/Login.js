@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
 
+import LoggedOutHeader from '../components/LoggedOutHeader';
+
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
@@ -44,50 +46,53 @@ const Login = (props) => {
   };
 
   return (
-    <main className="flex-row justify-center mb-4">
-      <div className="col-12 col-md-6">
-        <div className="card">
-          <h4 className="card-header">Login</h4>
-          <div className="card-body">
-            <form onSubmit={handleFormSubmit}>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control
-                  type="email"
-                  placeholder="Enter email"
-                  className="form-input"
-                  name="email"
-                  id="email"
-                  value={formState.email}
-                  onChange={handleChange}
-                />
-                <Form.Text className="text-muted">
-                  We'll never share your email with anyone else.
-                </Form.Text>
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  className="form-input"
-                  placeholder="******"
-                  name="password"
-                  id="password"
-                  value={formState.password}
-                  onChange={handleChange}
-                />
-              </Form.Group>
+    <>
+      <LoggedOutHeader />
+      <main className="flex-row justify-center mb-4">
+        <div className="col-12 col-md-6">
+          <div className="card">
+            <h4 className="card-header">Login</h4>
+            <div className="card-body">
+              <form onSubmit={handleFormSubmit}>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label>Email address</Form.Label>
+                  <Form.Control
+                    type="email"
+                    placeholder="Enter email"
+                    className="form-input"
+                    name="email"
+                    id="email"
+                    value={formState.email}
+                    onChange={handleChange}
+                  />
+                  <Form.Text className="text-muted">
+                    We'll never share your email with anyone else.
+                  </Form.Text>
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    className="form-input"
+                    placeholder="******"
+                    name="password"
+                    id="password"
+                    value={formState.password}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
 
-              <Button variant="secondary" type="submit">
-                Submit
-              </Button>
-            </form>
+                <Button variant="secondary" type="submit">
+                  Submit
+                </Button>
+              </form>
 
-            {error && <div>Login failed</div>}
+              {error && <div>Login failed</div>}
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 };
 

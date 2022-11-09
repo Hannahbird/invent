@@ -23,7 +23,7 @@ export const ADD_USER = gql`
     $username: String!
     $email: String!
     $password: String!
-    $signUpCode: String
+    $signUpLink: String
     $newCompany: Boolean
     $companyTitle: String
   ) {
@@ -31,7 +31,7 @@ export const ADD_USER = gql`
       username: $username
       email: $email
       password: $password
-      signUpCode: $signUpCode
+      signUpCode: $signUpLink
       newCompany: $newCompany
       companyTitle: $companyTitle
     ) {
@@ -102,8 +102,8 @@ export const ADD_EVENTTASK = gql`
     $description: String!
     $department: ID!
     $eventId: ID!
-    $startTime: String
-    $endTime: String
+    $startTime: String!
+    $endTime: String!
   ) {
     addEventTask(
       description: $description
@@ -115,11 +115,9 @@ export const ADD_EVENTTASK = gql`
       _id
       description
       department {
-        deptName
+        _id
       }
-      eventId {
-        eventName
-      }
+      eventId
     }
   }
 `;
@@ -130,8 +128,8 @@ export const UPDATE_EVENTTASK = gql`
     $description: String
     $department: ID
     $eventId: ID
-    $startTime: String
-    $endTime: String
+    $startTime: String!
+    $endTime: String!
   ) {
     updateEventTask(
       taskId: $taskId
@@ -146,9 +144,7 @@ export const UPDATE_EVENTTASK = gql`
       department {
         deptName
       }
-      eventId {
-        eventName
-      }
+
       startTime
       endTime
     }
@@ -156,7 +152,7 @@ export const UPDATE_EVENTTASK = gql`
 `;
 export const DELETE_EVENTTASK = gql`
   mutation deleteEventTask($taskId: ID!) {
-    deleteEventTask(taskId: taskId) {
+    deleteEventTask(taskId: $taskId) {
       _id
     }
   }
@@ -164,14 +160,16 @@ export const DELETE_EVENTTASK = gql`
 export const ADD_EVENT = gql`
   mutation Mutation(
     $contactName: String!
-    $eventDate: Date!
+    $eventStartDate: Date
+    $eventEndDate: Date
     $eventName: String!
     $location: ID!
     $contactInfo: String!
   ) {
     addEvent(
       contactName: $contactName
-      eventDate: $eventDate
+      eventStartDate: $eventStartDate
+      eventEndDate: $eventEndDate
       eventName: $eventName
       location: $location
       contactInfo: $contactInfo
@@ -185,6 +183,8 @@ export const ADD_EVENT = gql`
       contactInfo
       contactName
       eventDate
+      eventStartDate
+      eventEndDate
       eventState
     }
   }
@@ -232,11 +232,25 @@ export const DELETE_LOCATION = gql`
 `;
 //if you want to delete a location send update location the id and active = false
 export const UPDATE_EVENT = gql`
-  mutation Mutation($eventId: ID!, $contactName: String, $eventName: String) {
+  mutation Mutation(
+    $eventId: ID!
+    $contactName: String
+    $eventName: String
+    $contactInfo: String
+    $eventDate: Date
+    $eventStartDate: Date
+    $eventEndDate: Date
+    $eventState: String
+  ) {
     updateEvent(
       eventId: $eventId
       contactName: $contactName
+      contactInfo: $contactInfo
       eventName: $eventName
+      eventDate: $eventDate
+      eventStartDate: $eventStartDate
+      eventEndDate: $eventEndDate
+      eventState: $eventState
     ) {
       _id
       eventName
@@ -247,6 +261,8 @@ export const UPDATE_EVENT = gql`
       contactInfo
       contactName
       eventDate
+      eventStartDate
+      eventEndDate
     }
   }
 `;

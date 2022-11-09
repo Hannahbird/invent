@@ -12,16 +12,16 @@ const Header = () => {
 
   return (
     <header className="mb-4 py-2 flex-row header align-center">
-      <div className="header flex-row justify-space-between-lg justify-flex-end align-left">
+      <div className="header">
         <Link to="/">
-          <h1>InVent</h1>
+          <h1><span id='in'>in</span>Vent</h1>
         </Link>
       </div>
-      <div className="header container flex-row justify-space-between-lg justify-flex-end align-left">
+      <div className="container flex-row justify-space-between-lg justify-flex-end align-left">
         <nav>
           {Auth.loggedIn() ? (
             <>
-              <Link className="navigation" to="/events">
+              <Link className="navigation" to="/">
                 Events
               </Link>{' '}
               ||{' '}

@@ -5,7 +5,7 @@ import LandingPage from '../../pages/LandingPage';
 
 import Auth from '../../utils/auth';
 
-const Navigation = () => {
+const Header = () => {
   const logout = (event) => {
     event.preventDefault();
     Auth.logout();
@@ -13,24 +13,26 @@ const Navigation = () => {
 
   return (
     <header className="mb-4 py-2 flex-row header align-center">
-      <div className="header">
+      <div className="header flex-row justify-space-between-lg justify-flex-end align-left">
         <Link to="/">
           <h1><span id='in'>in</span>Vent</h1>
         </Link>
       </div>
       <div className="header container flex-row justify-space-between-lg justify-flex-end align-left">
         <nav>
-          {Auth.loggedIn() ? (
-            <a className="navigation" href="/" onClick={logout}>
-              Logout
-            </a>
-          ) : (
-            <LandingPage />
-          )}
+          <>
+            <Link className="navigation" to="/login">
+              Login
+            </Link>{' '}
+            ||{' '}
+            <Link className="navigation" to="/signup">
+              Signup
+            </Link>
+          </>
         </nav>
       </div>
     </header>
   );
 };
 
-export default Navigation;
+export default Header;

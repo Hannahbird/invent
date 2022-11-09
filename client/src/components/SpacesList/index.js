@@ -1,25 +1,27 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useMutation, useQuery } from "@apollo/client";
-import { QUERY_LOCATIONS } from "../../utils/queries";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useMutation, useQuery } from '@apollo/client';
+import { QUERY_LOCATIONS } from '../../utils/queries';
 
 //Modal styling from react-bootstrap
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import Form from "react-bootstrap/Form";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
 import {
   ADD_LOCATION,
   DELETE_LOCATION,
   UPDATE_EVENTTASK,
   UPDATE_LOCATION,
-} from "../../utils/mutations";
+} from '../../utils/mutations';
+
+import AdminHeader from '../AdminHeader';
 
 const SpacesList = ({ id }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editInfo, setEditInfo] = useState({
-    locationId: "",
-    locationName: "",
-    capacity: "",
+    locationId: '',
+    locationName: '',
+    capacity: '',
   });
   const { loading, data, refetch } = useQuery(QUERY_LOCATIONS);
   const [addLocation] = useMutation(ADD_LOCATION);
@@ -28,6 +30,7 @@ const SpacesList = ({ id }) => {
   if (!spaces.length) {
     return (
       <>
+        <AdminHeader />
         <h3>You have no spaces created yet.</h3>
         <Create />
       </>
@@ -35,7 +38,7 @@ const SpacesList = ({ id }) => {
   }
 
   if (loading) {
-    return <div>Loading...</div>;
+    <><AdminHeader /> <div>Loading...</div></>
   }
 
   //add spaces modal
@@ -192,36 +195,42 @@ const SpacesList = ({ id }) => {
   }
 
   return (
-    <div>
-      <h3>Your Current Spaces</h3>
-      <Create />
-      {showEditModal && <EditModal />}
-      {spaces &&
-        spaces.map((space) => {
-          return (
-            <div key={space._id} className="mb-3 col-6">
-              {space.locationName}
-              <button
-                id={space._id}
-                data-capacity={space.capacity}
-                value={space.locationName}
-                className="btn col-6"
-                onClick={() => {
-                  setShowEditModal(true);
-                  setEditInfo({
-                    locationId: space._id,
-                    locationName: space.locationName,
-                    capacity: space.capacity,
-                  });
-                  console.log(editInfo);
-                }}
-              >
-                edit
-              </button>
-            </div>
-          );
-        })}
-    </div>
+    <>
+      <AdminHeader />
+      <div className='container'>
+        <h3>Your Current Spaces</h3>
+        <Create />
+        {showEditModal && <EditModal />}
+        <div className="d-flex flex-wrap row mt-3">
+          {spaces &&
+            spaces.map((space) => {
+              return (
+                <div key={space._id} className="mb-3 col-lg-3 col-md-6 col-sm-12 border rounded d-flex justify-content-between">
+
+                  <div className='m-auto'>{space.locationName}</div>
+                  <button
+                    id={space._id}
+                    data-capacity={space.capacity}
+                    value={space.locationName}
+                    className="btn col-6"
+                    onClick={() => {
+                      setShowEditModal(true);
+                      setEditInfo({
+                        locationId: space._id,
+                        locationName: space.locationName,
+                        capacity: space.capacity,
+                      });
+                      console.log(editInfo);
+                    }}
+                  >
+                    edit
+                  </button>
+                </div>
+              );
+            })}
+        </div>
+      </div>
+    </>
   );
 };
 

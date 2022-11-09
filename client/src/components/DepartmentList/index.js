@@ -11,6 +11,8 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 
+import AdminHeader from "../AdminHeader";
+
 const DepartmentList = ({ id }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editInfo, setEditInfo] = useState({ id: "", name: "" });
@@ -20,14 +22,15 @@ const DepartmentList = ({ id }) => {
   });
 
   const departments = data?.departments || {};
-
+  console.log(departments);
   if (loading) {
-    return <div>Loading...</div>;
+    return (<><AdminHeader /> <div>Loading...</div></>);
   }
 
   if (!data.departments.length) {
     return (
       <>
+        <AdminHeader />
         <h3>No departments yet</h3>
         <Create />
       </>
@@ -180,32 +183,36 @@ const DepartmentList = ({ id }) => {
   }
   return (
     <div>
-      <h3>Your Current Departments</h3>
-      <Create />
-      {showEditModal && <EditModal />}
-      <div>
-        {departments.map((department) => {
-          if (department.deptName === "admin") {
-            return;
-          }
-          return (
-            <div
-              key={department._id}
-              className="d-flex justify-content-between"
-              type="div"
-            >
-              <p className="col-6 flex">{department.deptName}</p>
-              <button
-                onClick={editDept}
-                id={department._id}
-                value={department.deptName}
-                className="btn col-6"
+      <AdminHeader />
+      <div className="container">
+        <h3>Your Current Departments</h3>
+        <Create />
+        {showEditModal && <EditModal />}
+        <div className="mt-3">
+          {departments.map((department) => {
+            if (department.deptName === "admin") {
+              return;
+            }
+            return (
+              <div
+                key={department._id}
+                className="d-flex justify-content-between border rounded mt-1"
+                type="div"
               >
-                edit
-              </button>
-            </div>
-          );
-        })}
+                <p className="col-4 flex m-auto">{department.deptName}</p>
+                <p className="col-4 m-auto">Join code: {department.signUpLink}</p>
+                <button
+                  onClick={editDept}
+                  id={department._id}
+                  value={department.deptName}
+                  className="btn col-2"
+                >
+                  edit
+                </button>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
