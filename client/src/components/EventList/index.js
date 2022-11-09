@@ -1,21 +1,21 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useQuery, useMutation } from "@apollo/client";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useQuery, useMutation } from '@apollo/client';
 import {
   QUERY_COMPANY_DEPTS,
   QUERY_EVENTS,
   QUERY_LOCATIONS,
-} from "../../utils/queries";
-import { ADD_EVENT } from "../../utils/mutations";
-import "../../assets/css/EventList.css";
+} from '../../utils/queries';
+import { ADD_EVENT } from '../../utils/mutations';
+import '../../assets/css/EventList.css';
 //Modal styling from react-bootstrap
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import Form from "react-bootstrap/Form";
-import DateTime from "../../utils/dateTime/dateTime";
-import dayjs from "dayjs";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+import DateTime from '../../utils/dateTime/dateTime';
+import dayjs from 'dayjs';
 
-import AdminHeader from "../AdminHeader";
+import AdminHeader from '../AdminHeader';
 
 const EventList = () => {
   const { loading, error, data, refetch } = useQuery(QUERY_EVENTS);
@@ -27,12 +27,12 @@ const EventList = () => {
   const [modalShow, setModalShow] = React.useState(false);
 
   const [newEvent, setNewEvent] = useState({
-    eventName: "",
-    contactName: "",
-    contactInfo: "",
-    eventStartDate: "",
-    eventEndDate: "",
-    location: "",
+    eventName: '',
+    contactName: '',
+    contactInfo: '',
+    eventStartDate: '',
+    eventEndDate: '',
+    location: '',
   });
 
   const locations = locationData?.locations || [];
@@ -62,12 +62,12 @@ const EventList = () => {
         variables: { ...newEvent },
       });
       setNewEvent({
-        eventName: "",
-        contactName: "",
-        contactInfo: "",
-        eventStartDate: "",
-        eventEndDate: "",
-        location: "",
+        eventName: '',
+        contactName: '',
+        contactInfo: '',
+        eventStartDate: '',
+        eventEndDate: '',
+        location: '',
       });
       refetch();
     } catch (e) {}
@@ -194,10 +194,10 @@ const EventList = () => {
                       <div className="main-body-meeting-info">
                         <div className="main-body-date">
                           <span className="main-body-dateDay">
-                            {dayjs(event.eventStartDate).format("DD")}
+                            {dayjs(event.eventStartDate).format('DD')}
                           </span>
                           <span className="main-body-dateMonth">
-                            {dayjs(event.eventStartDate).format("MMM")}
+                            {dayjs(event.eventStartDate).format('MMM')}
                           </span>
                         </div>
                         <div className="main-body-event">
@@ -205,8 +205,8 @@ const EventList = () => {
                             {event.location.locationName}
                           </span>
                           <span className="main-body-time">
-                            {dayjs(event.eventStartDate).format("hh:mm A")} -{" "}
-                            {dayjs(event.eventEndDate).format("hh:mm A")}{" "}
+                            {dayjs(event.eventStartDate).format('hh:mm A')} -{' '}
+                            {dayjs(event.eventEndDate).format('hh:mm A')}{' '}
                           </span>
                         </div>
                       </div>
