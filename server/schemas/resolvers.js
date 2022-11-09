@@ -173,7 +173,6 @@ const resolvers = {
       let department;
       //check for new company
       //front end validation should check for the presence of a company title  before submit of company registration
-      if(!username){alert('Error')}
       if (newCompany && companyTitle) {
         company = await Company.create({
           title: companyTitle,
@@ -247,7 +246,6 @@ const resolvers = {
       if (!correctPw) {
         throw new AuthenticationError("Incorrect credentials");
       }
-
       const token = signToken(user);
       return { token, user };
     },

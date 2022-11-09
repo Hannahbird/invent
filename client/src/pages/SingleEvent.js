@@ -45,13 +45,14 @@ const SingleEvent = (props) => {
     };
     const handleShow = () => setShow(true);
     const [opaque, setOpaque] = useState(false);
+    
 
     const handleMouseOver = (state) => {
         setOpaque(state);
     };
 
     const [editEvent, setEditEvent] = useState({});
-
+    const [isError, setError] = useState(true);
     const handleChange = (event) => {
         const { name, value } = event.target;
 
@@ -59,6 +60,12 @@ const SingleEvent = (props) => {
             ...editEvent,
             [name]: value,
         });
+        if(!editEvent.contactName || !editEvent.contactInfo || !editEvent.eventName || !editEvent.location){
+          setError(true);
+        }
+        else{
+          setError(false);
+        }
 
         /*eventData = { ...eventData, [name]: value };*/
     };
@@ -321,6 +328,7 @@ const SingleEvent = (props) => {
                                     onClick={() => {
                                         setTaskToEdit(task);
                                         setShowEdit(true);
+
                                     }}
                                 >
                                     Edit
