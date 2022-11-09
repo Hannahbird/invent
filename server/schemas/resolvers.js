@@ -173,11 +173,13 @@ const resolvers = {
       let department;
       //check for new company
       //front end validation should check for the presence of a company title  before submit of company registration
+      if(!username){alert('Error')}
       if (newCompany && companyTitle) {
         company = await Company.create({
           title: companyTitle,
           companyEmail: userArgs.email,
         });
+        
 
         department = await Department.create({
           company: company._id,

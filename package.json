@@ -23,6 +23,8 @@
   "homepage": "https://github.com/Hannahbird/invent#readme",
   "dependencies": {
     "concurrently": "^7.5.0",
-    "react-router-dom": "^6.4.3"
+    "react-hook-form": "^7.39.1",
+    "react-router-dom": "^6.4.3",
+    "react-select": "^5.6.0"
   }
 }
