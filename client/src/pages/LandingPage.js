@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Col } from 'react-bootstrap';
 import LoggedOutHeader from '../components/LoggedOutHeader';
+import Carousel from '../components/Carousel';
 
 import Auth from '../utils/auth';
 
@@ -17,6 +18,9 @@ const Header = () => {
       <div>
         <>
           <section className="about">
+            <div className="flex justify-center">
+              <Carousel />
+            </div>
             <div className="row justify-content-center" id="about-container">
               <Col lg={6} md={12}>
                 <p>

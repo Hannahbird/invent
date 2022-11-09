@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
   ApolloClient,
@@ -47,31 +47,34 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-function App() {
-  return (
-    <ApolloProvider client={client}>
-      <Router>
-        <div className="flex-column justify-flex-start min-100-vh big-page-container">
-          <div>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
+export default class App extends Component {
+  render() {
+    return (
+      <ApolloProvider client={client}>
+        <Router>
+          <div className="flex-column justify-flex-start min-100-vh big-page-container">
+            <div>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
 
-              <Route path="/events" element={<EventList />} />
-              <Route path="/event/:id" element={<SingleEvent />} />
-              <Route path="/depevent/:id" element={<DepSingleEvent />} />
-              <Route path="/spaces" element={<SpacesList />} />
-              <Route path="/departments" element={<DepartmentList />} />
-              <Route path="*" element={<NoMatch />} />
-            </Routes>
+                <Route path="/events" element={<EventList />} />
+                <Route path="/event/:id" element={<SingleEvent />} />
+                <Route path="/depevent/:id" element={<DepSingleEvent />} />
+                <Route path="/spaces" element={<SpacesList />} />
+                <Route path="/departments" element={<DepartmentList />} />
+                <Route path="*" element={<NoMatch />} />
+              </Routes>
+            </div>
+
+            <div id="footer-spacer"></div>
+            <Footer />
           </div>
-          <div id="footer-spacer"></div>
-          <Footer />
-        </div>
-      </Router>
-    </ApolloProvider>
-  );
+        </Router>
+      </ApolloProvider>
+    );
+  }
 }
 
-export default App;
+// export default App;

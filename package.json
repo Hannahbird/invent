@@ -22,9 +22,17 @@
   },
   "homepage": "https://github.com/Hannahbird/invent#readme",
   "dependencies": {
+    "@craco/craco": "^7.0.0",
     "concurrently": "^7.5.0",
+    "react-easy-swipe": "^0.0.22",
+    "react-icons": "^4.6.0",
     "react-router-dom": "^6.4.3",
     "react-simple-image-slider": "^2.4.1",
     "react-slideshow-image": "^4.0.5"
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.8.8",
+    "postcss": "^7.0.39",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"
   }
 }
