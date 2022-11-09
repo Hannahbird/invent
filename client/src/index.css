@@ -73,6 +73,8 @@ a:link {
 
 p {
   font-family: 'Arial';
+  font-size: x-large;
+  font-weight: bold;
 }
 
 body {
@@ -131,4 +133,12 @@ header {
 
 .listitem{
   background-color: white;
+}
+
+img {
+  object-fit: cover;
+  object-position: center;
+  height: 600px;
+  width: 200px;
+  opacity: .7;
 }
