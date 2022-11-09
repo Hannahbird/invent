@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_LOCATIONS } from '../../utils/queries';
-import imageToBase64 from 'image-to-base64/browser'
 
 //Modal styling from react-bootstrap
 import {Card, Button, Modal, Form} from 'react-bootstrap'
@@ -29,7 +28,8 @@ const SpacesList = ({ id }) => {
   const spaces = data?.locations || {};
 
   useEffect(() => {
-    if (image.encodedImage) {
+    console.log(image.encodedImage)
+    if (image) {
       setImageLoading(false);
     }
     else {
@@ -81,10 +81,10 @@ const SpacesList = ({ id }) => {
             })
 
           }
-          reader.readAsDataURL(formDataObj.image);
+          await reader.readAsDataURL(formDataObj.image);
 
           while (imageLoading) {
-            //waiting
+             //waiting
           }
         }
         catch (e) {
