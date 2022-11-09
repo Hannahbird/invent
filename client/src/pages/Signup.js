@@ -54,7 +54,7 @@ const Signup = () => {
   return (
     <>
       <LoggedOutHeader />
-      <main className="flex-row justify-center mb-4">
+      <main className="container flex-row justify-center mb-4">
         <div className="col-12 col-md-6">
           <div className="card">
             <h4 className="card-header">Sign Up</h4>
@@ -91,7 +91,7 @@ const Signup = () => {
 
                 <Row className="mb-3">
                   <Form.Group as={Col}>
-                    <Form.Label>Company</Form.Label>
+                    <Form.Label>New Company</Form.Label>
                     <Form.Control
                       placeholder="Your Company"
                       name="companyTitle"
@@ -103,7 +103,7 @@ const Signup = () => {
                   </Form.Group>
                   OR
                   <Form.Group as={Col}>
-                    <Form.Label>Sign Up Link</Form.Label>
+                    <Form.Label>Sign Up Code</Form.Label>
                     <Form.Control
                       placeholder="Sign Up Link"
                       name="signUpLink"

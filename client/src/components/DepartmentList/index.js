@@ -24,7 +24,7 @@ const DepartmentList = ({ id }) => {
   const departments = data?.departments || {};
   console.log(departments);
   if (loading) {
-    return <div>Loading...</div>;
+    return (<><AdminHeader /> <div>Loading...</div></>);
   }
 
   if (!data.departments.length) {
@@ -185,35 +185,35 @@ const DepartmentList = ({ id }) => {
     <div>
       <AdminHeader />
       <div className="container">
-      <h3>Your Current Departments</h3>
-      <Create />
-      {showEditModal && <EditModal />}
-      <div className="mt-3">
-        {departments.map((department) => {
-          if (department.deptName === "admin") {
-            return;
-          }
-          return (
-            <div
-              key={department._id}
-              className="d-flex justify-content-between border rounded mt-1"
-              type="div"
-            >
-              <p className="col-4 flex m-auto">{department.deptName}</p>
-              <p className="col-4 m-auto">Join code: {department.signUpLink}</p>
-              <button
-                onClick={editDept}
-                id={department._id}
-                value={department.deptName}
-                className="btn col-2"
+        <h3>Your Current Departments</h3>
+        <Create />
+        {showEditModal && <EditModal />}
+        <div className="mt-3">
+          {departments.map((department) => {
+            if (department.deptName === "admin") {
+              return;
+            }
+            return (
+              <div
+                key={department._id}
+                className="d-flex justify-content-between border rounded mt-1"
+                type="div"
               >
-                edit
-              </button>
-            </div>
-          );
-        })}
+                <p className="col-4 flex m-auto">{department.deptName}</p>
+                <p className="col-4 m-auto">Join code: {department.signUpLink}</p>
+                <button
+                  onClick={editDept}
+                  id={department._id}
+                  value={department.deptName}
+                  className="btn col-2"
+                >
+                  edit
+                </button>
+              </div>
+            );
+          })}
         </div>
-        </div>
+      </div>
     </div>
   );
 };
