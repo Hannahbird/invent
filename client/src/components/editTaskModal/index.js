@@ -68,6 +68,7 @@ function EditTaskModal({ task, taskRefetch, showEdit, setShowEdit }) {
               type="string"
               placeholder="Task Description"
               defaultValue={task.description}
+              required
             />
             <Form.Text className="text-muted">
               A short description of expected duties
@@ -84,6 +85,7 @@ function EditTaskModal({ task, taskRefetch, showEdit, setShowEdit }) {
               endDate={editDate.endTime}
               stateMgr={setEditDate}
               stateObj={editDate}
+              required
             />
           </Form.Group>
 
@@ -93,10 +95,11 @@ function EditTaskModal({ task, taskRefetch, showEdit, setShowEdit }) {
               defaultValue={task.department?._id}
               name="department"
               type="string"
+              required
               placeholder="Department Needed"
             >
               {departments.map((department) => {
-                if (department.deptName === "admin") {
+                if (department.deptName.toLowerCase() === "admin") {
                   return;
                 }
                 return (

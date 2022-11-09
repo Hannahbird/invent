@@ -9,9 +9,9 @@ import {
   ADD_LOCATION,
   DELETE_LOCATION,
   UPDATE_LOCATION,
-} from '../../utils/mutations';
+} from "../../utils/mutations";
 
-import AdminHeader from '../AdminHeader';
+import AdminHeader from "../AdminHeader";
 
 const SpacesList = ({ id }) => {
   const [showEditModal, setShowEditModal] = useState(false);
@@ -58,7 +58,9 @@ const SpacesList = ({ id }) => {
   }
 
   if (loading) {
-    <><AdminHeader /> <div>Loading...</div></>
+    <>
+      <AdminHeader /> <div>Loading...</div>
+    </>;
   }
 
   //add spaces modal
@@ -126,6 +128,7 @@ const SpacesList = ({ id }) => {
                 name="locationName"
                 type="string"
                 placeholder="Space Name"
+                required
               />
               <Form.Text className="text-muted">
                 What is the Space Name?
@@ -138,6 +141,7 @@ const SpacesList = ({ id }) => {
                 name="capacity"
                 type="number"
                 placeholder="Space Capacity"
+                required
               />
               <Form.Text className="text-muted">
                 What is the capacity of this space?
@@ -237,6 +241,7 @@ const SpacesList = ({ id }) => {
                 type="string"
                 defaultValue={editInfo.locationName}
                 name="locationName"
+                required
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -246,6 +251,7 @@ const SpacesList = ({ id }) => {
                 type="number"
                 placeholder="Space Capacity"
                 defaultValue={editInfo.capacity}
+                required
               />
               <Form.Text className="text-muted">
                 What is the capacity of this space?
@@ -297,7 +303,7 @@ const SpacesList = ({ id }) => {
   return (
     <>
       <AdminHeader />
-      <div className='container'>
+      <div className="container">
         <h3>Your Current Spaces</h3>
         <Create />
         {showEditModal && <EditModal />}

@@ -3,23 +3,20 @@ import { QUERY_DEPT_EVENTS } from "../../utils/queries";
 import { useQuery, useMutation } from "@apollo/client";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
-const DepartmentEventList = ({ channel }) => {
+
+const DepartmentEventList = ({ channel, eventChannel }) => {
   const { loading, data, refetch } = useQuery(QUERY_DEPT_EVENTS);
 
   const events = data?.deptEvents || {};
   const [notifications, setNotifications] = useState({});
+  const [updateNotifications, setUpdateNotifications] = useState({});
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (!events.length) {
-    return (
-      <>
-        <h3>No Events Scheduled</h3>
-      </>
-    );
-  }
   channel.bind("taskChange", function (data) {
+    console.log(data);
+    setNotifications({ ...notifications, [data.updated.eventId]: true });
     refetch();
   });
   channel.bind("newTask", function (data) {
@@ -28,10 +25,25 @@ const DepartmentEventList = ({ channel }) => {
     console.log(notifications);
     refetch();
   });
+  eventChannel.bind("updatedEvent", function (data) {
+    if (
+      events.map((event) => event._id).indexOf(data.updatedEvent._id) !== -1
+    ) {
+      refetch();
+      setUpdateNotifications({
+        ...updateNotifications,
+        [data.updatedEvent._id]: true,
+      });
+    }
+  });
 
   return (
     <div>
-      <h3>Your Current Events</h3>
+      {events.length ? (
+        <h3>Your Current Events</h3>
+      ) : (
+        <h3>No Events Scheduled</h3>
+      )}
       <div className="row">
         {events &&
           events.map((event) => (
@@ -39,13 +51,17 @@ const DepartmentEventList = ({ channel }) => {
               className="col-sm-12 col-md-6"
               onClick={() => {
                 setNotifications({ ...notifications, [event._id]: false });
+                setUpdateNotifications({
+                  ...notifications,
+                  [event._id]: false,
+                });
               }}
             >
               <div
                 key={event._id}
                 className={`card ${
                   notifications[event._id] && "border border-danger"
-                }`}
+                } ${updateNotifications[event._id] && "border border-warning"}`}
               >
                 <Link to={`/depevent/${event._id}`}>
                   <div className="card-header border-0 text-black">
