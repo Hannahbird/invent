@@ -179,7 +179,7 @@ const resolvers = {
           title: companyTitle,
           companyEmail: userArgs.email,
         });
-        
+
 
         department = await Department.create({
           company: company._id,
@@ -422,7 +422,8 @@ const resolvers = {
           { _id: eventId },
           { ...eventInfo },
           { runValidators: true, context: "query", new: true }
-        ).populate("location");
+        ).populate("location", '-image');
+
         pusher.trigger(
           updatedEvent.location.company.toString(),
           "updatedEvent",
