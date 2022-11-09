@@ -77,6 +77,7 @@ function CreateTaskModal({
               name="description"
               type="string"
               placeholder="Task Description"
+              required
             />
             <Form.Text className="text-muted">
               A short description of expected duties
@@ -108,7 +109,7 @@ function CreateTaskModal({
               placeholder="Department Needed"
             >
               {departments.map((department) => {
-                if (department.deptName === "admin") {
+                if (department.deptName.toLowerCase() === "admin") {
                   return;
                 }
                 return (

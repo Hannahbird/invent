@@ -221,10 +221,10 @@ const SingleEvent = (props) => {
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
+            <Button variant="warning" onClick={handleClose}>
               Cancel
             </Button>
-            <Button variant="primary" onClick={handleUpdateEvent}>
+            <Button variant="warning" onClick={handleUpdateEvent}>
               Update
             </Button>
           </Modal.Footer>
@@ -334,7 +334,7 @@ const SingleEvent = (props) => {
                   {dayjs(task.endTime).format("hh:mm A")}
                 </div>
                 <button
-                  className="btn btn-warning col-1"
+                  className="btn btn-warning col-2"
                   onClick={() => {
                     setTaskToEdit(task);
                     setShowEdit(true);

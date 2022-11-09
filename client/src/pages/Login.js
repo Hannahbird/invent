@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
-import { LOGIN_USER } from '../utils/mutations';
+import React, { useState } from "react";
+import { useMutation } from "@apollo/client";
+import { LOGIN_USER } from "../utils/mutations";
 
-import LoggedOutHeader from '../components/LoggedOutHeader';
+import LoggedOutHeader from "../components/LoggedOutHeader";
 
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 
-import Auth from '../utils/auth';
+import Auth from "../utils/auth";
 
 const Login = (props) => {
-  const [formState, setFormState] = useState({ email: '', password: '' });
+  const [formState, setFormState] = useState({ email: "", password: "" });
   const [login, { error }] = useMutation(LOGIN_USER);
 
   // update state based on form input changes
@@ -40,8 +40,8 @@ const Login = (props) => {
 
     // clear form values
     setFormState({
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     });
   };
 
@@ -53,7 +53,7 @@ const Login = (props) => {
           <div className="card">
             <h4 className="card-header">Login</h4>
             <div className="card-body">
-              <form onSubmit={handleFormSubmit}>
+              <Form onSubmit={handleFormSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Email address</Form.Label>
                   <Form.Control
@@ -85,7 +85,7 @@ const Login = (props) => {
                 <Button variant="secondary" type="submit">
                   Submit
                 </Button>
-              </form>
+              </Form>
 
               {error && <div>Login failed</div>}
             </div>
