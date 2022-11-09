@@ -24,7 +24,11 @@ const DepartmentList = ({ id }) => {
   const departments = data?.departments || {};
   console.log(departments);
   if (loading) {
-    return (<><AdminHeader /> <div>Loading...</div></>);
+    return (
+      <>
+        <AdminHeader /> <div>Loading...</div>
+      </>
+    );
   }
 
   if (!data.departments.length) {
@@ -189,17 +193,19 @@ const DepartmentList = ({ id }) => {
         {showEditModal && <EditModal />}
         <div className="mt-3">
           {departments.map((department) => {
-            if (department.deptName === "admin") {
+            if (department.deptName.toLowerCase() === "admin") {
               return;
             }
             return (
               <div
                 key={department._id}
-                className="d-flex justify-content-between border rounded mt-1"
+                className="d-flex justify-content-between border rounded mt-1 listitem"
                 type="div"
               >
                 <p className="col-4 flex m-auto">{department.deptName}</p>
-                <p className="col-4 m-auto">Join code: {department.signUpLink}</p>
+                <p className="col-4 m-auto">
+                  Join code: {department.signUpLink}
+                </p>
                 <button
                   onClick={editDept}
                   id={department._id}

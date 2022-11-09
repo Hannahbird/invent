@@ -1,27 +1,27 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useMutation, useQuery } from '@apollo/client';
-import { QUERY_LOCATIONS } from '../../utils/queries';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useMutation, useQuery } from "@apollo/client";
+import { QUERY_LOCATIONS } from "../../utils/queries";
 
 //Modal styling from react-bootstrap
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
 import {
   ADD_LOCATION,
   DELETE_LOCATION,
   UPDATE_EVENTTASK,
   UPDATE_LOCATION,
-} from '../../utils/mutations';
+} from "../../utils/mutations";
 
-import AdminHeader from '../AdminHeader';
+import AdminHeader from "../AdminHeader";
 
 const SpacesList = ({ id }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editInfo, setEditInfo] = useState({
-    locationId: '',
-    locationName: '',
-    capacity: '',
+    locationId: "",
+    locationName: "",
+    capacity: "",
   });
   const { loading, data, refetch } = useQuery(QUERY_LOCATIONS);
   const [addLocation] = useMutation(ADD_LOCATION);
@@ -38,7 +38,9 @@ const SpacesList = ({ id }) => {
   }
 
   if (loading) {
-    <><AdminHeader /> <div>Loading...</div></>
+    <>
+      <AdminHeader /> <div>Loading...</div>
+    </>;
   }
 
   //add spaces modal
@@ -197,7 +199,7 @@ const SpacesList = ({ id }) => {
   return (
     <>
       <AdminHeader />
-      <div className='container'>
+      <div className="container">
         <h3>Your Current Spaces</h3>
         <Create />
         {showEditModal && <EditModal />}
@@ -205,9 +207,11 @@ const SpacesList = ({ id }) => {
           {spaces &&
             spaces.map((space) => {
               return (
-                <div key={space._id} className="mb-3 col-lg-3 col-md-6 col-sm-12 border rounded d-flex justify-content-between">
-
-                  <div className='m-auto'>{space.locationName}</div>
+                <div
+                  key={space._id}
+                  className="listitem mb-3 col-lg-3 col-md-6 col-sm-12 border rounded d-flex justify-content-between"
+                >
+                  <div className="m-auto">{space.locationName}</div>
                   <button
                     id={space._id}
                     data-capacity={space.capacity}
