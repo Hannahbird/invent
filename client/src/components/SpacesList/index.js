@@ -5,9 +5,7 @@ import { QUERY_LOCATIONS } from '../../utils/queries';
 import imageToBase64 from 'image-to-base64/browser'
 
 //Modal styling from react-bootstrap
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
+import {Card, Button, Modal, Form} from 'react-bootstrap'
 import {
   ADD_LOCATION,
   DELETE_LOCATION,
@@ -263,31 +261,36 @@ const SpacesList = ({ id }) => {
         <h3>Your Current Spaces</h3>
         <Create />
         {showEditModal && <EditModal />}
-        <div className="d-flex flex-wrap row mt-3">
+        <div className="d-flex flex-wrap mt-3 justify-content-evenly">
           {spaces &&
             spaces.map((space) => {
               return (
-                <div key={space._id} className="mb-3 col-lg-3 col-md-6 col-sm-12 border rounded d-flex justify-content-between">
-
-                  <div className='m-auto'>{space.locationName}</div>
-                  <button
-                    id={space._id}
-                    data-capacity={space.capacity}
-                    value={space.locationName}
-                    className="btn col-6"
-                    onClick={() => {
-                      setShowEditModal(true);
-                      setEditInfo({
-                        locationId: space._id,
-                        locationName: space.locationName,
-                        capacity: space.capacity,
+                <Card key={space._id} className="mt-3 text-center d-flex justify-content-center col-lg-3 col-md-5">
+                  {space.image && <Card.Img variant="top" src={space.image.encodedImage} />}
+                  <Card.Body>
+                    <Card.Title className='m-auto'>{space.locationName}</Card.Title>
+                    <Card.Text>
+                        Capacity: {space.capacity}
+                    </Card.Text>
+                    <Button
+                      variant="primary"
+                      id={space._id}
+                      data-capacity={space.capacity}
+                      value={space.locationName}
+                      className="btn col-8"
+                      onClick={() => {
+                        setShowEditModal(true);
+                        setEditInfo({
+                          locationId: space._id,
+                          locationName: space.locationName,
+                          capacity: space.capacity,
                       });
                       console.log(editInfo);
-                    }}
-                  >
-                    edit
-                  </button>
-                </div>
+                      }}
+                    >edit</Button>
+                  </Card.Body>
+                  
+                </Card>
               );
             })}
         </div>
