@@ -39,16 +39,9 @@ const EventList = () => {
   const events = data?.events || {};
 
   if (loading) {
-    <><AdminHeader /> <div>Loading...</div></>
-  }
-
-  if (!events.length) {
-    return (
-      <>
-        <AdminHeader />
-        <h3>No Events Scheduled</h3>
-      </>
-    );
+    <>
+      <AdminHeader /> <div>Loading...</div>
+    </>;
   }
 
   const handleChange = (event) => {
@@ -77,7 +70,7 @@ const EventList = () => {
         location: "",
       });
       refetch();
-    } catch (e) { }
+    } catch (e) {}
 
     setModalShow(false);
   };
@@ -182,7 +175,7 @@ const EventList = () => {
           Create Events
         </Button>
       </>
-      <h3>Your Current Events</h3>
+      <h3>{events.length ? "Your Current Events" : "No events yet..."}</h3>
       <div className="row">
         {events &&
           events.map((event) => (
