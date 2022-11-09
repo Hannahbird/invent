@@ -177,7 +177,7 @@ const EventList = () => {
       </>
       <h3>{events.length ? "Your Current Events" : "No events yet..."}</h3>
       <div className="row">
-        {events &&
+        {events.length &&
           events.map((event) => (
             <div className="col-sm-12 col-md-6">
               <div key={event._id} className="card mt-3">
