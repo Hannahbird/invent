@@ -79,6 +79,7 @@ const SpacesList = ({ id }) => {
                 name="locationName"
                 type="string"
                 placeholder="Space Name"
+                required
               />
               <Form.Text className="text-muted">
                 What is the Space Name?
@@ -91,6 +92,7 @@ const SpacesList = ({ id }) => {
                 name="capacity"
                 type="number"
                 placeholder="Space Capacity"
+                required
               />
               <Form.Text className="text-muted">
                 What is the capacity of this space?
@@ -148,6 +150,7 @@ const SpacesList = ({ id }) => {
                 type="string"
                 defaultValue={editInfo.locationName}
                 name="locationName"
+                required
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -157,6 +160,7 @@ const SpacesList = ({ id }) => {
                 type="number"
                 placeholder="Space Capacity"
                 defaultValue={editInfo.capacity}
+                required
               />
               <Form.Text className="text-muted">
                 What is the capacity of this space?
