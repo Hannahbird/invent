@@ -38,17 +38,18 @@ const SingleEvent = (props) => {
 
   const [updateEvent, { error }] = useMutation(UPDATE_EVENT);
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => {
-    setShow(false);
-    setEditEvent({});
-  };
-  const handleShow = () => setShow(true);
-  const [opaque, setOpaque] = useState(false);
+    const [show, setShow] = useState(false);
+    const handleClose = () => {
+        setShow(false);
+        setEditEvent({});
+    };
+    const handleShow = () => setShow(true);
+    const [opaque, setOpaque] = useState(false);
+    
 
-  const handleMouseOver = (state) => {
-    setOpaque(state);
-  };
+    const handleMouseOver = (state) => {
+        setOpaque(state);
+    };
 
   const [editEvent, setEditEvent] = useState({});
 

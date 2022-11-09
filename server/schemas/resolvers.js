@@ -178,6 +178,7 @@ const resolvers = {
           title: companyTitle,
           companyEmail: userArgs.email,
         });
+        
 
         department = await Department.create({
           company: company._id,
@@ -245,7 +246,6 @@ const resolvers = {
       if (!correctPw) {
         throw new AuthenticationError("Incorrect credentials");
       }
-
       const token = signToken(user);
       return { token, user };
     },

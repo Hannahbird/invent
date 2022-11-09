@@ -84,7 +84,7 @@ const EventList = () => {
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
-        <Form>
+        <Form onSubmit={handleNewEvent}>
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
               Create Events
@@ -100,6 +100,7 @@ const EventList = () => {
                 placeholder="Event Name"
                 value={newEvent.eventName}
                 onChange={handleChange}
+                required
               />
               <Form.Text className="text-muted">
                 What is the Event's Name?
@@ -114,6 +115,7 @@ const EventList = () => {
                 placeholder="Client Name"
                 value={newEvent.contactName}
                 onChange={handleChange}
+                required
               />
               <Form.Text className="text-muted">
                 Who is the primary contact?
@@ -128,6 +130,7 @@ const EventList = () => {
                 placeholder="Client Contact"
                 value={newEvent.contactInfo}
                 onChange={handleChange}
+                required
               />
               <Form.Text className="text-muted">
                 What is the primary contact information?
@@ -152,6 +155,7 @@ const EventList = () => {
                 type="string"
                 placeholder="Event Location"
                 onChange={handleChange}
+                required
               >
                 <option selected>Select Location</option>
                 {locations.map((location) => (
@@ -164,7 +168,7 @@ const EventList = () => {
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" type="submit" onClick={handleNewEvent}>
+            <Button variant="secondary" type="submit" >
               Submit
             </Button>
           </Modal.Footer>
