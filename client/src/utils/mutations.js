@@ -221,17 +221,27 @@ export const UPDATE_LOCATION = gql`
     $locationId: ID!
     $locationName: String
     $capacity: Int
+    $encodedImage: String
+    $imageName: String
     $active: Boolean
   ) {
     updateLocation(
       locationId: $locationId
       locationName: $locationName
       capacity: $capacity
+      input: {
+        encodedImage: $encodedImage
+        imageName: $imageName
+      }
       active: $active
     ) {
       _id
       locationName
       capacity
+      image {
+        encodedImage
+        imageName
+      }
     }
   }
 `;

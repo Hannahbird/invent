@@ -124,6 +124,7 @@ const typeDefs = gql`
       locationName: String
       locationId: ID!
       capacity: Int
+      input: imageInput
       active: Boolean
     ): Location
     deleteLocation(locationId: ID!): Location

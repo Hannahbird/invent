@@ -342,10 +342,21 @@ const resolvers = {
     },
     updateLocation: async (
       parent,
-      { locationId, ...locationInfo },
+      { locationId, input = "", ...locationInfo },
       context
     ) => {
       if (context.user) {
+
+        console.log(input.encodedImage)
+        if (input) {
+          console.log('seeing valid input')
+          locationInfo['image'] = {
+            encodedImage: input.encodedImage,
+            imageName: input.imageName
+          }
+          console.log(locationInfo)
+        }
+
         const updatedLocation = await Location.findOneAndUpdate(
           { _id: locationId },
           { ...locationInfo },

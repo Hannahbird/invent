@@ -9,7 +9,6 @@ import {Card, Button, Modal, Form} from 'react-bootstrap'
 import {
   ADD_LOCATION,
   DELETE_LOCATION,
-  UPDATE_EVENTTASK,
   UPDATE_LOCATION,
 } from '../../utils/mutations';
 
@@ -26,7 +25,7 @@ const SpacesList = ({ id }) => {
   const [image, setImage] = useState({});
   const [imageLoading, setImageLoading] = useState(true)
   const { loading, data, refetch } = useQuery(QUERY_LOCATIONS);
-  const [addLocation] = useMutation(ADD_LOCATION);
+  const [addLocation, {error}] = useMutation(ADD_LOCATION);
   const spaces = data?.locations || {};
 
   useEffect(() => {
@@ -68,8 +67,6 @@ const SpacesList = ({ id }) => {
       e.preventDefault();
       const formData = new FormData(e.target),
         formDataObj = Object.fromEntries(formData.entries());
-      let test
-      console.log(formDataObj)
 
       if (formDataObj.image.name.length) {
         console.log("there is an image")
@@ -104,6 +101,7 @@ const SpacesList = ({ id }) => {
 
       props.onHide();
       await addLocation({ variables: parsedObj });
+      setImage({})
       refetch();
     };
     return (
@@ -165,24 +163,57 @@ const SpacesList = ({ id }) => {
     );
   }
   function EditModal() {
-    const [updateLocation] = useMutation(UPDATE_LOCATION);
-    const [deleteLocation] = useMutation(DELETE_LOCATION);
+    const [updateLocation, {error: updateError}] = useMutation(UPDATE_LOCATION);
+    const [deleteLocation, {error: deleteError}] = useMutation(DELETE_LOCATION);
     const handleDeleteLocation = async () => {
-      await deleteLocation({ variables: { locationId: editInfo.locationId } });
+      try {
+        let deletedLocation = await deleteLocation({
+          variables: {
+            locationId: editInfo.locationId
+          }
+        });
+      }
+      catch (e) {
+        console.log(deleteError)
+      }
+      
       refetch();
     };
     const onFormSubmit = async (e) => {
       e.preventDefault();
       const formData = new FormData(e.target),
         formDataObj = Object.fromEntries(formData.entries());
+      
+      if (formDataObj.image.name.length) { //convert to base64
+      
+        try {
+          let reader = new FileReader();
+          reader.onloadend = function () {
+            setImage({
+              encodedImage: reader.result,
+              imageName: formDataObj.image.name
+            })
+          }
+          reader.readAsDataURL(formDataObj.image);
+          while (imageLoading) { //wait for setImageState to finish setting
+            //waiting
+          }
+        }
+        catch (e) {
+          console.log(e);
+        }
+      }
+      
       const parsedObj = {
         locationId: editInfo.locationId,
         locationName: formDataObj.locationName,
         capacity: parseInt(formDataObj.capacity),
+        ...image
       };
 
       setShowEditModal(false);
       await updateLocation({ variables: parsedObj });
+      setImage({})
       refetch();
     };
     return (
@@ -219,6 +250,15 @@ const SpacesList = ({ id }) => {
               <Form.Text className="text-muted">
                 What is the capacity of this space?
               </Form.Text>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId='formFile'>
+              <Form.Label>Upload/Replace Image</Form.Label>
+              <Form.Control
+                name='image'
+                type='file'
+                onChange={handleChange}
+                /*Come back add type and size validation */
+              />
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
