@@ -60,7 +60,7 @@ code {
   background-color: rgba(255, 255, 255, .8);
   padding: 10px;
   border-radius: 3px;
-  max-height: 50px !important;
+ 
 }
 
 .navigation {
@@ -160,4 +160,10 @@ img {
 .accordion-button {
   border: none !important;
   box-shadow: none !important;
+}
+
+@media  screen and (min-width: 500px) {
+  .header nav{
+    max-height: 45px;
+  }
 }
