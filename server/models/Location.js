@@ -21,7 +21,7 @@ const locationSchema = new Schema(
         image: imageSchema,
         active: {
             type: Boolean,
-            deafult: true
+            default: true
         }
     }
 

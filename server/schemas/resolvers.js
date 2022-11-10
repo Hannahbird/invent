@@ -126,6 +126,33 @@ const resolvers = {
       }
       throw new AuthenticationError("Not logged in");
     },
+    locationsByCode: async (parent, { code }) => {
+
+      const company = await Company.find({
+      })
+        .then(companies => {
+            return companies.find(company => {
+              if (company.reserveCode === code) {
+                return true
+              }
+              return false
+            })
+        });
+
+      if (!company) {
+        throw new GraphQLError("Invalid reservation code", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+          },
+        });
+      }
+
+      const locations = await Location.find({
+        company: company._id
+      });
+    
+      return { locations, company };
+    },
     checkEmail: async (parent, { email }) => {
       const exists = await User.findOne({
         email: email,
@@ -235,7 +262,15 @@ const resolvers = {
       return { token, user };
     },
     login: async (parent, { email, password }) => {
-      const user = await User.findOne({ email }).populate("department");
+      const user = await User.findOne({ email })
+        .populate("department")
+        .populate({
+          path: 'department',
+          populate: {
+            path: 'company',
+            model: 'Company'
+          }
+        });
 
       if (!user) {
         throw new AuthenticationError("Incorrect credentials");
