@@ -142,7 +142,31 @@ img {
   width: 200px;
   opacity: .7;
 }
-
+.about img {
+  object-fit: contain;
+  object-position: center;
+height: fit-content;
+  width: 80vw;
+  max-width: 700px;
+  opacity: 1;
+  display: block;
+  margin: auto;
+}
+.about .row {
+  --bs-gutter-x:0;
+  justify-content: center;
+}
+.about p{
+  text-align: center;
+  font-weight: normal;
+  
+  
+}
+.display-7{
+  background-color: rgba(255, 255, 255, 0.801);
+  padding: 2px;
+  border-radius: 5px;
+}
 /* custom colors for accordian */
 
 .accordion-button:not(.collapsed) {

@@ -1,23 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation } from "@apollo/client";
 import {
   QUERY_COMPANY_DEPTS,
   QUERY_EVENTS,
   QUERY_LOCATIONS,
-} from '../../utils/queries';
-import { ADD_EVENT } from '../../utils/mutations';
-import '../../assets/css/EventList.css';
+} from "../../utils/queries";
+import { ADD_EVENT } from "../../utils/mutations";
+import "../../assets/css/EventList.css";
 //Modal styling from react-bootstrap
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
-import DateTime from '../../utils/dateTime/dateTime';
-import Accordian from 'react-bootstrap/Accordion'
-import EventCard from './EventCard'
-import AdminHeader from '../AdminHeader';
-
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
+import DateTime from "../../utils/dateTime/dateTime";
+import Accordian from "react-bootstrap/Accordion";
+import EventCard from "./EventCard";
+import AdminHeader from "../AdminHeader";
+import Auth from "../../utils/auth";
+import Pusher from "pusher-js";
 const EventList = () => {
+  // pusher init
+  var pusher = new Pusher("b4bd3ba699f2fde524c6", {
+    cluster: "mt1",
+  });
+  var channel = pusher.subscribe(Auth.getProfile().data._id.toString());
+  const companyTitle =
+    Auth.getProfile().data.department.company.title || "your company";
   const { loading, error, data, refetch } = useQuery(QUERY_EVENTS);
   const { loading: locationLoading, data: locationData } =
     useQuery(QUERY_LOCATIONS);
@@ -27,17 +35,20 @@ const EventList = () => {
   const [modalShow, setModalShow] = React.useState(false);
 
   const [newEvent, setNewEvent] = useState({
-    eventName: '',
-    contactName: '',
-    contactInfo: '',
-    eventStartDate: '',
-    eventEndDate: '',
-    location: '',
+    eventName: "",
+    contactName: "",
+    contactInfo: "",
+    eventStartDate: "",
+    eventEndDate: "",
+    location: "",
   });
 
   const locations = locationData?.locations || [];
   const events = data?.events || {};
-
+  // refetch on ;ending event submit
+  channel.bind("eventReq", function (data) {
+    refetch();
+  });
   if (loading) {
     <>
       <AdminHeader /> <div>Loading...</div>
@@ -62,15 +73,15 @@ const EventList = () => {
         variables: { ...newEvent },
       });
       setNewEvent({
-        eventName: '',
-        contactName: '',
-        contactInfo: '',
-        eventStartDate: '',
-        eventEndDate: '',
-        location: '',
+        eventName: "",
+        contactName: "",
+        contactInfo: "",
+        eventStartDate: "",
+        eventEndDate: "",
+        location: "",
       });
       refetch();
-    } catch (e) { }
+    } catch (e) {}
 
     setModalShow(false);
   };
@@ -168,7 +179,7 @@ const EventList = () => {
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" type="submit" >
+            <Button variant="secondary" type="submit">
               Submit
             </Button>
           </Modal.Footer>
@@ -179,60 +190,90 @@ const EventList = () => {
           Create Events
         </Button>
       </>
-      <h3>{events.length ? "Your Current Events" : "No events yet..."}</h3>
-      <Accordian flush defaultActiveKey={['0']}>
-        <Accordian.Item eventKey='0'>
-          <Accordian.Header>Planning: ({events.length && events.filter(event => event.eventState === 'Planning').length})</Accordian.Header>
+      <h3>
+        {events.length
+          ? `Current Events for ${companyTitle}`
+          : "No events yet..."}
+      </h3>
+      <Accordian flush defaultActiveKey={["0"]}>
+        <Accordian.Item eventKey="0">
+          <Accordian.Header>
+            Planning: (
+            {events.length &&
+              events.filter((event) => event.eventState === "Planning").length}
+            )
+          </Accordian.Header>
           <Accordian.Body>
             <div className="row">
               {events.length &&
-                events.filter(event => event.eventState === 'Planning').map((event) => (
-                  <EventCard event={event} />
-                ))}
+                events
+                  .filter((event) => event.eventState === "Planning")
+                  .map((event) => <EventCard event={event} />)}
             </div>
           </Accordian.Body>
         </Accordian.Item>
-        <Accordian.Item eventKey='2'>
-          <Accordian.Header>Pending: ({events.length && events.filter(event => event.eventState === 'Pending').length})</Accordian.Header>
+        <Accordian.Item eventKey="2">
+          <Accordian.Header>
+            Pending: (
+            {events.length &&
+              events.filter((event) => event.eventState === "Pending").length}
+            )
+          </Accordian.Header>
           <Accordian.Body>
             <div className="row">
               {events.length &&
-                events.filter(event => event.eventState === 'Pending').map((event) => (
-                  <EventCard event={event} />
-                ))}
+                events
+                  .filter((event) => event.eventState === "Pending")
+                  .map((event) => <EventCard event={event} />)}
             </div>
           </Accordian.Body>
         </Accordian.Item>
-        <Accordian.Item eventKey='3'>
-          <Accordian.Header>In Progress: ({events.length && events.filter(event => event.eventState === 'InProgress').length})</Accordian.Header>
+        <Accordian.Item eventKey="3">
+          <Accordian.Header>
+            In Progress: (
+            {events.length &&
+              events.filter((event) => event.eventState === "InProgress")
+                .length}
+            )
+          </Accordian.Header>
           <Accordian.Body>
             <div className="row">
               {events.length &&
-                events.filter(event => event.eventState === 'InProgress').map((event) => (
-                  <EventCard event={event} />
-                ))}
+                events
+                  .filter((event) => event.eventState === "InProgress")
+                  .map((event) => <EventCard event={event} />)}
             </div>
           </Accordian.Body>
         </Accordian.Item>
-        <Accordian.Item eventKey='4'>
-          <Accordian.Header>Completed: ({events.length && events.filter(event => event.eventState === 'Complete').length})</Accordian.Header>
+        <Accordian.Item eventKey="4">
+          <Accordian.Header>
+            Completed: (
+            {events.length &&
+              events.filter((event) => event.eventState === "Complete").length}
+            )
+          </Accordian.Header>
           <Accordian.Body>
             <div className="row">
               {events.length &&
-                events.filter(event => event.eventState === 'Complete').map((event) => (
-                  <EventCard event={event} />
-                ))}
+                events
+                  .filter((event) => event.eventState === "Complete")
+                  .map((event) => <EventCard event={event} />)}
             </div>
           </Accordian.Body>
         </Accordian.Item>
-        <Accordian.Item eventKey='5'>
-          <Accordian.Header>Cancelled: ({events.length && events.filter(event => event.eventState === 'Cancelled').length})</Accordian.Header>
+        <Accordian.Item eventKey="5">
+          <Accordian.Header>
+            Cancelled: (
+            {events.length &&
+              events.filter((event) => event.eventState === "Cancelled").length}
+            )
+          </Accordian.Header>
           <Accordian.Body>
             <div className="row">
               {events.length &&
-                events.filter(event => event.eventState === 'Cancelled').map((event) => (
-                  <EventCard event={event} />
-                ))}
+                events
+                  .filter((event) => event.eventState === "Cancelled")
+                  .map((event) => <EventCard event={event} />)}
             </div>
           </Accordian.Body>
         </Accordian.Item>

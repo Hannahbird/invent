@@ -1,45 +1,45 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { Component } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
-} from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
-import './App.css';
+} from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import "./App.css";
 
 //component imports
 
-import Footer from './components/Footer';
-import DepartmentList from './components/DepartmentList';
-import EventList from './components/EventList';
-import SpacesList from './components/SpacesList';
+import Footer from "./components/Footer";
+import DepartmentList from "./components/DepartmentList";
+import EventList from "./components/EventList";
+import SpacesList from "./components/SpacesList";
 
 //pages imports
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import About from './pages/About';
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import About from "./pages/About";
 
-import DepSingleEvent from './pages/DepSingleEvent';
-import SingleEvent from './pages/SingleEvent';
-import NoMatch from './pages/NoMatch';
-import Reserve from './pages/Reserve'
+import DepSingleEvent from "./pages/DepSingleEvent";
+import SingleEvent from "./pages/SingleEvent";
+import NoMatch from "./pages/NoMatch";
+import Reserve from "./pages/Reserve";
 
-import Pusher from 'pusher-js';
-import * as bs from 'bootstrap/dist/css/bootstrap.css';
+import Pusher from "pusher-js";
+import * as bs from "bootstrap/dist/css/bootstrap.css";
 
 const httpLink = createHttpLink({
-  uri: '/graphql',
+  uri: "/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('id_token');
+  const token = localStorage.getItem("id_token");
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : '',
+      authorization: token ? `Bearer ${token}` : "",
     },
   };
 });
@@ -60,12 +60,12 @@ export default class App extends Component {
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
-                <Route path="/about" element={<About />} />
+                <Route path="/gettingstarted" element={<About />} />
                 <Route path="/events" element={<EventList />} />
                 <Route path="/event/:id" element={<SingleEvent />} />
                 <Route path="/depevent/:id" element={<DepSingleEvent />} />
                 <Route path="/spaces" element={<SpacesList />} />
-                <Route path="/reserve/:id" element= {<Reserve />} />
+                <Route path="/reserve/:id" element={<Reserve />} />
                 <Route path="/departments" element={<DepartmentList />} />
                 <Route path="*" element={<NoMatch />} />
               </Routes>

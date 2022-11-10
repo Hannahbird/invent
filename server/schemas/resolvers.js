@@ -127,17 +127,14 @@ const resolvers = {
       throw new AuthenticationError("Not logged in");
     },
     locationsByCode: async (parent, { code }) => {
-
-      const company = await Company.find({
-      })
-        .then(companies => {
-            return companies.find(company => {
-              if (company.reserveCode === code) {
-                return true
-              }
-              return false
-            })
+      const company = await Company.find({}).then((companies) => {
+        return companies.find((company) => {
+          if (company.reserveCode === code) {
+            return true;
+          }
+          return false;
         });
+      });
 
       if (!company) {
         throw new GraphQLError("Invalid reservation code", {
@@ -148,9 +145,9 @@ const resolvers = {
       }
 
       const locations = await Location.find({
-        company: company._id
+        company: company._id,
       });
-    
+
       return { locations, company };
     },
     checkEmail: async (parent, { email }) => {
@@ -207,7 +204,6 @@ const resolvers = {
           companyEmail: userArgs.email,
         });
 
-
         department = await Department.create({
           company: company._id,
           deptName: "Admin",
@@ -248,15 +244,14 @@ const resolvers = {
       })
         .then((data) => {
           return User.findById(data._id)
-            .populate('department')
+            .populate("department")
             .populate({
-            path: 'department',
-            populate: {
-              path: 'company',
-              model: 'Company'
-            }
-          });
-
+              path: "department",
+              populate: {
+                path: "company",
+                model: "Company",
+              },
+            });
         })
         .catch(async (err) => {
           await Company.findByIdAndDelete(company._id);
@@ -274,11 +269,11 @@ const resolvers = {
       const user = await User.findOne({ email })
         .populate("department")
         .populate({
-          path: 'department',
+          path: "department",
           populate: {
-            path: 'company',
-            model: 'Company'
-          }
+            path: "company",
+            model: "Company",
+          },
         });
 
       if (!user) {
@@ -367,13 +362,13 @@ const resolvers = {
 
         console.log(input.encodedImage);
         if (input) {
-          console.log('seeing valid input')
-          locationData['image'] = {
+          console.log("seeing valid input");
+          locationData["image"] = {
             encodedImage: input.encodedImage,
-            imageName: input.imageName
-          }
+            imageName: input.imageName,
+          };
 
-          console.log(locationData)
+          console.log(locationData);
         }
 
         const location = await Location.create({
@@ -390,15 +385,14 @@ const resolvers = {
       context
     ) => {
       if (context.user) {
-
-        console.log(input.encodedImage)
+        console.log(input.encodedImage);
         if (input) {
-          console.log('seeing valid input')
-          locationInfo['image'] = {
+          console.log("seeing valid input");
+          locationInfo["image"] = {
             encodedImage: input.encodedImage,
-            imageName: input.imageName
-          }
-          console.log(locationInfo)
+            imageName: input.imageName,
+          };
+          console.log(locationInfo);
         }
 
         const updatedLocation = await Location.findOneAndUpdate(
@@ -420,6 +414,12 @@ const resolvers = {
         const event = await Event.create({
           ...eventData,
         });
+        if (eventData.eventState === "Pending") {
+          console.log(context.user);
+          pusher.trigger(context.user._id.toString(), "eventReq", {
+            eventData,
+          });
+        }
 
         return event;
       }
@@ -466,7 +466,7 @@ const resolvers = {
           { _id: eventId },
           { ...eventInfo },
           { runValidators: true, context: "query", new: true }
-        ).populate("location", '-image');
+        ).populate("location", "-image");
 
         pusher.trigger(
           updatedEvent.location.company.toString(),

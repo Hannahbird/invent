@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Carousel from 'react-bootstrap/Carousel';
-import i from '../../assets/images/i.png';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Carousel from "react-bootstrap/Carousel";
+import i from "../../assets/images/i.png";
 
-import Auth from '../../utils/auth';
+import Auth from "../../utils/auth";
 
 const Header = (props) => {
   const logout = (event) => {
@@ -27,16 +27,20 @@ const Header = (props) => {
             <>
               <Link className="navigation" to="/">
                 Events
-              </Link>{' '}
-              ||{' '}
+              </Link>{" "}
+              ||{" "}
               <Link className="navigation" to="/spaces">
                 Spaces
-              </Link>{' '}
-              ||{' '}
+              </Link>{" "}
+              ||{" "}
               <Link className="navigation" to="/departments">
                 Departments
-              </Link>{' '}
-              ||{' '}
+              </Link>{" "}
+              ||{" "}
+              <Link className="navigation" to="/gettingstarted">
+                Help
+              </Link>{" "}
+              ||{" "}
               <a className="navigation" href="/" onClick={logout}>
                 Logout
               </a>
@@ -45,8 +49,8 @@ const Header = (props) => {
             <>
               <Link className="navigation" to="/login">
                 Login
-              </Link>{' '}
-              ||{' '}
+              </Link>{" "}
+              ||{" "}
               <Link className="navigation" to="/signup">
                 Signup
               </Link>

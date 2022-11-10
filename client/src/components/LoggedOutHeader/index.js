@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Nav from 'react-bootstrap/Nav';
-import LandingPage from '../../pages/LandingPage';
-import i from '../../assets/images/i.png';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Nav from "react-bootstrap/Nav";
+import LandingPage from "../../pages/LandingPage";
+import i from "../../assets/images/i.png";
 
-import Auth from '../../utils/auth';
+import Auth from "../../utils/auth";
 
 const Header = () => {
   const logout = (event) => {
@@ -26,15 +26,14 @@ const Header = () => {
           <>
             <Link className="navigation" to="/login">
               Login
-            </Link>{' '}
-            ||{' '}
+            </Link>{" "}
+            ||{" "}
             <Link className="navigation" to="/signup">
               Signup
-            </Link>{' '}
-            ||{' '}
-            <Link className="navigation" to="/about">
-              {/* <img style={{ height: 50, width: 50 }} src={i} alt="Info" /> */}
-              About
+            </Link>{" "}
+            ||{" "}
+            <Link className="navigation" to="/gettingstarted">
+              Getting Started
             </Link>
           </>
         </nav>
