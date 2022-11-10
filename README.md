@@ -16,6 +16,15 @@ An app to be used for the management and preparation of event spaces/locations.
 
 One of our collaborators worked at a retirement community where various rooms were often booked and quite a bit of coordination was needed, depending on the need of the event being hosted. The organization had been looking for options so we were inspired to see if we could solve their problem in a fun way.
 
+## The Stack
+
+- MongoDB
+- React
+- React Bootstrap
+- Pusher
+- Express
+- GraphQL w/ Apollo Client
+
 ## Snapshots
 
 ### Planning / Wireframing
