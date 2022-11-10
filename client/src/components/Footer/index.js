@@ -7,7 +7,7 @@ const Footer = () => {
     flex-row justify-content-center"
     >
       <div className="container  footer">
-        Created by Hannah B, Brandon Davis, Cristina Dege, Max Kottong, and Max
+        Created by Hannah Brownson, Brandon Davis, Cristina Dege, Max Kottong, and Max
         Taylor{' '}
       </div>
     </footer>
