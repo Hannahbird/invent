@@ -61,6 +61,9 @@ query LocationsByCode($code: String!) {
       _id
       locationName
       capacity
+      image {
+        encodedImage
+      }
     }
     company {
       title

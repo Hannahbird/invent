@@ -148,8 +148,7 @@ const resolvers = {
       }
 
       const locations = await Location.find({
-        company: company._id,
-        active: true
+        company: company._id
       });
     
       return { locations, company };

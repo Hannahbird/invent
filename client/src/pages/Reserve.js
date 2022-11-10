@@ -24,7 +24,11 @@ const Reserve = () => {
     //reserve form modal
     const [show, setShow] = useState(false)
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        setShow(true)
+        setConfirmed(false);
+    };
+    const [confirmed, setConfirmed] = useState(false);
 
     //track state of reservation
     const [ reservation, setReservation ] = useState({
@@ -32,7 +36,8 @@ const Reserve = () => {
         location: '',
         contactName: '',
         contactInfo: '',
-        eventDate: ''
+        eventStartDate: '',
+        eventEndDate: ''
 
     })
 
@@ -58,6 +63,7 @@ const Reserve = () => {
                eventState: 'Pending',
                ...reservation}
             })
+            setConfirmed(true)
         }
         catch (e) {
             console.error(error);
@@ -107,7 +113,7 @@ const Reserve = () => {
                         <Modal.Title>Reservation Request</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Form>
+                        {<Form>
                             <Form.Group className="mb-3" controlId="formContact">
                                 <Form.Label>Name</Form.Label>
                                 <Form.Control
@@ -145,10 +151,13 @@ const Reserve = () => {
                                 <DateTime
                                     className="form-control"
                                     name='eventDate'
-                                    value={reservation.eventDate}
-                                    onChange={handleChange} />
+                                    startDate={reservation.eventStartDate}
+                                    endDate={reservation.eventEndDate}
+                                    stateMgr={setReservation}
+                                    stateObj={reservation}
+                                />
                             </Form.Group>
-                        </Form>
+                        </Form>}
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleClose}>
@@ -160,23 +169,32 @@ const Reserve = () => {
                     </Modal.Footer>
                 </Modal>
             </>
-                <div className="container justify-content-center d-flex">
-                    <h2>Select and request a space for your event at {company.title}</h2>
+                <div className="container">
+                    
+                    {confirmed ?
+                        <div className="justify-content-center">
+                        <p className='display-3 opacity-75'>Your request was successfully submitted, the event coordinator will contact you soon</p>
+                        <Button variant="secondary" className="btn-warning" onClick={() => setConfirmed(false)}>Return to Reservations</Button>
+                        </div>
+                        :
+                        <h2 className='text-center'>Select and request a space for your event at {company.title}</h2>
+                    }
                 </div>
-                <div className="d-flex flex-wrap justify-content-evenly mt-3">
+                {!confirmed &&
+                    <div className="container d-flex flex-wrap mt-3 justify-content-evenly">
                     {locations.map(location => (               
-                            <Card className="mt-3" key={location._id} style={{ width: '10rem' }}>
-                                <Card.Img variant="top" src="holder.js/100px180" />
+                            <Card className="mt-3 text-center d-flex justify-content-center col-lg-3 col-md-5" key={location._id}>
+                                {location.image && <Card.Img variant="top" className='opacity-100 img-fluid' src={location.image.encodedImage} />}
                                 <Card.Body>
                                     <Card.Title>{location.locationName}</Card.Title>
                                     <Card.Text>
                                         Capacity: {location.capacity}
                                 </Card.Text>
-                                    <Button variant="primary" onClick={() => {loadReserveForm(location._id, location.locationName)}}>Request Space</Button>
+                                    <Button variant="primary" className="btn-warning col-8" onClick={() => {loadReserveForm(location._id, location.locationName)}}>Request Space</Button>
                                 </Card.Body>
                             </Card>
                     ))}
-                </div>
+                    </div>}
             </div>
         </div>
     )
