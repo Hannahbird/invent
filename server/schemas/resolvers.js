@@ -247,10 +247,19 @@ const resolvers = {
         department: department._id,
       })
         .then((data) => {
-          return data.populate("department");
+          return User.findById(data._id)
+            .populate('department')
+            .populate({
+            path: 'department',
+            populate: {
+              path: 'company',
+              model: 'Company'
+            }
+          });
+
         })
-        .catch((err) => {
-          Company.findByIdAndRemove(company._id);
+        .catch(async (err) => {
+          await Company.findByIdAndDelete(company._id);
           throw new GraphQLError("user creation failed", {
             extensions: {
               code: "BAD_USER_INPUT",
