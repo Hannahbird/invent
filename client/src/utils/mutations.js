@@ -11,6 +11,7 @@ export const LOGIN_USER = gql`
           _id
           company {
             _id
+            reserveCode
           }
         }
       }

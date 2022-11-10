@@ -262,7 +262,15 @@ const resolvers = {
       return { token, user };
     },
     login: async (parent, { email, password }) => {
-      const user = await User.findOne({ email }).populate("department");
+      const user = await User.findOne({ email })
+        .populate("department")
+        .populate({
+          path: 'department',
+          populate: {
+            path: 'company',
+            model: 'Company'
+          }
+        });
 
       if (!user) {
         throw new AuthenticationError("Incorrect credentials");

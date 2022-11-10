@@ -34,6 +34,7 @@ const typeDefs = gql`
     company: Company
     signUpLink: String
     teamMembers: [User]
+    reserveCode: String
   }
 
   type Company {
