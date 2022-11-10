@@ -2,11 +2,11 @@
 
 ## Collaborators
 
-[Hannah Brownson](https://github.com/Hannahbird)
-[Cristina Dege](https://github.com/crisdege)
-[Brandon Davis](https://github.com/gatorhatur)
-[Max Kottong](https://github.com/MaxKottong)
-[Max Taylor](https://github.com/maxbransontaylor)
+- [Hannah Brownson](https://github.com/Hannahbird)
+- [Cristina Dege](https://github.com/crisdege)
+- [Brandon Davis](https://github.com/gatorhatur)
+- [Max Kottong](https://github.com/MaxKottong)
+- [Max Taylor](https://github.com/maxbransontaylor)
 
 ## Description
 
