@@ -17,7 +17,7 @@ const Dashboard = () => {
       <AdminHeader />
       <div className="container background">
         <div>
-          <h2>{`Guests may request an event at `}<a href={Url} target='blank'>{Url}</a></h2>
+          <h5 className="display-6">{`Guests may request an event at `}<a href={Url} target='blank'>../reserve/{reserveCode}</a></h5>
           <EventList />
         </div>
       </div>

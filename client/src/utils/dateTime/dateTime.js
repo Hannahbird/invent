@@ -25,6 +25,7 @@ export default function CustomDateTimePicker({startDate, endDate, stateMgr, stat
                     onError={console.log}
                     inputFormat="MM/DD/YYYY hh:mm a"
                     renderInput={(params) => <TextField {...params} />}
+                    className="mt-2 me-2"
                 />
             </LocalizationProvider>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -40,6 +41,7 @@ export default function CustomDateTimePicker({startDate, endDate, stateMgr, stat
                     onError={console.log}
                     inputFormat="MM/DD/YYYY hh:mm a"
                     renderInput={(params) => <TextField {...params} />}
+                    className="mt-2"
                 />
             </LocalizationProvider>
         </div>

@@ -23,7 +23,16 @@ const Reserve = () => {
 
     //reserve form modal
     const [show, setShow] = useState(false)
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setShow(false)
+        setReservation({
+        eventName: '',
+        contactName: '',
+        contactInfo: '',
+        eventStartDate: '',
+        eventEndDate: ''
+        })
+    };
     const handleShow = () => {
         setShow(true)
         setConfirmed(false);
@@ -68,13 +77,6 @@ const Reserve = () => {
         catch (e) {
             console.error(error);
         }
-
-        setReservation({
-        eventName: '',
-        contactName: '',
-        contactInfo: '',
-        eventDate: ''
-        })
 
         handleClose()
     }
