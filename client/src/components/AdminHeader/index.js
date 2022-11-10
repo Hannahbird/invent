@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Carousel from 'react-bootstrap/Carousel';
+import i from '../../assets/images/i.png';
 
 import Auth from '../../utils/auth';
 
