@@ -47,8 +47,8 @@ const DepartmentList = ({ id }) => {
 
     const deptSubmit = async () => {
       const newDept = document.getElementById("deptInput").value.trim();
+      props.onHide()
       await addDepartment({ variables: { deptName: newDept } });
-
       refetch();
     };
     return (
@@ -58,6 +58,7 @@ const DepartmentList = ({ id }) => {
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
+          <Form onSubmit={deptSubmit}>
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
             Create Department
@@ -65,31 +66,28 @@ const DepartmentList = ({ id }) => {
         </Modal.Header>
         <Modal.Body>
           <h4>Create Department</h4>
-          <Form>
             <Form.Group className="mb-3">
-              <Form.Label>Department Name</Form.Label>
+              <Form.Label>Department Name*</Form.Label>
               <Form.Control
                 type="string"
                 placeholder="Department Name"
                 id="deptInput"
+                required
               />
               <Form.Text className="text-muted">
                 What is the Department's Name?
               </Form.Text>
             </Form.Group>
-          </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button
             variant="secondary"
-            onClick={() => {
-              deptSubmit();
-              props.onHide();
-            }}
-          >
+            type = 'submit'
+            >
             Save
           </Button>
         </Modal.Footer>
+            </Form>
       </Modal>
     );
   }

@@ -38,17 +38,18 @@ const SingleEvent = (props) => {
 
   const [updateEvent, { error }] = useMutation(UPDATE_EVENT);
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => {
-    setShow(false);
-    setEditEvent({});
-  };
-  const handleShow = () => setShow(true);
-  const [opaque, setOpaque] = useState(false);
+    const [show, setShow] = useState(false);
+    const handleClose = () => {
+        setShow(false);
+        setEditEvent({});
+    };
+    const handleShow = () => setShow(true);
+    const [opaque, setOpaque] = useState(false);
+    
 
-  const handleMouseOver = (state) => {
-    setOpaque(state);
-  };
+    const handleMouseOver = (state) => {
+        setOpaque(state);
+    };
 
   const [editEvent, setEditEvent] = useState({});
 
@@ -221,10 +222,10 @@ const SingleEvent = (props) => {
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
+            <Button variant="warning" onClick={handleClose}>
               Cancel
             </Button>
-            <Button variant="primary" onClick={handleUpdateEvent}>
+            <Button variant="warning" onClick={handleUpdateEvent}>
               Update
             </Button>
           </Modal.Footer>
@@ -334,7 +335,7 @@ const SingleEvent = (props) => {
                   {dayjs(task.endTime).format("hh:mm A")}
                 </div>
                 <button
-                  className="btn btn-warning col-1"
+                  className="btn btn-warning col-2"
                   onClick={() => {
                     setTaskToEdit(task);
                     setShowEdit(true);

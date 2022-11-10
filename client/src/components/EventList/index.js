@@ -1,21 +1,21 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useQuery, useMutation } from "@apollo/client";
+import React, { useState } from 'react';
+
+import { useQuery, useMutation } from '@apollo/client';
 import {
   QUERY_COMPANY_DEPTS,
   QUERY_EVENTS,
   QUERY_LOCATIONS,
-} from "../../utils/queries";
-import { ADD_EVENT } from "../../utils/mutations";
-import "../../assets/css/EventList.css";
+} from '../../utils/queries';
+import { ADD_EVENT } from '../../utils/mutations';
+import '../../assets/css/EventList.css';
 //Modal styling from react-bootstrap
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import Form from "react-bootstrap/Form";
-import DateTime from "../../utils/dateTime/dateTime";
-import dayjs from "dayjs";
-
-import AdminHeader from "../AdminHeader";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+import DateTime from '../../utils/dateTime/dateTime';
+import Accordian from 'react-bootstrap/Accordion'
+import EventCard from './EventCard'
+import AdminHeader from '../AdminHeader';
 
 const EventList = () => {
   const { loading, error, data, refetch } = useQuery(QUERY_EVENTS);
@@ -27,12 +27,12 @@ const EventList = () => {
   const [modalShow, setModalShow] = React.useState(false);
 
   const [newEvent, setNewEvent] = useState({
-    eventName: "",
-    contactName: "",
-    contactInfo: "",
-    eventStartDate: "",
-    eventEndDate: "",
-    location: "",
+    eventName: '',
+    contactName: '',
+    contactInfo: '',
+    eventStartDate: '',
+    eventEndDate: '',
+    location: '',
   });
 
   const locations = locationData?.locations || [];
@@ -62,15 +62,15 @@ const EventList = () => {
         variables: { ...newEvent },
       });
       setNewEvent({
-        eventName: "",
-        contactName: "",
-        contactInfo: "",
-        eventStartDate: "",
-        eventEndDate: "",
-        location: "",
+        eventName: '',
+        contactName: '',
+        contactInfo: '',
+        eventStartDate: '',
+        eventEndDate: '',
+        location: '',
       });
       refetch();
-    } catch (e) {}
+    } catch (e) { }
 
     setModalShow(false);
   };
@@ -84,7 +84,7 @@ const EventList = () => {
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
-        <Form>
+        <Form onSubmit={handleNewEvent}>
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
               Create Events
@@ -100,6 +100,7 @@ const EventList = () => {
                 placeholder="Event Name"
                 value={newEvent.eventName}
                 onChange={handleChange}
+                required
               />
               <Form.Text className="text-muted">
                 What is the Event's Name?
@@ -114,6 +115,7 @@ const EventList = () => {
                 placeholder="Client Name"
                 value={newEvent.contactName}
                 onChange={handleChange}
+                required
               />
               <Form.Text className="text-muted">
                 Who is the primary contact?
@@ -128,6 +130,7 @@ const EventList = () => {
                 placeholder="Client Contact"
                 value={newEvent.contactInfo}
                 onChange={handleChange}
+                required
               />
               <Form.Text className="text-muted">
                 What is the primary contact information?
@@ -152,6 +155,7 @@ const EventList = () => {
                 type="string"
                 placeholder="Event Location"
                 onChange={handleChange}
+                required
               >
                 <option selected>Select Location</option>
                 {locations.map((location) => (
@@ -164,7 +168,7 @@ const EventList = () => {
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" type="submit" onClick={handleNewEvent}>
+            <Button variant="secondary" type="submit" >
               Submit
             </Button>
           </Modal.Footer>
@@ -176,50 +180,63 @@ const EventList = () => {
         </Button>
       </>
       <h3>{events.length ? "Your Current Events" : "No events yet..."}</h3>
-      <div className="row">
-        {events.length &&
-          events.map((event) => (
-            <div className="col-sm-12 col-md-6">
-              <div key={event._id} className="card mt-3">
-                <Link to={`/event/${event._id}`}>
-                  <div className="card-header border-0 text-black">
-                    <p>{event.eventName}</p>
-                  </div>
-                  <div className="card-body row text-black">
-                    <div className="main-body">
-                      <div className="main-body-meeting-info">
-                        <div className="main-body-date">
-                          <span className="main-body-dateDay">
-                            {dayjs(event.eventStartDate).format("DD")}
-                          </span>
-                          <span className="main-body-dateMonth">
-                            {dayjs(event.eventStartDate).format("MMM")}
-                          </span>
-                        </div>
-                        <div className="main-body-event">
-                          <span className="main-body-location">
-                            {event.location.locationName}
-                          </span>
-                          <span className="main-body-time">
-                            {dayjs(event.eventStartDate).format("hh:mm A")} -{" "}
-                            {dayjs(event.eventEndDate).format("hh:mm A")}{" "}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="main-body-contact">
-                        <span>{event.contactName}</span>
-                        <span>{event.contactInfo}</span>
-                      </div>
-                      <div className="main-body-eventState">
-                        <span>Event Status: {event.eventState}</span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </div>
+      <Accordian flush defaultActiveKey={['0']}>
+        <Accordian.Item eventKey='0'>
+          <Accordian.Header>Planning: ({events.length && events.filter(event => event.eventState === 'Planning').length})</Accordian.Header>
+          <Accordian.Body>
+            <div className="row">
+              {events.length &&
+                events.filter(event => event.eventState === 'Planning').map((event) => (
+                  <EventCard event={event} />
+                ))}
             </div>
-          ))}
-      </div>
+          </Accordian.Body>
+        </Accordian.Item>
+        <Accordian.Item eventKey='2'>
+          <Accordian.Header>Pending: ({events.length && events.filter(event => event.eventState === 'Pending').length})</Accordian.Header>
+          <Accordian.Body>
+            <div className="row">
+              {events.length &&
+                events.filter(event => event.eventState === 'Pending').map((event) => (
+                  <EventCard event={event} />
+                ))}
+            </div>
+          </Accordian.Body>
+        </Accordian.Item>
+        <Accordian.Item eventKey='3'>
+          <Accordian.Header>In Progress: ({events.length && events.filter(event => event.eventState === 'InProgress').length})</Accordian.Header>
+          <Accordian.Body>
+            <div className="row">
+              {events.length &&
+                events.filter(event => event.eventState === 'InProgress').map((event) => (
+                  <EventCard event={event} />
+                ))}
+            </div>
+          </Accordian.Body>
+        </Accordian.Item>
+        <Accordian.Item eventKey='4'>
+          <Accordian.Header>Completed: ({events.length && events.filter(event => event.eventState === 'Complete').length})</Accordian.Header>
+          <Accordian.Body>
+            <div className="row">
+              {events.length &&
+                events.filter(event => event.eventState === 'Complete').map((event) => (
+                  <EventCard event={event} />
+                ))}
+            </div>
+          </Accordian.Body>
+        </Accordian.Item>
+        <Accordian.Item eventKey='5'>
+          <Accordian.Header>Cancelled: ({events.length && events.filter(event => event.eventState === 'Cancelled').length})</Accordian.Header>
+          <Accordian.Body>
+            <div className="row">
+              {events.length &&
+                events.filter(event => event.eventState === 'Cancelled').map((event) => (
+                  <EventCard event={event} />
+                ))}
+            </div>
+          </Accordian.Body>
+        </Accordian.Item>
+      </Accordian>
     </div>
   );
 };

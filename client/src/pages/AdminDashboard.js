@@ -8,7 +8,7 @@ const Dashboard = () => {
   return (
     <div>
       <AdminHeader />
-      <div className="container">
+      <div className="container background">
         <div>
           <h2>Viewing your dashboard.</h2>
           <EventList />

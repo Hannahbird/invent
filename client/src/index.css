@@ -60,7 +60,7 @@ code {
   background-color: rgba(255, 255, 255, .8);
   padding: 10px;
   border-radius: 3px;
-  max-height: 50px !important;
+ 
 }
 
 .navigation {
@@ -73,11 +73,16 @@ a:link {
 
 p {
   font-family: 'Arial';
+  font-size: x-large;
+  font-weight: bold;
 }
 
 body {
   font: 'Arial';
-  background-color: #EDEDE9
+  background-color: #EDEDE9;
+
+
+
 }
 
 main {
@@ -126,6 +131,39 @@ header {
   background-color: white;
 }
 
-.listitem{
+.listitem {
   background-color: white;
+}
+
+img {
+  object-fit: cover;
+  object-position: center;
+  height: 600px;
+  width: 200px;
+  opacity: .7;
+}
+
+/* custom colors for accordian */
+
+.accordion-button:not(.collapsed) {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  color: white !important;
+
+}
+
+.accordion-button:not(.collapsed)::after {
+  filter: brightness(0) invert(1)  !important;
+}
+.accordion-item {
+  background-color: rgba(255, 255, 255, .8) !important;
+}
+.accordion-button {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+@media  screen and (min-width: 500px) {
+  .header nav{
+    max-height: 45px;
+  }
 }
