@@ -17,12 +17,12 @@ function DepSingleEvent() {
   var pusher = new Pusher("b4bd3ba699f2fde524c6", {
     cluster: "mt1",
   });
-
+  console.log(Auth.getProfile());
   var channel = pusher.subscribe(
     Auth.getProfile().data.department._id.toString()
   );
   var eventChannel = pusher.subscribe(
-    Auth.getProfile().data.department.company
+    Auth.getProfile().data.department.company._id.toString()
   );
   const { id: eventId } = useParams();
   const { loading, data, refetch } = useQuery(QUERY_EVENT, {
