@@ -34,12 +34,19 @@ const typeDefs = gql`
     company: Company
     signUpLink: String
     teamMembers: [User]
+    reserveCode: String
   }
 
   type Company {
     _id: ID
     title: String
     companyEmail: String
+    reserveCode: String
+  }
+
+  type Reserve {
+    locations: [Location]
+    company: Company
   }
 
   type Location {
@@ -102,6 +109,7 @@ const typeDefs = gql`
     deptEvents: [Event]
     event(eventId: String!): Event
     locations: [Location]
+    locationsByCode(code: String!): Reserve
     checkEmail(email: String!): Check
     checkUsername(username: String!): Check
   }
@@ -131,11 +139,11 @@ const typeDefs = gql`
     addEvent(
       eventName: String!
       location: ID!
-      departments: [ID]
       contactInfo: String!
       contactName: String!
       eventStartDate: Date
       eventEndDate: Date
+      eventState: String
     ): Event
     updateEvent(
       eventId: ID!

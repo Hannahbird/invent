@@ -54,6 +54,24 @@ export const QUERY_LOCATIONS = gql`
   }
 `;
 
+export const QUERY_LOCATIONS_BYCODE = gql`
+query LocationsByCode($code: String!) {
+  locationsByCode(code: $code) {
+    locations {
+      _id
+      locationName
+      capacity
+      image {
+        encodedImage
+      }
+    }
+    company {
+      title
+      companyEmail
+    }
+  }
+}`
+
 export const QUERY_ME = gql`
   {
     me {

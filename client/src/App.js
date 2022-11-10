@@ -25,6 +25,7 @@ import About from './pages/About';
 import DepSingleEvent from './pages/DepSingleEvent';
 import SingleEvent from './pages/SingleEvent';
 import NoMatch from './pages/NoMatch';
+import Reserve from './pages/Reserve'
 
 import Pusher from 'pusher-js';
 import * as bs from 'bootstrap/dist/css/bootstrap.css';
@@ -64,6 +65,7 @@ export default class App extends Component {
                 <Route path="/event/:id" element={<SingleEvent />} />
                 <Route path="/depevent/:id" element={<DepSingleEvent />} />
                 <Route path="/spaces" element={<SpacesList />} />
+                <Route path="/reserve/:id" element= {<Reserve />} />
                 <Route path="/departments" element={<DepartmentList />} />
                 <Route path="*" element={<NoMatch />} />
               </Routes>

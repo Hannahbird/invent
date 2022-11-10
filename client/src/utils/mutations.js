@@ -11,6 +11,7 @@ export const LOGIN_USER = gql`
           _id
           company {
             _id
+            reserveCode
           }
         }
       }
@@ -165,6 +166,7 @@ export const ADD_EVENT = gql`
     $eventName: String!
     $location: ID!
     $contactInfo: String!
+    $eventState: String
   ) {
     addEvent(
       contactName: $contactName
@@ -173,6 +175,7 @@ export const ADD_EVENT = gql`
       eventName: $eventName
       location: $location
       contactInfo: $contactInfo
+      eventState: $eventState
     ) {
       _id
       eventName
