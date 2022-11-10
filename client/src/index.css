@@ -146,15 +146,17 @@ img {
 /* custom colors for accordian */
 
 .accordion-button:not(.collapsed) {
-  background-color: rgba(218, 165, 32, 0.6) !important;
+  background-color: rgba(0, 0, 0, 0.4) !important;
   color: white !important;
 
 }
 
 .accordion-button:not(.collapsed)::after {
-  filter: brightness(0) invert(1) !important;
+  filter: brightness(0) invert(1)  !important;
 }
-
+.accordion-item {
+  background-color: rgba(255, 255, 255, .8) !important;
+}
 .accordion-button {
   border: none !important;
   box-shadow: none !important;
