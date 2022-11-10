@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Nav from 'react-bootstrap/Nav';
-import LandingPage from '../../pages/LandingPage';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Nav from "react-bootstrap/Nav";
+import LandingPage from "../../pages/LandingPage";
+import i from "../../assets/images/i.png";
 
-import Auth from '../../utils/auth';
+import Auth from "../../utils/auth";
 
 const Header = () => {
   const logout = (event) => {
@@ -23,16 +24,16 @@ const Header = () => {
       <div className="header container flex-row justify-space-between-lg justify-flex-end align-left">
         <nav>
           <>
-            <Link className="navigation" to="/about">
-              About
-            </Link>{' '}
-            ||{' '}
             <Link className="navigation" to="/login">
               Login
-            </Link>{' '}
-            ||{' '}
+            </Link>{" "}
+            ||{" "}
             <Link className="navigation" to="/signup">
               Signup
+            </Link>{" "}
+            ||{" "}
+            <Link className="navigation" to="/gettingstarted">
+              Getting Started
             </Link>
           </>
         </nav>
